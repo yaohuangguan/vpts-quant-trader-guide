@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card } from './Card';
-import { Filter, Play, PieChart, ShieldAlert, TrendingUp, CheckCircle2, AlertTriangle, ArrowUpRight, ScanLine, Radar, Clock, Calendar, MousePointerClick, Target, ArrowRight, Layers, Lock, Zap, Skull, LogOut, BarChart2, Hash, Split, Anchor, Sun, Snowflake, Sprout, Award, Coins } from 'lucide-react';
+import { Filter, Play, PieChart, ShieldAlert, TrendingUp, CheckCircle2, AlertTriangle, ArrowUpRight, ScanLine, Radar, Clock, Calendar, MousePointerClick, Target, ArrowRight, Layers, Lock, Zap, Skull, LogOut, BarChart2, Hash, Split, Anchor, Sun, Snowflake, Sprout, Award, Coins, RefreshCcw } from 'lucide-react';
 import { Lang } from '../types';
 
 export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
@@ -191,6 +191,10 @@ export const RiskManagement: React.FC<{ lang: Lang }> = ({ lang }) => {
   );
 
   const t = {
+    essence: {
+        title: lang === 'zh' ? '交易核心本质' : 'Trading Essence',
+        desc: lang === 'zh' ? '股票价值交换盈利就是底部的时候买入足够多的筹码，高位的时候抛出足够多的筹码。' : 'Profit comes from buying enough chips at the bottom and selling enough chips at the high.'
+    },
     buy: {
         title: lang === 'zh' ? '买入规则' : 'Entry Rules',
         pyramid: {
@@ -265,6 +269,21 @@ export const RiskManagement: React.FC<{ lang: Lang }> = ({ lang }) => {
 
   return (
     <div className="flex flex-col gap-6">
+       {/* Trading Essence Card (New) */}
+       <Card highlightColor="amber" className="bg-amber-50/50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/50 shadow-sm">
+           <div className="flex items-start gap-4">
+               <div className="bg-amber-100 dark:bg-amber-900/50 p-2 rounded-full text-amber-600 dark:text-amber-400 shrink-0 mt-1">
+                   <Coins size={24} />
+               </div>
+               <div>
+                   <h4 className="font-bold text-lg text-amber-800 dark:text-amber-300 mb-2">{t.essence.title}</h4>
+                   <p className="text-base font-medium text-amber-900/80 dark:text-amber-100/80 leading-relaxed">
+                       "{t.essence.desc}"
+                   </p>
+               </div>
+           </div>
+       </Card>
+
        {/* Buy Rules */}
        <Card highlightColor="green" className="bg-green-50/30 dark:bg-green-900/5 border-2 border-green-500/20 shadow-sm">
           <div className="flex items-center gap-3 mb-4">

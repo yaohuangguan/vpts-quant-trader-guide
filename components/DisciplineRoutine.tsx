@@ -13,7 +13,7 @@ export const DailyRoutine: React.FC<{ lang: Lang }> = ({ lang }) => {
         step2: lang === 'zh' ? '作战计划' : 'Battle Plan',
         desc2: lang === 'zh' ? 'If-Then 剧本 / 盘前决策' : 'If-Then Scripts / Decide Early',
         step3: lang === 'zh' ? '誓言宣读' : 'The Oath',
-        desc3: lang === 'zh' ? '“目标是执行，不是赚钱”' : '"Goal is Execution, Not Money"'
+        desc3: lang === 'zh' ? '“执行力是利润的唯一来源”' : '"Execution is the Source of Profit"'
     },
     intra: {
         title: lang === 'zh' ? '盘中 (Intra-Market)' : 'Intra-Market',

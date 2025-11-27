@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from './Card';
 import { Scale, Sprout, ShoppingCart, RefreshCw, Flame, Hand, CheckCircle } from 'lucide-react';
@@ -23,7 +22,7 @@ export const PhilosophyReconstruction: React.FC<{ lang: Lang }> = ({ lang }) => 
         c_list: lang === 'zh' ? '入场、仓位、止损执行' : 'Entry, Size, Execution',
         u_list: lang === 'zh' ? '涨跌、新闻、运气' : 'Price Action, News, Luck',
         liberation: lang === 'zh' ? '精神解脱' : 'Liberation',
-        lib_desc: lang === 'zh' ? '我对系统负责，不对结果负责。按纪律亏损也是成功，违纪律赚钱也是失败。' : 'Responsible for the System, not the Result. Disciplined loss is success; Undisciplined win is failure.',
+        lib_desc: lang === 'zh' ? '结果是系统的镜像。对系统极致负责，就是对结果最大的负责。' : 'Result mirrors the System. Extreme responsibility for the system IS responsibility for the result.',
     },
     identity: {
         title: lang === 'zh' ? '身份重塑：从拥有者到收割者' : 'Identity Shift: From Owner to Harvester',

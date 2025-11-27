@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Section } from './components/Section';
 import { Introduction } from './components/Introduction';
@@ -17,6 +16,7 @@ import { DisciplineSystem } from './components/DisciplineRoutine';
 import { ChaosOrder } from './components/ChaosOrder';
 import { Assessment } from './components/Assessment';
 import { TechnicalTruth } from './components/TechnicalTruth';
+import { ClassicCandlePatterns } from './components/CandlestickPatterns';
 import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User, Wind, Film, ShoppingBag, Cpu, TrendingUp, Menu, X, ChevronRight } from 'lucide-react';
 import { Lang } from './types';
 
@@ -35,12 +35,6 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
     // Calculate position relative to center
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
-    // "Depress" logic: 
-    // Push Top (y < center) -> rotateX should be POSITIVE (top goes into screen)
-    // Push Bottom (y > center) -> rotateX should be NEGATIVE (bottom goes into screen, top comes out)
-    // Push Right (x > center) -> rotateY should be POSITIVE (right goes into screen?? No, standard CSS rotateY(90) moves right away)
-    // Actually, usually rotateX(positive) tips top back. rotateY(positive) tips right back.
     
     const rotateX = ((centerY - y) / centerY) * 20; 
     const rotateY = ((x - centerX) / centerX) * 20;
@@ -101,7 +95,7 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
                 d="M55,10 L30,55 L50,55 L40,90 L75,35 L55,35 Z" 
                 fill="#facc15" 
                 stroke="#b45309" 
-                strokeWidth="1.5" 
+                stroke-width="1.5" 
                 strokeLinejoin="round"
                 filter="url(#bolt-glow)"
              />
@@ -115,7 +109,7 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
 // Section Keys for Navigation
 const SECTION_KEYS = [
     'sec_00', 'sec_01', 'sec_02', 'sec_03', 'sec_04', 'sec_05', 
-    'sec_06', 'sec_07', 'sec_08', 'sec_09', 'sec_10', 'sec_11',
+    'sec_06', 'sec_kline', 'sec_07', 'sec_08', 'sec_09', 'sec_10', 'sec_11',
     'sec_12', 'sec_13', 'sec_14', 'sec_15', 'sec_16', 'sec_17',
     'sec_18', 'sec_19', 'sec_20', 'sec_21', 'sec_22', 'sec_23'
 ];
@@ -147,13 +141,42 @@ const Navbar: React.FC<{
 
     return (
         <>
+            <style>{`
+                @keyframes shimmer-gold {
+                    0% { background-position: 200% center; }
+                    100% { background-position: -200% center; }
+                }
+                .text-gold-shimmer {
+                    background: linear-gradient(
+                        to right,
+                        #b45309 20%,
+                        #fcd34d 50%,
+                        #b45309 80%
+                    );
+                    background-size: 200% auto;
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    animation: shimmer-gold 3s linear infinite;
+                }
+            `}</style>
             <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 h-16 md:h-20 transition-all duration-300 shadow-sm">
                 <div className="container mx-auto px-4 h-full flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
                         <RolyPolyLogo className="w-10 h-10 md:w-14 md:h-14" />
-                        <span className="font-black text-lg md:text-xl text-slate-800 dark:text-slate-100 hidden sm:block tracking-tight">
-                            {t.header_title_1}
+                        <span className="text-lg md:text-2xl hidden sm:block tracking-tight">
+                            {lang === 'zh' ? (
+                                <>
+                                    <span className="text-gold-shimmer font-bold">姚记</span>
+                                    <span className="text-slate-800 dark:text-slate-100 font-bold">五线开花</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="text-gold-shimmer font-bold">Yao's</span>
+                                    <span className="text-slate-800 dark:text-slate-100 font-bold"> Blossom</span>
+                                </>
+                            )}
                         </span>
                     </div>
 
@@ -219,7 +242,7 @@ const Navbar: React.FC<{
                     </div>
                     
                     <div className="p-4 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400">
-                        {t.header_title_1} - v10.1
+                        {t.header_title_1} - v10.2
                     </div>
                 </div>
             </div>
@@ -228,7 +251,7 @@ const Navbar: React.FC<{
 };
 
 const App: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [lang, setLang] = useState<Lang>('zh');
 
   useEffect(() => {
@@ -246,7 +269,7 @@ const App: React.FC = () => {
         header_title_2: "量价时空",
         header_subtitle: "基于筹码微观结构与多周期共振的深度交易模型",
         header_nav: ["可视化指南", "筹码结构", "屠龙刀共振", "交易心理与纪律", "实战考核"],
-        author_name: "姚柏杨 (Sam Yao)",
+        author_name: "作者：姚柏杨 (Sam Yao)",
         author_title: "",
         sec_00: "导读",
         sec_01: "均线系统的哲学本质与五线架构",
@@ -255,6 +278,7 @@ const App: React.FC = () => {
         sec_04: "趋势几何学：多头排列的惯性保障",
         sec_05: "指标协同效应与多维验证 (Indicator Synergy)",
         sec_06: "核心变种：全均线战术板 (Six Tactical Patterns)",
+        sec_kline: "经典顶底K线形态大全 (Pattern Library)",
         sec_07: "量能动力学与验证机制",
         sec_08: "筹码微观结构：吸筹-锁仓-出货",
         sec_09: "全周期共振：信号传递链",
@@ -292,7 +316,7 @@ const App: React.FC = () => {
             ],
             conclusion: "在大的时间背景下（天时），叠加五线极致粘合（地利）与筹码高度集中（人和），多头排列才更有爆发力和持续性。"
         },
-        footer: "© 2025 Quant Model Research. 最终解释权由金沐资本及Baiyang Yao姚柏杨所有."
+        footer: "© 2025 Quant Model Research. 版权所有 All Rights Reserved. 最终解释权归 Baiyang Yao (姚柏杨)."
     },
     en: {
         header_badge: "Deep Quant Research on Stock Trading Essence",
@@ -300,7 +324,7 @@ const App: React.FC = () => {
         header_title_2: "Vol-Price Space-Time",
         header_subtitle: "Deep Trading Model Based on Micro-Chip Structure and Multi-Cycle Resonance",
         header_nav: ["Visual Guide", "Chip Structure", "Dragon Saber Resonance", "Psychology & Discipline", "Final Exam"],
-        author_name: "Sam Yao (姚柏杨)",
+        author_name: "Author: Sam Yao (姚柏杨)",
         author_title: "",
         sec_00: "Preface",
         sec_01: "Philosophical Essence & Architecture of MA Systems",
@@ -309,6 +333,7 @@ const App: React.FC = () => {
         sec_04: "Trend Geometry: Inertia Guarantee of Bullish Alignment",
         sec_05: "Indicator Synergy & Multi-Dimensional Verification",
         sec_06: "Tactical Variations: Six Core Patterns",
+        sec_kline: "Classic Top/Bottom Candlestick Patterns",
         sec_07: "Volume Dynamics & Verification Mechanisms",
         sec_08: "Micro-Chip Structure: Accumulation-Lock-Distribution",
         sec_09: "Timeframe Resonance: Signal Chain",
@@ -346,7 +371,7 @@ const App: React.FC = () => {
             ],
             conclusion: "Under the grand context (Timing), superimposed with extreme MA adhesion (Location) and high chip concentration (Harmony), creates the most explosive trend."
         },
-        footer: "© 2025 Quant Model Research. All rights reserved by Jinmu Capital & Baiyang Yao."
+        footer: "© 2025 Quant Model Research. All Rights Reserved. Final interpretation by Baiyang Yao."
     }
   };
 
@@ -413,7 +438,7 @@ const App: React.FC = () => {
       <div className="relative z-10 pt-20"> {/* Add padding-top for fixed header */}
         <header className="relative text-center pb-16 px-6 mb-12">
             
-            <div className="inline-block bg-blue-600 text-white text-lg font-bold px-6 py-2 rounded-full mb-6 shadow-lg tracking-wide transform hover:scale-105 transition-transform mt-4 md:mt-0">
+            <div className="inline-block bg-blue-600 text-white text-lg font-bold px-6 py-2 rounded-full mb-6 shadow-lg tracking-wide transform hover:scale-105 transition-transform mt-12 md:mt-16">
             {t.header_badge}
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-6 leading-tight drop-shadow-sm">
@@ -535,6 +560,11 @@ const App: React.FC = () => {
             {/* 6. Tactical Variations */}
             <Section id="sec_06" number="06" title={t.sec_06}>
                 <TacticalVariations lang={lang} />
+            </Section>
+
+            {/* NEW: Classic Candle Patterns */}
+            <Section id="sec_kline" number="06+" title={t.sec_kline}>
+                <ClassicCandlePatterns lang={lang} />
             </Section>
 
             {/* 7. Volume Dynamics */}
