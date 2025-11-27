@@ -1,8 +1,352 @@
 
 import React from 'react';
 import { Card } from './Card';
-import { Filter, Play, PieChart, ShieldAlert, TrendingUp, CheckCircle2, AlertTriangle, ArrowUpRight, ScanLine, Radar, Clock, Calendar, MousePointerClick, Target, ArrowRight, Layers, Lock, Zap, Skull, LogOut, BarChart2, Hash, Split, Anchor, Sun, Snowflake, Sprout, Award, Coins, RefreshCcw } from 'lucide-react';
+import { Filter, Play, PieChart, ShieldAlert, TrendingUp, CheckCircle2, AlertTriangle, ArrowUpRight, ScanLine, Radar, Clock, Calendar, MousePointerClick, Target, ArrowRight, Layers, Lock, Zap, Skull, LogOut, BarChart2, Hash, Split, Anchor, Sun, Snowflake, Sprout, Award, Coins, RefreshCcw, Feather, Gem } from 'lucide-react';
 import { Lang } from '../types';
+
+// New Sub-component: Old Duck Head Analysis
+const OldDuckHeadAnalysis: React.FC<{ lang: Lang }> = ({ lang }) => {
+    const t = {
+        title: lang === 'zh' ? '千金难买老鸭头 (Old Duck Head)' : 'The "Old Duck Head" Pattern',
+        subtitle: lang === 'zh' ? '经典主力洗盘与拉升形态深度解析' : 'Classic Washout & Rally Pattern Analysis',
+        quote: lang === 'zh' ? '“千金难买老鸭头，主力洗盘我也不愁。”' : '"A thousand gold cannot buy an Old Duck Head."',
+        phases: [
+            {
+                step: '1',
+                name: lang === 'zh' ? '鸭颈 (建仓期)' : 'Duck Neck (Accumulation)',
+                desc: lang === 'zh' ? '主力放量拉升收集筹码。MA5和MA10金叉上穿MA60，形成鸭颈。股价运行在MA60上方。' : 'Volume surge as MM accumulates. MA5/10 cross MA60 up. Price stays above MA60.'
+            },
+            {
+                step: '2',
+                name: lang === 'zh' ? '鸭头 (洗盘期)' : 'Duck Head (Washout)',
+                desc: lang === 'zh' ? '股价冲高回落，形成高点。主力震荡洗盘，清洗获利浮筹。MA5/10出现死叉或粘合。' : 'Price peaks and retraces. MM shakes out weak hands. MA5/10 dead cross or bond.'
+            },
+            {
+                step: '3',
+                name: lang === 'zh' ? '鸭鼻孔 (关键点)' : 'Duck Nostril (Key Point)',
+                desc: lang === 'zh' ? '【核心】极致缩量（芝麻量）。回踩MA60不破，此时是最佳买点。量越小，爆发力越强。' : '[CORE] Extreme volume shrink. Retest MA60 without breaking. Best entry point.'
+            },
+            {
+                step: '4',
+                name: lang === 'zh' ? '鸭嘴 (爆发期)' : 'Duck Mouth (Explosion)',
+                desc: lang === 'zh' ? '放量大阳线突破。MA5/10再次金叉张口向上。主升浪开启，鸭嘴张得越大，行情越猛。' : 'Breakout with volume. MA5/10 golden cross again. Mouth opens wide = Huge trend.'
+            }
+        ],
+        logic: lang === 'zh' 
+            ? '老鸭头的本质是主力在拉升途中的一次“假摔”。通过打压股价回踩生命线（MA60），测试支撑并清洗不坚定的散户。鼻孔处的“缩量”证明主力并未出逃，而是锁仓不动。随后的放量是主升浪的确信信号。'
+            : 'The essence is a "Fake Drop" during ascent. MM tests support (MA60) and washes out retail. Low volume at the "Nostril" proves MM is holding (Locked Chips). The subsequent surge is the main wave.',
+        svg: {
+            neck: lang === 'zh' ? '鸭颈' : 'Neck',
+            head: lang === 'zh' ? '鸭头' : 'Head',
+            nostril: lang === 'zh' ? '鸭鼻孔 (芝麻量)' : 'Nostril (Low Vol)',
+            mouth: lang === 'zh' ? '鸭嘴 (爆发)' : 'Mouth (Explode)',
+            ma60: 'MA60'
+        }
+    };
+
+    return (
+        <Card highlightColor="amber" className="mt-6 border-2 border-amber-500/20">
+            <div className="flex flex-col md:flex-row items-start gap-6">
+                {/* Left: Text Analysis */}
+                <div className="w-full md:w-1/2">
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
+                            <Feather size={24} />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
+                            <p className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide">{t.subtitle}</p>
+                        </div>
+                    </div>
+                    
+                    <div className="bg-amber-50 dark:bg-amber-900/10 p-3 rounded-lg border-l-4 border-amber-500 mb-6">
+                        <p className="text-sm font-bold text-amber-800 dark:text-amber-300 italic">{t.quote}</p>
+                    </div>
+
+                    <div className="space-y-4 relative">
+                        <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-slate-200 dark:bg-slate-700"></div>
+                        {t.phases.map((p, i) => (
+                            <div key={i} className="relative pl-8 group">
+                                <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-amber-500 text-amber-600 font-bold text-xs flex items-center justify-center z-10 group-hover:scale-110 transition-transform">
+                                    {p.step}
+                                </div>
+                                <h5 className="font-bold text-sm text-slate-800 dark:text-slate-200 mb-1">{p.name}</h5>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                                    {p.desc}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right: Visualization */}
+                <div className="w-full md:w-1/2">
+                    <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 h-full min-h-[300px] relative overflow-hidden flex flex-col">
+                        <style>{`
+                            @keyframes draw-duck {
+                                0% { stroke-dashoffset: 1000; }
+                                100% { stroke-dashoffset: 0; }
+                            }
+                            @keyframes pulse-nostril {
+                                0% { r: 3; opacity: 0.5; fill: #fbbf24; }
+                                50% { r: 6; opacity: 1; fill: #ef4444; }
+                                100% { r: 3; opacity: 0.5; fill: #fbbf24; }
+                            }
+                            .anim-duck-path { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw-duck 4s ease-out forwards; }
+                            .anim-nostril { animation: pulse-nostril 2s infinite; }
+                        `}</style>
+                        
+                        <div className="absolute top-2 right-2 px-2 py-1 bg-slate-800 rounded text-[10px] text-slate-400 font-mono border border-slate-700">
+                            Model: LYT-V1
+                        </div>
+
+                        {/* Chart Area */}
+                        <div className="flex-grow relative">
+                            <svg viewBox="0 0 300 180" className="w-full h-full">
+                                {/* Grid */}
+                                <line x1="0" y1="150" x2="300" y2="150" className="stroke-slate-700" strokeWidth="1" />
+                                <line x1="0" y1="50" x2="300" y2="50" className="stroke-slate-800" strokeDasharray="4" />
+                                
+                                {/* MA60 (Life Line) - Smooth Curve Support */}
+                                <path d="M0,140 Q150,130 300,100" fill="none" className="stroke-blue-500" strokeWidth="2" strokeDasharray="5,2" />
+                                <text x="10" y="135" fontSize="10" className="fill-blue-500 font-bold">{t.svg.ma60}</text>
+
+                                {/* The Duck Shape (Price / Short MA) */}
+                                {/* Neck(Up) -> Head(Top) -> Nostril(Dip) -> Mouth(Up) */}
+                                <path 
+                                    d="M10,140 L60,60 Q90,30 120,60 T160,115 L180,120 L280,20" 
+                                    fill="none" 
+                                    className="stroke-amber-400 anim-duck-path" 
+                                    strokeWidth="3" 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round"
+                                />
+                                
+                                {/* Duck Outline Overlay (Artistic) */}
+                                <path 
+                                    d="M60,60 Q90,10 140,40 Q170,60 160,115 Q140,130 110,100" 
+                                    fill="rgba(251, 191, 36, 0.1)" 
+                                    className="stroke-amber-500/30" 
+                                    strokeWidth="1"
+                                />
+                                <circle cx="120" cy="50" r="2" className="fill-white" /> {/* Eye */}
+
+                                {/* Annotations */}
+                                <text x="40" y="80" fontSize="10" className="fill-slate-400">{t.svg.neck}</text>
+                                <text x="100" y="25" fontSize="10" className="fill-slate-400">{t.svg.head}</text>
+                                
+                                {/* Nostril Highlight */}
+                                <circle cx="160" cy="115" r="4" className="anim-nostril" />
+                                <text x="140" y="135" fontSize="10" className="fill-amber-400 font-bold">{t.svg.nostril}</text>
+                                
+                                {/* Mouth */}
+                                <text x="220" y="50" fontSize="12" className="fill-red-500 font-bold">{t.svg.mouth}</text>
+                            </svg>
+                        </div>
+
+                        {/* Volume Simulation */}
+                        <div className="h-16 flex items-end justify-between gap-1 px-4 border-t border-slate-700 pt-2">
+                            {/* Neck: High Volume */}
+                            <div className="flex items-end gap-0.5">
+                                <div className="w-2 bg-red-500 h-8 opacity-80"></div>
+                                <div className="w-2 bg-red-500 h-10 opacity-90"></div>
+                                <div className="w-2 bg-red-500 h-12"></div>
+                            </div>
+                            {/* Head: Medium */}
+                            <div className="flex items-end gap-0.5">
+                                <div className="w-2 bg-slate-500 h-6"></div>
+                                <div className="w-2 bg-slate-500 h-5"></div>
+                            </div>
+                            {/* Nostril: Extreme Low (Sesame) */}
+                            <div className="flex items-end gap-0.5 relative group">
+                                <div className="w-2 bg-green-500 h-2"></div>
+                                <div className="w-2 bg-green-500 h-1.5 animate-pulse"></div>
+                                <div className="w-2 bg-green-500 h-2"></div>
+                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] text-slate-300 bg-slate-700 px-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Land Vol
+                                </div>
+                            </div>
+                            {/* Mouth: Explosion */}
+                            <div className="flex items-end gap-0.5">
+                                <div className="w-2 bg-red-500 h-6"></div>
+                                <div className="w-2 bg-red-500 h-10"></div>
+                                <div className="w-2 bg-red-500 h-14 animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase block mb-1">{lang === 'zh' ? '核心逻辑' : 'Core Logic'}</span>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-snug">
+                            {t.logic}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </Card>
+    );
+};
+
+// New Sub-component: Beauty Shoulder Analysis
+const BeautyShoulderAnalysis: React.FC<{ lang: Lang }> = ({ lang }) => {
+    const t = {
+        title: lang === 'zh' ? '绝美形态：美人肩 (Beauty Shoulder)' : 'The "Beauty Shoulder" Pattern',
+        subtitle: lang === 'zh' ? '最强悍的上升中继形态' : 'The Strongest Trend Relay Pattern',
+        quote: lang === 'zh' ? '“美人肩上一点红，万花丛中一点绿。”' : '"A red dot on a beauty\'s shoulder, a touch of green amidst flowers."',
+        desc: lang === 'zh' ? '美人肩是比老鸭头更强势的形态。股价在拉升后，并不进行深度回调（不触碰MA60），而在高位进行极其狭窄的缩量盘整，MA5与MA10欲拒还迎，纠缠而不死叉，最终放量喷出。' 
+                             : 'More powerful than the Duck Head. Price rallies but refuses deep correction (avoids MA60), consolidating tightly at highs. MA5/10 entangle but don\'t cross down deeply. Explodes with volume.',
+        phases: [
+            { step: '1', t: lang === 'zh' ? '香颈 (急涨)' : 'Neck (Surge)', d: lang === 'zh' ? '主力强力拉升，脱离成本区，角度陡峭。' : 'Strong rally away from cost zone, steep angle.' },
+            { step: '2', t: lang === 'zh' ? '美肩 (盘整)' : 'Shoulder (Consolidate)', d: lang === 'zh' ? '高位缩量横盘，拒绝回调。MA5/10粘合但保持向上通气，依托MA20强势整理。' : 'High tight flag. Low vol. Refuses to drop. MAs bond but stay up, riding MA20.' },
+            { step: '3', t: lang === 'zh' ? '启动 (飞吻)' : 'Kiss (Launch)', d: lang === 'zh' ? '放量突破盘整区，主升浪开启。' : 'Vol breakout. Main wave starts.' }
+        ],
+        logic: lang === 'zh' ? '之所以叫“美人肩”，是因为形态极其优美流畅，没有深跌的“难看”走势。这代表主力控盘程度极高，市场惜售情绪浓厚，只要有一点火星（资金）就能点燃主升浪。' : 'Called "Beauty Shoulder" for its smooth elegance without "ugly" deep drops. Indicates immense MM control and reluctance to sell. A spark ignites the main wave.',
+        svg: {
+            ma: 'MA20',
+            neck: lang === 'zh' ? '香颈 (急涨)' : 'Neck (Surge)',
+            shoulder: lang === 'zh' ? '美人肩 (极致缩量)' : 'Shoulder (Low Vol)',
+            break: lang === 'zh' ? '突破 (主升)' : 'Breakout',
+            vol: lang === 'zh' ? '缩量' : 'Shrink'
+        }
+    };
+
+    return (
+        <Card highlightColor="pink" className="mt-6 border-2 border-pink-500/20">
+            <div className="flex flex-col md:flex-row items-start gap-6">
+                {/* Left: Text Analysis */}
+                <div className="w-full md:w-1/2">
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="p-2 bg-pink-100 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400">
+                            <Gem size={24} />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
+                            <p className="text-xs font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wide">{t.subtitle}</p>
+                        </div>
+                    </div>
+                    
+                    <div className="bg-pink-50 dark:bg-pink-900/10 p-3 rounded-lg border-l-4 border-pink-500 mb-6">
+                        <p className="text-sm font-bold text-pink-800 dark:text-pink-300 italic">{t.quote}</p>
+                    </div>
+
+                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed mb-6">
+                        {t.desc}
+                    </p>
+
+                    <div className="space-y-4 relative">
+                        {t.phases.map((p, i) => (
+                            <div key={i} className="flex items-start gap-3 group">
+                                <div className="w-6 h-6 rounded-full bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 text-pink-600 dark:text-pink-300 font-bold text-xs flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform mt-0.5">
+                                    {p.step}
+                                </div>
+                                <div>
+                                    <h5 className="font-bold text-sm text-slate-800 dark:text-slate-200 mb-0.5">{p.t}</h5>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                                        {p.d}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right: Visualization */}
+                <div className="w-full md:w-1/2">
+                    <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 h-full min-h-[300px] relative overflow-hidden flex flex-col">
+                        <style>{`
+                            @keyframes draw-shoulder {
+                                0% { stroke-dashoffset: 800; }
+                                100% { stroke-dashoffset: 0; }
+                            }
+                            @keyframes pulse-break {
+                                0% { r: 3; opacity: 0.5; stroke-width: 1px; }
+                                50% { r: 6; opacity: 1; stroke-width: 3px; }
+                                100% { r: 3; opacity: 0.5; stroke-width: 1px; }
+                            }
+                            .anim-shoulder-path { stroke-dasharray: 800; stroke-dashoffset: 800; animation: draw-shoulder 4s ease-out forwards; }
+                            .anim-break-point { animation: pulse-break 1.5s infinite; }
+                        `}</style>
+                        
+                        <div className="absolute top-2 right-2 px-2 py-1 bg-pink-900/30 text-pink-300 rounded text-[10px] font-mono border border-pink-800/50">
+                            Pattern: MRJ-Pro
+                        </div>
+
+                        {/* Chart Area */}
+                        <div className="flex-grow relative">
+                            <svg viewBox="0 0 300 180" className="w-full h-full">
+                                {/* Grid */}
+                                <defs>
+                                    <linearGradient id="shoulderGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#ec4899" stopOpacity="0.2"/>
+                                        <stop offset="100%" stopColor="#ec4899" stopOpacity="0"/>
+                                    </linearGradient>
+                                </defs>
+                                <line x1="0" y1="150" x2="300" y2="150" className="stroke-slate-700" strokeWidth="1" />
+                                <line x1="0" y1="50" x2="300" y2="50" className="stroke-slate-800" strokeDasharray="4" />
+                                
+                                {/* MA20 (Support Line) - Rising Steadily */}
+                                <path d="M0,160 Q100,140 200,80 T300,40" fill="none" className="stroke-purple-500" strokeWidth="2" />
+                                <text x="10" y="155" fontSize="10" className="fill-purple-500 font-bold">{t.svg.ma}</text>
+
+                                {/* Price Path */}
+                                {/* Surge -> Flat Shoulder -> Surge */}
+                                <path 
+                                    d="M10,160 L60,60 L100,50 L160,55 L180,60 L200,50 L280,10" 
+                                    fill="none" 
+                                    className="stroke-pink-400 anim-shoulder-path" 
+                                    strokeWidth="3" 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round"
+                                />
+                                
+                                {/* Shoulder Highlight Area */}
+                                <rect x="100" y="45" width="80" height="25" className="fill-pink-500/10 stroke-pink-500/30" rx="4" />
+                                <text x="140" y="40" fontSize="10" textAnchor="middle" className="fill-pink-400 font-bold">{t.svg.shoulder}</text>
+
+                                {/* Annotations */}
+                                <text x="45" y="100" fontSize="10" className="fill-slate-400" transform="rotate(-60, 45, 100)">{t.svg.neck}</text>
+                                
+                                {/* Breakout Point */}
+                                <circle cx="200" cy="50" r="4" className="fill-white stroke-pink-500 anim-break-point" />
+                                <text x="220" y="70" fontSize="11" className="fill-white font-bold">{t.svg.break}</text>
+                            </svg>
+                        </div>
+
+                        {/* Volume Simulation */}
+                        <div className="h-16 flex items-end justify-between gap-1 px-4 border-t border-slate-700 pt-2">
+                            {/* Neck: High Volume */}
+                            <div className="flex items-end gap-0.5 flex-1 justify-center">
+                                <div className="w-2 bg-red-500 h-8 opacity-80"></div>
+                                <div className="w-2 bg-red-500 h-10 opacity-90"></div>
+                                <div className="w-2 bg-red-500 h-12"></div>
+                            </div>
+                            {/* Shoulder: Extreme Shrinkage */}
+                            <div className="flex items-end gap-0.5 flex-1 justify-center relative">
+                                <div className="w-1.5 bg-slate-600 h-3"></div>
+                                <div className="w-1.5 bg-slate-600 h-2"></div>
+                                <div className="w-1.5 bg-slate-600 h-2"></div>
+                                <div className="w-1.5 bg-slate-600 h-3"></div>
+                                <div className="absolute -top-4 text-[9px] text-slate-400 w-full text-center">{t.svg.vol}</div>
+                            </div>
+                            {/* Breakout: Explosion */}
+                            <div className="flex items-end gap-0.5 flex-1 justify-center">
+                                <div className="w-2 bg-red-500 h-14 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                                <div className="w-2 bg-red-500 h-10"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase block mb-1">{lang === 'zh' ? '核心逻辑' : 'Core Logic'}</span>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-snug">
+                            {t.logic}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </Card>
+    );
+};
 
 export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
   const t = {
@@ -33,152 +377,160 @@ export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 mb-10">
-      <style>{`
-        @keyframes scan-line {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.3); }
-            50% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); border-color: rgba(59, 130, 246, 0.8); }
-        }
-        .scanner-overlay {
-            background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.2), transparent);
-            animation: scan-line 3s linear infinite;
-        }
-        .item-pulse {
-            animation: pulse-glow 3s infinite;
-        }
-        @keyframes draw-path-fusion {
-            0% { stroke-dashoffset: 1000; }
-            100% { stroke-dashoffset: 0; }
-        }
-        @keyframes fade-in-seq {
-            0%, 20% { opacity: 0; transform: translateY(5px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .fusion-path {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: draw-path-fusion 4s ease-in-out infinite;
-        }
-        .seq-appear-1 { animation: fade-in-seq 4s infinite; animation-delay: 0s; }
-        .seq-appear-2 { animation: fade-in-seq 4s infinite; animation-delay: 1.5s; }
-        .seq-appear-3 { animation: fade-in-seq 4s infinite; animation-delay: 3s; }
-      `}</style>
-      
-      {/* Left: Fusion Morphology */}
-      <div className="w-full md:w-3/5">
-        <Card highlightColor="teal" className="h-full">
-            <h4 className="font-bold text-lg mb-4 text-teal-800 dark:text-teal-400">{t.fusion.title}</h4>
-            <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded mb-4 border border-slate-100 dark:border-slate-800 transition-colors duration-300 overflow-hidden">
-                <svg viewBox="0 0 500 180" className="w-full h-full absolute inset-0">
-                    <defs>
-                        <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                            <path d="M 20 0 L 0 0 0 20" fill="none" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="0.5"/>
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#smallGrid)" />
+    <div className="flex flex-col gap-10">
+        <div className="flex flex-col md:flex-row gap-6">
+        <style>{`
+            @keyframes scan-line {
+                0% { top: 0%; opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { top: 100%; opacity: 0; }
+            }
+            @keyframes pulse-glow {
+                0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.3); }
+                50% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); border-color: rgba(59, 130, 246, 0.8); }
+            }
+            .scanner-overlay {
+                background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.2), transparent);
+                animation: scan-line 3s linear infinite;
+            }
+            .item-pulse {
+                animation: pulse-glow 3s infinite;
+            }
+            @keyframes draw-path-fusion {
+                0% { stroke-dashoffset: 1000; }
+                100% { stroke-dashoffset: 0; }
+            }
+            @keyframes fade-in-seq {
+                0%, 20% { opacity: 0; transform: translateY(5px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+            .fusion-path {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+                animation: draw-path-fusion 4s ease-in-out infinite;
+            }
+            .seq-appear-1 { animation: fade-in-seq 4s infinite; animation-delay: 0s; }
+            .seq-appear-2 { animation: fade-in-seq 4s infinite; animation-delay: 1.5s; }
+            .seq-appear-3 { animation: fade-in-seq 4s infinite; animation-delay: 3s; }
+        `}</style>
+        
+        {/* Left: Fusion Morphology */}
+        <div className="w-full md:w-3/5">
+            <Card highlightColor="teal" className="h-full">
+                <h4 className="font-bold text-lg mb-4 text-teal-800 dark:text-teal-400">{t.fusion.title}</h4>
+                <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded mb-4 border border-slate-100 dark:border-slate-800 transition-colors duration-300 overflow-hidden">
+                    <svg viewBox="0 0 500 180" className="w-full h-full absolute inset-0">
+                        <defs>
+                            <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#smallGrid)" />
 
-                    <path d="M20,150 C150,140 300,100 480,20" fill="none" className="stroke-slate-300 dark:stroke-slate-700" strokeWidth="2" strokeDasharray="5,5" />
+                        <path d="M20,150 C150,140 300,100 480,20" fill="none" className="stroke-slate-300 dark:stroke-slate-700" strokeWidth="2" strokeDasharray="5,5" />
 
-                    <path 
-                        d="M20,150 L80,90 Q130,140 180,110 T240,90 L300,90 L340,70 L380,70 L480,10" 
-                        fill="none" 
-                        className="stroke-teal-500 fusion-path" 
-                        strokeWidth="3" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                    />
-                    
-                    <g className="seq-appear-1 opacity-0">
-                        <circle cx="80" cy="90" r="4" className="fill-red-500" />
-                        <text x="80" y="75" textAnchor="middle" fontSize="12" fontWeight="bold" className="fill-red-500">{t.fusion.s1}</text>
-                    </g>
+                        <path 
+                            d="M20,150 L80,90 Q130,140 180,110 T240,90 L300,90 L340,70 L380,70 L480,10" 
+                            fill="none" 
+                            className="stroke-teal-500 fusion-path" 
+                            strokeWidth="3" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                        />
+                        
+                        <g className="seq-appear-1 opacity-0">
+                            <circle cx="80" cy="90" r="4" className="fill-red-500" />
+                            <text x="80" y="75" textAnchor="middle" fontSize="12" fontWeight="bold" className="fill-red-500">{t.fusion.s1}</text>
+                        </g>
 
-                    <g className="seq-appear-2 opacity-0">
-                        <circle cx="180" cy="115" r="4" className="fill-blue-500" />
-                        <text x="180" y="140" textAnchor="middle" fontSize="12" fontWeight="bold" className="fill-blue-500">{t.fusion.s2}</text>
-                    </g>
+                        <g className="seq-appear-2 opacity-0">
+                            <circle cx="180" cy="115" r="4" className="fill-blue-500" />
+                            <text x="180" y="140" textAnchor="middle" fontSize="12" fontWeight="bold" className="fill-blue-500">{t.fusion.s2}</text>
+                        </g>
 
-                    <g className="seq-appear-3 opacity-0">
-                        <rect x="300" y="65" width="80" height="20" className="fill-pink-500/10 stroke-pink-500" strokeDasharray="2,2" rx="4" />
-                        <text x="340" y="55" textAnchor="middle" fontSize="12" fontWeight="bold" className="fill-pink-500">{t.fusion.s3}</text>
-                    </g>
-                </svg>
+                        <g className="seq-appear-3 opacity-0">
+                            <rect x="300" y="65" width="80" height="20" className="fill-pink-500/10 stroke-pink-500" strokeDasharray="2,2" rx="4" />
+                            <text x="340" y="55" textAnchor="middle" fontSize="12" fontWeight="bold" className="fill-pink-500">{t.fusion.s3}</text>
+                        </g>
+                    </svg>
 
-                <div className="absolute bottom-0 left-0 right-0 h-10 flex items-end gap-1 px-4 opacity-50">
-                    <div className="w-10 bg-red-500 h-8 seq-appear-1"></div>
-                    <div className="w-8 bg-red-400 h-6 seq-appear-1"></div>
-                    <div className="w-6 bg-slate-400 h-3 seq-appear-2 ml-10"></div>
-                    <div className="w-6 bg-slate-400 h-2 seq-appear-2"></div>
-                    <div className="w-6 bg-red-400 h-4 seq-appear-3 ml-20"></div>
-                    <div className="w-6 bg-red-400 h-5 seq-appear-3"></div>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 text-center text-sm text-slate-700 dark:text-slate-300">
-                <div className="p-2 rounded bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/50">
-                    <span className="font-bold text-red-600 dark:text-red-400 block mb-1 text-sm">{t.fusion.t1}</span> <span className="text-xs">{t.fusion.d1}</span>
-                </div>
-                <div className="p-2 rounded bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/50">
-                    <span className="font-bold text-blue-600 dark:text-blue-400 block mb-1 text-sm">{t.fusion.t2}</span> <span className="text-xs">{t.fusion.d2}</span>
-                </div>
-                <div className="p-2 rounded bg-pink-50 dark:bg-pink-900/10 border border-pink-100 dark:border-pink-800/50">
-                    <span className="font-bold text-pink-600 dark:text-pink-400 block mb-1 text-sm">{t.fusion.t3}</span> <span className="text-xs">{t.fusion.d3}</span>
-                </div>
-            </div>
-        </Card>
-      </div>
-
-      {/* Right: Stock Screener */}
-      <div className="w-full md:w-2/5">
-        <div className="bg-slate-800 dark:bg-slate-900 text-white border border-slate-700 shadow-xl rounded-2xl p-6 h-full flex flex-col relative overflow-hidden group transition-colors duration-300">
-            <div className="absolute left-0 right-0 h-10 scanner-overlay z-0 pointer-events-none"></div>
-            
-            <div className="flex items-center justify-between gap-2 mb-6 border-b border-slate-600 pb-2 relative z-10">
-                <div className="flex items-center gap-2">
-                    <div className="relative">
-                        <Radar className="text-blue-400 w-5 h-5 animate-spin-slow" style={{animationDuration: '4s'}} />
-                        <span className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-20"></span>
+                    <div className="absolute bottom-0 left-0 right-0 h-10 flex items-end gap-1 px-4 opacity-50">
+                        <div className="w-10 bg-red-500 h-8 seq-appear-1"></div>
+                        <div className="w-8 bg-red-400 h-6 seq-appear-1"></div>
+                        <div className="w-6 bg-slate-400 h-3 seq-appear-2 ml-10"></div>
+                        <div className="w-6 bg-slate-400 h-2 seq-appear-2"></div>
+                        <div className="w-6 bg-red-400 h-4 seq-appear-3 ml-20"></div>
+                        <div className="w-6 bg-red-400 h-5 seq-appear-3"></div>
                     </div>
-                    <h4 className="font-bold text-base text-blue-300">{t.screen.title}</h4>
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-green-900/50 rounded border border-green-500/30">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                    <span className="text-xs text-green-400 font-mono tracking-wider">{t.screen.status}</span>
+
+                <div className="grid grid-cols-3 gap-2 text-center text-sm text-slate-700 dark:text-slate-300">
+                    <div className="p-2 rounded bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/50">
+                        <span className="font-bold text-red-600 dark:text-red-400 block mb-1 text-sm">{t.fusion.t1}</span> <span className="text-xs">{t.fusion.d1}</span>
+                    </div>
+                    <div className="p-2 rounded bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/50">
+                        <span className="font-bold text-blue-600 dark:text-blue-400 block mb-1 text-sm">{t.fusion.t2}</span> <span className="text-xs">{t.fusion.d2}</span>
+                    </div>
+                    <div className="p-2 rounded bg-pink-50 dark:bg-pink-900/10 border border-pink-100 dark:border-pink-800/50">
+                        <span className="font-bold text-pink-600 dark:text-pink-400 block mb-1 text-sm">{t.fusion.t3}</span> <span className="text-xs">{t.fusion.d3}</span>
+                    </div>
                 </div>
-            </div>
-            
-            <div className="space-y-3 flex-grow relative z-10">
-                {[
-                    { icon: Zap, l: t.screen.f1, v: t.screen.v1, color: 'text-amber-300', bg: 'bg-amber-900/40', border: 'border-amber-500/50' },
-                    { icon: PieChart, l: t.screen.f2, v: t.screen.v2, color: 'text-cyan-300', bg: 'bg-cyan-900/40', border: 'border-cyan-500/50' },
-                    { icon: TrendingUp, l: t.screen.f3, v: t.screen.v3, color: 'text-emerald-300', bg: 'bg-emerald-900/40', border: 'border-emerald-500/50' },
-                    { icon: BarChart2, l: t.screen.f4, v: t.screen.v4, color: 'text-pink-300', bg: 'bg-pink-900/40', border: 'border-pink-500/50' }
-                ].map((item, i) => (
-                    <div key={i} className={`flex items-center justify-between p-3 rounded-lg border ${item.bg} ${item.border} item-pulse transition-all transform hover:scale-[1.02]`} style={{animationDelay: `${i * 0.5}s`}}>
-                        <div className="flex items-center gap-3">
-                            <div className={`p-1.5 rounded bg-slate-900/50 ${item.color}`}>
-                                <item.icon size={16} />
-                            </div>
-                            <span className="text-xs text-slate-300 uppercase tracking-wider font-bold">{item.l}</span>
+            </Card>
+        </div>
+
+        {/* Right: Stock Screener */}
+        <div className="w-full md:w-2/5">
+            <div className="bg-slate-800 dark:bg-slate-900 text-white border border-slate-700 shadow-xl rounded-2xl p-6 h-full flex flex-col relative overflow-hidden group transition-colors duration-300">
+                <div className="absolute left-0 right-0 h-10 scanner-overlay z-0 pointer-events-none"></div>
+                
+                <div className="flex items-center justify-between gap-2 mb-6 border-b border-slate-600 pb-2 relative z-10">
+                    <div className="flex items-center gap-2">
+                        <div className="relative">
+                            <Radar className="text-blue-400 w-5 h-5 animate-spin-slow" style={{animationDuration: '4s'}} />
+                            <span className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-20"></span>
                         </div>
-                        <span className={`font-bold text-sm ${item.color}`}>{item.v}</span>
+                        <h4 className="font-bold text-base text-blue-300">{t.screen.title}</h4>
                     </div>
-                ))}
-            </div>
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 bg-green-900/50 rounded border border-green-500/30">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                        <span className="text-xs text-green-400 font-mono tracking-wider">{t.screen.status}</span>
+                    </div>
+                </div>
+                
+                <div className="space-y-3 flex-grow relative z-10">
+                    {[
+                        { icon: Zap, l: t.screen.f1, v: t.screen.v1, color: 'text-amber-300', bg: 'bg-amber-900/40', border: 'border-amber-500/50' },
+                        { icon: PieChart, l: t.screen.f2, v: t.screen.v2, color: 'text-cyan-300', bg: 'bg-cyan-900/40', border: 'border-cyan-500/50' },
+                        { icon: TrendingUp, l: t.screen.f3, v: t.screen.v3, color: 'text-emerald-300', bg: 'bg-emerald-900/40', border: 'border-emerald-500/50' },
+                        { icon: BarChart2, l: t.screen.f4, v: t.screen.v4, color: 'text-pink-300', bg: 'bg-pink-900/40', border: 'border-pink-500/50' }
+                    ].map((item, i) => (
+                        <div key={i} className={`flex items-center justify-between p-3 rounded-lg border ${item.bg} ${item.border} item-pulse transition-all transform hover:scale-[1.02]`} style={{animationDelay: `${i * 0.5}s`}}>
+                            <div className="flex items-center gap-3">
+                                <div className={`p-1.5 rounded bg-slate-900/50 ${item.color}`}>
+                                    <item.icon size={16} />
+                                </div>
+                                <span className="text-xs text-slate-300 uppercase tracking-wider font-bold">{item.l}</span>
+                            </div>
+                            <span className={`font-bold text-sm ${item.color}`}>{item.v}</span>
+                        </div>
+                    ))}
+                </div>
 
-            <div className="mt-4 pt-2 relative z-10">
-                <div className="text-xs text-slate-500 font-mono text-center flex items-center justify-center gap-2">
-                    <Hash size={10} /> AI ENGINE ACTIVE • <span className="text-slate-400">WAITING FOR DATA FEED...</span>
+                <div className="mt-4 pt-2 relative z-10">
+                    <div className="text-xs text-slate-500 font-mono text-center flex items-center justify-center gap-2">
+                        <Hash size={10} /> AI ENGINE ACTIVE • <span className="text-slate-400">WAITING FOR DATA FEED...</span>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
+        </div>
+
+        {/* New Feature: Old Duck Head Analysis */}
+        <OldDuckHeadAnalysis lang={lang} />
+        
+        {/* New Feature: Beauty Shoulder Analysis */}
+        <BeautyShoulderAnalysis lang={lang} />
     </div>
   );
 };

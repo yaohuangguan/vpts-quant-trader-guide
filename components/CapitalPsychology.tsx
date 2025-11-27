@@ -136,7 +136,7 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
                                     type="number" 
                                     value={winRate}
                                     onChange={(e) => setWinRate(Number(e.target.value))}
-                                    className="w-full p-1.5 rounded text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-center text-slate-900 dark:text-slate-100 font-mono focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full p-1.5 rounded text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-600 text-center text-slate-900 dark:text-slate-100 font-bold font-mono focus:ring-2 focus:ring-blue-500 outline-none shadow-sm transition-shadow"
                                 />
                             </div>
                             <div>
@@ -145,7 +145,7 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
                                     type="number" 
                                     value={odds}
                                     onChange={(e) => setOdds(Number(e.target.value))}
-                                    className="w-full p-1.5 rounded text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-center text-slate-900 dark:text-slate-100 font-mono focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full p-1.5 rounded text-sm bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-600 text-center text-slate-900 dark:text-slate-100 font-bold font-mono focus:ring-2 focus:ring-blue-500 outline-none shadow-sm transition-shadow"
                                 />
                                 <div className="text-[9px] text-slate-400 mt-1 text-center whitespace-nowrap scale-90 origin-top">{t.kelly.odds_hint}</div>
                             </div>
@@ -153,13 +153,13 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
 
                         {kellyResult > 0 ? (
                             <div className="grid grid-cols-2 gap-2">
-                                <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700 text-center">
-                                    <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold">{t.kelly.res_full}</div>
-                                    <div className="text-lg font-black text-slate-700 dark:text-slate-200">{(kellyResult * 100).toFixed(1)}%</div>
+                                <div className="bg-slate-800 dark:bg-slate-700 p-2 rounded border border-slate-700 dark:border-slate-600 text-center shadow-sm">
+                                    <div className="text-[10px] text-slate-300 dark:text-slate-400 uppercase font-bold">{t.kelly.res_full}</div>
+                                    <div className="text-lg font-black text-white dark:text-slate-200">{(kellyResult * 100).toFixed(1)}%</div>
                                 </div>
-                                <div className="bg-green-100 dark:bg-green-900/40 p-2 rounded border border-green-200 dark:border-green-800 text-center shadow-sm">
-                                    <div className="text-[10px] text-green-700 dark:text-green-300 uppercase font-bold">{t.kelly.res_half}</div>
-                                    <div className="text-lg font-black text-green-600 dark:text-green-400">{(kellyResult * 50).toFixed(1)}%</div>
+                                <div className="bg-green-600 dark:bg-green-900/40 p-2 rounded border border-green-700 dark:border-green-800 text-center shadow-sm">
+                                    <div className="text-[10px] text-green-100 dark:text-green-300 uppercase font-bold">{t.kelly.res_half}</div>
+                                    <div className="text-lg font-black text-white dark:text-green-400">{(kellyResult * 50).toFixed(1)}%</div>
                                 </div>
                             </div>
                         ) : (

@@ -18,6 +18,7 @@ import { ChaosOrder } from './components/ChaosOrder';
 import { Assessment } from './components/Assessment';
 import { TechnicalTruth } from './components/TechnicalTruth';
 import { ClassicCandlePatterns } from './components/CandlestickPatterns';
+import { VPSpaceTime } from './components/VPSpaceTime';
 import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User, Wind, Film, ShoppingBag, Cpu, TrendingUp, Menu, X, ChevronRight } from 'lucide-react';
 import { Lang } from './types';
 
@@ -107,12 +108,34 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
   );
 };
 
-// Section Keys for Navigation
+// Section Keys for Navigation - Inserted sec_vp at 09, Moved sec_08 (Chip) to 11
 const SECTION_KEYS = [
-    'sec_00', 'sec_01', 'sec_02', 'sec_03', 'sec_04', 'sec_05', 
-    'sec_06', 'sec_kline', 'sec_07', 'sec_08', 'sec_09', 'sec_10', 'sec_11',
-    'sec_12', 'sec_13', 'sec_14', 'sec_15', 'sec_16', 'sec_17',
-    'sec_18', 'sec_19', 'sec_20', 'sec_21', 'sec_22', 'sec_23'
+    'sec_00', // 00 Intro
+    'sec_01', // 01 MA
+    'sec_02', // 02 Core
+    'sec_03', // 03 Adhesion
+    'sec_04', // 04 Trend
+    'sec_05', // 05 Indicator
+    'sec_06', // 06 Tactical
+    'sec_kline', // 07 Candles
+    'sec_07', // 08 Volume
+    'sec_vp', // 09 VP Space-Time (NEW)
+    'sec_16', // 10 Strategy (Target Position)
+    'sec_08', // 11 Chip Structure (Moved after Strategy)
+    'sec_09', // 12 Timeframe
+    'sec_17', // 13 Case Studies
+    'sec_10', // 14 Psych
+    'sec_11', // 15 Neuro Science
+    'sec_12', // 16 Neuro Bio
+    'sec_13', // 17 Mindset
+    'sec_14', // 18 Discipline
+    'sec_15', // 19 Evo
+    'sec_18', // 20 Capital
+    'sec_19', // 21 Risk
+    'sec_20', // 22 Tech Truth
+    'sec_21', // 23 Philosophy
+    'sec_22', // 24 Chaos
+    'sec_23'  // 25 Assessment
 ];
 
 const Navbar: React.FC<{ 
@@ -243,7 +266,7 @@ const Navbar: React.FC<{
                     </div>
                     
                     <div className="p-4 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400">
-                        {t.header_title_1} - v10.2
+                        {t.header_title_1} - v10.4
                     </div>
                 </div>
             </div>
@@ -281,6 +304,7 @@ const App: React.FC = () => {
         sec_06: "核心变种：全均线战术板 (Six Tactical Patterns)",
         sec_kline: "经典顶底K线形态大全 (Pattern Library)",
         sec_07: "量能动力学与验证机制",
+        sec_vp: "量价时空分析：四维全息视角", // New Section Title
         sec_08: "筹码微观结构：吸筹-锁仓-出货",
         sec_09: "全周期共振：信号传递链",
         sec_10: "市场心理学与庄家博弈分析",
@@ -336,6 +360,7 @@ const App: React.FC = () => {
         sec_06: "Tactical Variations: Six Core Patterns",
         sec_kline: "Classic Top/Bottom Candlestick Patterns",
         sec_07: "Volume Dynamics & Verification Mechanisms",
+        sec_vp: "Volume-Price Space-Time Analysis", // New
         sec_08: "Micro-Chip Structure: Accumulation-Lock-Distribution",
         sec_09: "Timeframe Resonance: Signal Chain",
         sec_10: "Market Psychology & Market Maker Game Theory",
@@ -563,93 +588,98 @@ const App: React.FC = () => {
                 <TacticalVariations lang={lang} />
             </Section>
 
-            {/* NEW: Classic Candle Patterns */}
-            <Section id="sec_kline" number="06+" title={t.sec_kline}>
+            {/* 7. Classic Candle Patterns */}
+            <Section id="sec_kline" number="07" title={t.sec_kline}>
                 <ClassicCandlePatterns lang={lang} />
             </Section>
 
-            {/* 7. Volume Dynamics */}
-            <Section id="sec_07" number="07" title={t.sec_07}>
+            {/* 8. Volume Dynamics */}
+            <Section id="sec_07" number="08" title={t.sec_07}>
                 <VolumeDynamics lang={lang} />
             </Section>
 
-            {/* 8. Chip Structure */}
-            <Section id="sec_08" number="08" title={t.sec_08}>
-                <ChipStructure lang={lang} />
+            {/* 9. Volume-Price Space-Time (NEW) */}
+            <Section id="sec_vp" number="09" title={t.sec_vp}>
+                <VPSpaceTime lang={lang} />
             </Section>
 
-            {/* 9. Timeframe Resonance */}
-            <Section id="sec_09" number="09" title={t.sec_09}>
-                <TimeframeResonance lang={lang} />
-            </Section>
-
-            {/* 10. Market Psychology */}
-            <Section id="sec_10" number="10" title={t.sec_10}>
-                <MarketPsychology lang={lang} />
-            </Section>
-
-            {/* 11. Neuroscience & Biology */}
-            <Section id="sec_11" number="11" title={t.sec_11}>
-                <NeuroScienceSection lang={lang} />
-            </Section>
-
-            {/* 12. Neurobiology of Selling */}
-            <Section id="sec_12" number="12" title={t.sec_12}>
-                <NeuroBiology lang={lang} />
-            </Section>
-
-            {/* 13. Mindset Framework */}
-            <Section id="sec_13" number="13" title={t.sec_13}>
-                <MindsetFramework lang={lang} />
-            </Section>
-            
-            {/* 14. Discipline */}
-            <Section id="sec_14" number="14" title={t.sec_14}>
-                <DisciplineSystem lang={lang} />
-            </Section>
-
-            {/* 15. System Evolution */}
-            <Section id="sec_15" number="15" title={t.sec_15}>
-                <SystemEvolution lang={lang} />
-            </Section>
-
-            {/* 16. Strategy & Screener */}
-            <Section id="sec_16" number="16" title={t.sec_16}>
+            {/* 10. Strategy & Screener (Kept at 10) */}
+            <Section id="sec_16" number="10" title={t.sec_16}>
                 <StrategySection lang={lang} />
             </Section>
 
-            {/* 17. Case Studies */}
-            <Section id="sec_17" number="17" title={t.sec_17}>
+            {/* 11. Chip Structure (Moved Here from 09) */}
+            <Section id="sec_08" number="11" title={t.sec_08}>
+                <ChipStructure lang={lang} />
+            </Section>
+
+            {/* 12. Timeframe Resonance */}
+            <Section id="sec_09" number="12" title={t.sec_09}>
+                <TimeframeResonance lang={lang} />
+            </Section>
+
+            {/* 13. Case Studies */}
+            <Section id="sec_17" number="13" title={t.sec_17}>
                 <CaseStudies lang={lang} />
             </Section>
+
+            {/* 14. Market Psychology */}
+            <Section id="sec_10" number="14" title={t.sec_10}>
+                <MarketPsychology lang={lang} />
+            </Section>
+
+            {/* 15. Neuroscience */}
+            <Section id="sec_11" number="15" title={t.sec_11}>
+                <NeuroScienceSection lang={lang} />
+            </Section>
+
+            {/* 16. Neurobiology of Selling */}
+            <Section id="sec_12" number="16" title={t.sec_12}>
+                <NeuroBiology lang={lang} />
+            </Section>
+
+            {/* 17. Mindset Framework */}
+            <Section id="sec_13" number="17" title={t.sec_13}>
+                <MindsetFramework lang={lang} />
+            </Section>
             
-            {/* 18. Capital & Psychology */}
-            <Section id="sec_18" number="18" title={t.sec_18}>
+            {/* 18. Discipline */}
+            <Section id="sec_14" number="18" title={t.sec_14}>
+                <DisciplineSystem lang={lang} />
+            </Section>
+
+            {/* 19. System Evolution */}
+            <Section id="sec_15" number="19" title={t.sec_15}>
+                <SystemEvolution lang={lang} />
+            </Section>
+
+            {/* 20. Capital & Psychology */}
+            <Section id="sec_18" number="20" title={t.sec_18}>
                 <CapitalPsychology lang={lang} />
             </Section>
 
-            {/* 19. Risk Management */}
-            <Section id="sec_19" number="19" title={t.sec_19}>
+            {/* 21. Risk Management */}
+            <Section id="sec_19" number="21" title={t.sec_19}>
                 <RiskManagement lang={lang} />
             </Section>
 
-            {/* 20. Technical Truth */}
-            <Section id="sec_20" number="20" title={t.sec_20}>
+            {/* 22. Technical Truth */}
+            <Section id="sec_20" number="22" title={t.sec_20}>
                 <TechnicalTruth lang={lang} />
             </Section>
 
-            {/* 21. Philosophy Reconstruction */}
-            <Section id="sec_21" number="21" title={t.sec_21}>
+            {/* 23. Philosophy Reconstruction */}
+            <Section id="sec_21" number="23" title={t.sec_21}>
                 <PhilosophyReconstruction lang={lang} />
             </Section>
 
-            {/* 22. Chaos & Order */}
-            <Section id="sec_22" number="22" title={t.sec_22}>
+            {/* 24. Chaos & Order */}
+            <Section id="sec_22" number="24" title={t.sec_22}>
                 <ChaosOrder lang={lang} />
             </Section>
 
-            {/* 23. Assessment */}
-            <Section id="sec_23" number="23" title={t.sec_23}>
+            {/* 25. Assessment */}
+            <Section id="sec_23" number="25" title={t.sec_23}>
                 <Assessment lang={lang} />
                 <div className="text-center text-slate-500 dark:text-slate-500 text-xl mt-12 pb-10 font-medium">
                     {t.footer}
