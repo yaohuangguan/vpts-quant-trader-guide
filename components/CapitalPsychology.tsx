@@ -1,20 +1,48 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Card } from './Card';
-import { Scale, TrendingUp, ShieldCheck, Brain, Target, Lock, Zap, Anchor, PieChart, Layers } from 'lucide-react';
+import { Scale, TrendingUp, ShieldCheck, Brain, Target, Lock, Zap, Anchor, PieChart, Calculator } from 'lucide-react';
 import { Lang } from '../types';
 
 export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
+  // Kelly Calculator State
+  const [winRate, setWinRate] = useState(85);
+  const [odds, setOdds] = useState(3.0);
+  const [kellyResult, setKellyResult] = useState(0);
+
+  useEffect(() => {
+    // Kelly Formula: f = p - (q / b)
+    // p = win probability, q = loss probability (1-p), b = odds
+    const p = winRate / 100;
+    const q = 1 - p;
+    const b = odds;
+    
+    if (b > 0) {
+        const f = p - (q / b);
+        setKellyResult(f);
+    } else {
+        setKellyResult(0);
+    }
+  }, [winRate, odds]);
+
   const t = {
     title: lang === 'zh' ? '资金管理与心理博弈' : 'Capital Management & Psychology',
     kelly: {
       title: lang === 'zh' ? '凯利公式与2-3-2建仓' : 'Kelly & 2-3-2 Sizing',
       formula: 'f = (bp - q) / b',
-      desc: lang === 'zh' ? '鉴于本模型胜率~60%，盈亏比>3:1，采用2-3-2金字塔建仓法：' : 'Given ~60% Win Rate, >3:1 RR, use 2-3-2 Pyramid:',
+      desc: lang === 'zh' ? '鉴于本模型胜率>85%，盈亏比>3:1，采用2-3-2金字塔建仓法：' : 'Given >85% Win Rate, >3:1 RR, use 2-3-2 Pyramid:',
       step1: lang === 'zh' ? '底仓 20% (试错)' : 'Base 20% (Test)',
       step2: lang === 'zh' ? '加仓 30% (确认)' : 'Add 30% (Confirm)',
       step3: lang === 'zh' ? '补仓 20% (主升)' : 'Boost 20% (Trend)',
       reserve: lang === 'zh' ? '备用 30% (风控)' : 'Reserve 30% (Risk)',
-      risk: lang === 'zh' ? '单股仓位上限 70%' : 'Max Pos < 70%'
+      risk: lang === 'zh' ? '单股仓位上限 70%' : 'Max Pos < 70%',
+      calc_title: lang === 'zh' ? '凯利公式计算器' : 'Kelly Calculator',
+      label_win: lang === 'zh' ? '胜率 (%)' : 'Win Rate (%)',
+      label_odds: lang === 'zh' ? '盈亏比 (Odds)' : 'Profit/Loss Ratio',
+      res_full: lang === 'zh' ? '理论仓位 (Full)' : 'Full Kelly',
+      res_half: lang === 'zh' ? '建议仓位 (Half)' : 'Half Kelly (Safe)',
+      no_edge: lang === 'zh' ? '无优势，勿操作' : 'No Edge - Do Not Trade',
+      odds_hint: lang === 'zh' ? '赔率 = 平均盈利 / 平均亏损' : 'Odds = Avg Profit / Avg Loss'
     },
     psy: {
       title: lang === 'zh' ? '克服“恐高”与“贪婪”' : 'Overcoming Fear of Heights & Greed',
@@ -34,8 +62,6 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
   };
 
   // Determine colors and text based on locale
-  // ZH: Red for rise (Fish body), Green for fall/neutral
-  // EN: Green for rise (Fish body), Red for fall
   const fishFill = lang === 'zh' ? 'fill-red-500' : 'fill-green-500';
   const fishStroke = lang === 'zh' ? 'stroke-red-500' : 'stroke-green-500';
   const fishTextFill = lang === 'zh' ? 'fill-red-600' : 'fill-green-600';
@@ -73,7 +99,7 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
                 <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.kelly.title}</h4>
             </div>
             
-            <div className="flex flex-col md:flex-row gap-6 items-center">
+            <div className="flex flex-col md:flex-row gap-6 items-start">
                 {/* Visual Pyramid */}
                 <div className="w-full md:w-1/2 h-64 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 relative flex flex-col justify-end items-center p-4">
                      {/* Max Cap Line */}
@@ -94,12 +120,55 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
                      </div>
                 </div>
 
-                {/* Text Content */}
+                {/* Text Content & Calculator */}
                 <div className="w-full md:w-1/2 space-y-4">
-                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded border-l-4 border-blue-500">
-                        <div className="text-sm text-slate-500 dark:text-slate-400 font-mono mb-1">Kelly Formula</div>
-                        <div className="text-xl font-bold text-slate-800 dark:text-slate-200 font-mono">{t.kelly.formula}</div>
+                    
+                    {/* Kelly Calculator */}
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 p-4">
+                        <div className="flex items-center gap-2 mb-3 text-blue-800 dark:text-blue-300 font-bold border-b border-blue-200 dark:border-blue-800 pb-2">
+                            <Calculator size={16} /> {t.kelly.calc_title}
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-bold mb-1">{t.kelly.label_win}</label>
+                                <input 
+                                    type="number" 
+                                    value={winRate}
+                                    onChange={(e) => setWinRate(Number(e.target.value))}
+                                    className="w-full p-1.5 rounded text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-center text-slate-900 dark:text-slate-100 font-mono focus:ring-2 focus:ring-blue-500 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-bold mb-1">{t.kelly.label_odds}</label>
+                                <input 
+                                    type="number" 
+                                    value={odds}
+                                    onChange={(e) => setOdds(Number(e.target.value))}
+                                    className="w-full p-1.5 rounded text-sm bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-center text-slate-900 dark:text-slate-100 font-mono focus:ring-2 focus:ring-blue-500 outline-none"
+                                />
+                                <div className="text-[9px] text-slate-400 mt-1 text-center whitespace-nowrap scale-90 origin-top">{t.kelly.odds_hint}</div>
+                            </div>
+                        </div>
+
+                        {kellyResult > 0 ? (
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700 text-center">
+                                    <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold">{t.kelly.res_full}</div>
+                                    <div className="text-lg font-black text-slate-700 dark:text-slate-200">{(kellyResult * 100).toFixed(1)}%</div>
+                                </div>
+                                <div className="bg-green-100 dark:bg-green-900/40 p-2 rounded border border-green-200 dark:border-green-800 text-center shadow-sm">
+                                    <div className="text-[10px] text-green-700 dark:text-green-300 uppercase font-bold">{t.kelly.res_half}</div>
+                                    <div className="text-lg font-black text-green-600 dark:text-green-400">{(kellyResult * 50).toFixed(1)}%</div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300 p-2 rounded text-center text-xs font-bold border border-red-200 dark:border-red-800">
+                                {t.kelly.no_edge}
+                            </div>
+                        )}
                     </div>
+
                     <p className="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                         {t.kelly.desc}
                     </p>

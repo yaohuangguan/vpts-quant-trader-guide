@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Section } from './components/Section';
 import { Introduction } from './components/Introduction';
@@ -251,7 +252,7 @@ const Navbar: React.FC<{
 };
 
 const App: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [lang, setLang] = useState<Lang>('zh');
 
   useEffect(() => {
