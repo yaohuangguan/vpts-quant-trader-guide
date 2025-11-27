@@ -1,17 +1,22 @@
+
 import React, { useState, useEffect } from 'react';
 import { Section } from './components/Section';
 import { Introduction } from './components/Introduction';
 import { CorePatternChart } from './components/CorePatternChart';
 import { IndicatorDiagrams } from './components/IndicatorDiagrams';
 import { TacticalVariations } from './components/TacticalVariations';
-import { ChipStructure, TimeframeResonance, SystemEvolution, MarketPsychology, VolumeDynamics, AdhesionMorphology, MAArchitecture } from './components/DeepAnalysis';
+import { ChipStructure, TimeframeResonance, SystemEvolution, MarketPsychology, VolumeDynamics, AdhesionMorphology, MAArchitecture, TrendGeometry } from './components/DeepAnalysis';
 import { StrategySection, RiskManagement } from './components/Strategy';
+import { CaseStudies } from './components/CaseStudies';
 import { CapitalPsychology } from './components/CapitalPsychology';
 import { NeuroScienceSection } from './components/NeuroScience';
+import { NeuroBiology } from './components/NeuroBiology';
+import { PhilosophyReconstruction } from './components/PhilosophyReconstruction';
 import { MindsetFramework } from './components/MindsetFramework';
 import { DisciplineSystem } from './components/DisciplineRoutine';
 import { ChaosOrder } from './components/ChaosOrder';
 import { Assessment } from './components/Assessment';
+import { TechnicalTruth } from './components/TechnicalTruth';
 import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User } from 'lucide-react';
 import { Lang } from './types';
 
@@ -40,21 +45,26 @@ const App: React.FC = () => {
         sec_01: "均线系统的哲学本质与五线架构",
         sec_02: "核心形态：七线汇聚与微观结构 (The Knot)",
         sec_03: "均线粘合的几何形态学与微观结构",
-        sec_04: "指标协同效应与多维验证 (Indicator Synergy)",
-        sec_05: "核心变种：全均线战术板 (Six Tactical Patterns)",
-        sec_06: "量能动力学与验证机制",
-        sec_07: "筹码微观结构：吸筹-锁仓-出货",
-        sec_08: "全周期共振：信号传递链",
-        sec_09: "市场心理学与庄家博弈分析",
-        sec_10: "交易心理的生物学与神经科学基础",
-        sec_11: "心态管理的核心框架与深度解析",
-        sec_12: "纪律的实操：常规、日志与系统",
-        sec_13: "系统演进：双系统博弈与优劣势对比",
-        sec_14: "综合战法与阿尔法选股器 (Strategy & Screener)",
-        sec_15: "量化交易策略与风控体系 (Strategy & Risk Control)",
-        sec_16: "资金管理与心理博弈 (Capital & Psychology)",
-        sec_17: "结语：在混沌中寻找秩序",
-        sec_18: "最终考核：交易员认证测试",
+        sec_04: "趋势几何学：多头排列的惯性保障",
+        sec_05: "指标协同效应与多维验证 (Indicator Synergy)",
+        sec_06: "核心变种：全均线战术板 (Six Tactical Patterns)",
+        sec_07: "量能动力学与验证机制",
+        sec_08: "筹码微观结构：吸筹-锁仓-出货",
+        sec_09: "全周期共振：信号传递链",
+        sec_10: "市场心理学与庄家博弈分析",
+        sec_11: "交易心理的生物学与神经科学基础",
+        sec_12: "惜售心理的神经生物学机制——“行”的生理障碍",
+        sec_13: "心态管理的核心框架与深度解析",
+        sec_14: "纪律的实操：常规、日志与系统",
+        sec_15: "系统演进：五线开花在算法交易时代的演变",
+        sec_16: "综合战法与阿尔法选股器 (Strategy & Screener)",
+        sec_17: "买卖止盈止损交易策略",
+        sec_18: "量化与技术分析的客观真理——“知”的数学基础",
+        sec_19: "知行合一的哲学与心理重构——思想的武器",
+        sec_20: "典型案例复盘与深度解析",
+        sec_21: "资金管理与心理博弈 (Capital & Psychology)",
+        sec_22: "结语：在混沌中寻找秩序",
+        sec_23: "最终考核：交易员认证测试",
         one_yang: {
             title: "一阳多线：四大强度判定标准 (判定胜负手)",
             items: [
@@ -78,21 +88,26 @@ const App: React.FC = () => {
         sec_01: "Philosophical Essence & Architecture of MA Systems",
         sec_02: "Core Pattern: Seven-Line Convergence (The Knot)",
         sec_03: "Geometric Morphology of MA Adhesion",
-        sec_04: "Indicator Synergy & Multi-Dimensional Verification",
-        sec_05: "Tactical Variations: Six Core Patterns",
-        sec_06: "Volume Dynamics & Verification Mechanisms",
-        sec_07: "Micro-Chip Structure: Accumulation-Lock-Distribution",
-        sec_08: "Timeframe Resonance: Signal Chain",
-        sec_09: "Market Psychology & Market Maker Game Theory",
-        sec_10: "Biology & Neuroscience Foundation of Trading Psychology",
-        sec_11: "Mindset Management Framework & Deep Analysis",
-        sec_12: "Discipline in Practice: Routine, Journaling & Systems",
-        sec_13: "System Evolution: Linear vs Fibonacci",
-        sec_14: "Comprehensive Strategy & Alpha Screener",
-        sec_15: "Quantitative Strategy & Risk Management",
-        sec_16: "Capital Management & Psychology",
-        sec_17: "Conclusion: Finding Order in Chaos",
-        sec_18: "Final Assessment: Trader Certification",
+        sec_04: "Trend Geometry: Inertia Guarantee of Bullish Alignment",
+        sec_05: "Indicator Synergy & Multi-Dimensional Verification",
+        sec_06: "Tactical Variations: Six Core Patterns",
+        sec_07: "Volume Dynamics & Verification Mechanisms",
+        sec_08: "Micro-Chip Structure: Accumulation-Lock-Distribution",
+        sec_09: "Timeframe Resonance: Signal Chain",
+        sec_10: "Market Psychology & Market Maker Game Theory",
+        sec_11: "Biology & Neuroscience Foundation of Trading Psychology",
+        sec_12: "Neurobiology of Reluctance to Sell: Barriers to 'Action'",
+        sec_13: "Mindset Management Framework & Deep Analysis",
+        sec_14: "Discipline in Practice: Routine, Journaling & Systems",
+        sec_15: "System Evolution: Blossom in Algorithmic Age",
+        sec_16: "Comprehensive Strategy & Alpha Screener",
+        sec_17: "Buy/Sell/Stop/Profit Trading Strategies",
+        sec_18: "Objective Truth of Quant & Technical Analysis",
+        sec_19: "Philosophy & Psychology Reconstruction: Unity of Knowledge & Action",
+        sec_20: "Typical Case Study Review & Deep Analysis",
+        sec_21: "Capital Management & Psychology",
+        sec_22: "Conclusion: Finding Order in Chaos",
+        sec_23: "Final Assessment: Trader Certification",
         one_yang: {
             title: "One Yang Crosses Multiple Lines: 4 Strength Criteria",
             items: [
@@ -169,7 +184,7 @@ const App: React.FC = () => {
             <div className="absolute top-6 right-6 flex gap-3">
                 <button 
                     onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
-                    className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1 text-xs font-bold shadow-sm"
+                    className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1 text-sm font-bold shadow-sm"
                     aria-label="Toggle Language"
                 >
                     <Globe size={18} /> {lang === 'zh' ? 'EN' : '中'}
@@ -198,13 +213,13 @@ const App: React.FC = () => {
             <div className="flex flex-col items-center justify-center gap-2 mb-8">
                 <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <User size={16} className="text-slate-500 dark:text-slate-400" />
-                    <span className="font-bold text-slate-700 dark:text-slate-300 text-sm md:text-base">
+                    <span className="font-bold text-slate-700 dark:text-slate-300 text-base md:text-lg">
                         {t.author_name}
                     </span>
                     {t.author_title && (
                       <>
                         <span className="hidden md:inline text-slate-300 dark:text-slate-600">|</span>
-                        <span className="text-xs md:text-sm text-slate-500 dark:text-slate-400 font-medium max-w-xs md:max-w-none leading-tight md:leading-normal">
+                        <span className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-medium max-w-xs md:max-w-none leading-tight md:leading-normal">
                             {t.author_title}
                         </span>
                       </>
@@ -221,7 +236,8 @@ const App: React.FC = () => {
             </p>
         </header>
 
-        <main className="container mx-auto max-w-7xl pb-20">
+        {/* Increased max-width to 7xl for 10% wider layout */}
+        <main className="container mx-auto max-w-7xl px-4 pb-20">
             {/* 00. Introduction */}
             <Section number="00" title={t.sec_00}>
                 <Introduction lang={lang} />
@@ -242,13 +258,13 @@ const App: React.FC = () => {
                         </div>
                         {t.one_yang.title}
                     </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-base">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
                         {t.one_yang.items.map((item, i) => (
                             <div key={i} className="flex items-start gap-3">
-                                <div className="bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 w-8 h-8 rounded-full flex items-center justify-center text-base font-bold shrink-0 mt-0.5">{i+1}</div>
+                                <div className="bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold shrink-0 mt-0.5">{i+1}</div>
                                 <div>
-                                    <div className="font-bold text-slate-800 dark:text-slate-200 text-lg">{item.t}</div>
-                                    <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed mt-1 font-medium">{item.c}</p>
+                                    <div className="font-bold text-slate-800 dark:text-slate-200 text-xl">{item.t}</div>
+                                    <p className="text-slate-700 dark:text-slate-300 text-lg leading-relaxed mt-1 font-medium">{item.c}</p>
                                 </div>
                             </div>
                         ))}
@@ -261,80 +277,105 @@ const App: React.FC = () => {
                 <AdhesionMorphology lang={lang} />
             </Section>
 
-            {/* 4. Indicators */}
+            {/* 4. Trend Geometry */}
             <Section number="04" title={t.sec_04}>
+                <TrendGeometry lang={lang} />
+            </Section>
+
+            {/* 5. Indicators */}
+            <Section number="05" title={t.sec_05}>
                 <IndicatorDiagrams lang={lang} />
             </Section>
 
-            {/* 5. Tactical Variations */}
-            <Section number="05" title={t.sec_05}>
+            {/* 6. Tactical Variations */}
+            <Section number="06" title={t.sec_06}>
                 <TacticalVariations lang={lang} />
             </Section>
 
-            {/* 6. Volume Dynamics */}
-            <Section number="06" title={t.sec_06}>
+            {/* 7. Volume Dynamics */}
+            <Section number="07" title={t.sec_07}>
                 <VolumeDynamics lang={lang} />
             </Section>
 
-            {/* 7. Chip Structure */}
-            <Section number="07" title={t.sec_07}>
+            {/* 8. Chip Structure */}
+            <Section number="08" title={t.sec_08}>
                 <ChipStructure lang={lang} />
             </Section>
 
-            {/* 8. Timeframe Resonance */}
-            <Section number="08" title={t.sec_08}>
+            {/* 9. Timeframe Resonance */}
+            <Section number="09" title={t.sec_09}>
                 <TimeframeResonance lang={lang} />
             </Section>
 
-            {/* 9. Market Psychology */}
-            <Section number="09" title={t.sec_09}>
+            {/* 10. Market Psychology */}
+            <Section number="10" title={t.sec_10}>
                 <MarketPsychology lang={lang} />
             </Section>
 
-            {/* 10. Neuroscience & Biology */}
-            <Section number="10" title={t.sec_10}>
+            {/* 11. Neuroscience & Biology */}
+            <Section number="11" title={t.sec_11}>
                 <NeuroScienceSection lang={lang} />
             </Section>
 
-            {/* 11. Mindset Framework (NEW) */}
-            <Section number="11" title={t.sec_11}>
+            {/* 12. Neurobiology of Selling */}
+            <Section number="12" title={t.sec_12}>
+                <NeuroBiology lang={lang} />
+            </Section>
+
+            {/* 13. Mindset Framework */}
+            <Section number="13" title={t.sec_13}>
                 <MindsetFramework lang={lang} />
             </Section>
             
-            {/* 12. Discipline (NEW) */}
-            <Section number="12" title={t.sec_12}>
+            {/* 14. Discipline */}
+            <Section number="14" title={t.sec_14}>
                 <DisciplineSystem lang={lang} />
             </Section>
 
-            {/* 13. System Evolution */}
-            <Section number="13" title={t.sec_13}>
+            {/* 15. System Evolution */}
+            <Section number="15" title={t.sec_15}>
                 <SystemEvolution lang={lang} />
             </Section>
 
-            {/* 14. Strategy & Screener */}
-            <Section number="14" title={t.sec_14}>
+            {/* 16. Strategy & Screener */}
+            <Section number="16" title={t.sec_16}>
                 <StrategySection lang={lang} />
             </Section>
 
-            {/* 15. Risk Management */}
-            <Section number="15" title={t.sec_15}>
-                <RiskManagement lang={lang} />
+            {/* 17. Case Studies (Moved from 20) */}
+            <Section number="17" title={t.sec_20}>
+                <CaseStudies lang={lang} />
             </Section>
             
-            {/* 16. Capital & Psychology (NEW) */}
-            <Section number="16" title={t.sec_16}>
+            {/* 18. Capital & Psychology (Moved from 21) */}
+            <Section number="18" title={t.sec_21}>
                 <CapitalPsychology lang={lang} />
             </Section>
 
-            {/* 17. Chaos & Order */}
-            <Section number="17" title={t.sec_17}>
+            {/* 19. Risk Management -> RULES (Old 17) */}
+            <Section number="19" title={t.sec_17}>
+                <RiskManagement lang={lang} />
+            </Section>
+
+            {/* 20. Technical Truth (Old 18) */}
+            <Section number="20" title={t.sec_18}>
+                <TechnicalTruth lang={lang} />
+            </Section>
+
+            {/* 21. Philosophy Reconstruction (Old 19) */}
+            <Section number="21" title={t.sec_19}>
+                <PhilosophyReconstruction lang={lang} />
+            </Section>
+
+            {/* 22. Chaos & Order */}
+            <Section number="22" title={t.sec_22}>
                 <ChaosOrder lang={lang} />
             </Section>
 
-            {/* 18. Assessment */}
-            <Section number="18" title={t.sec_18}>
+            {/* 23. Assessment */}
+            <Section number="23" title={t.sec_23}>
                 <Assessment lang={lang} />
-                <div className="text-center text-slate-500 dark:text-slate-500 text-lg mt-12 pb-10 font-medium">
+                <div className="text-center text-slate-500 dark:text-slate-500 text-xl mt-12 pb-10 font-medium">
                     {t.footer}
                 </div>
             </Section>

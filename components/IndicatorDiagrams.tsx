@@ -4,15 +4,19 @@ import { TrendingUp, Activity, BarChart2, GitCommit } from 'lucide-react';
 import { Lang } from '../types';
 
 export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
+  const intro = lang === 'zh' ? '以下形态均为“五线开花”爆发时刻的典型特征' : 'Typical features during the "Five-Line Blossom" burst phase';
+
   const t = {
     macd: {
         title: lang === 'zh' ? 'MACD: 水上金叉与双回试' : 'MACD: Water Cross & Double Test',
         zero: lang === 'zh' ? '零轴共振' : 'Zero Resonance',
         refuse: lang === 'zh' ? '将死不死' : 'Refusing to Die',
         burst: lang === 'zh' ? '红柱爆发' : 'Red Burst',
+        trumpet: lang === 'zh' ? '喇叭口扩张' : 'Trumpet Expansion',
         desc_zero: lang === 'zh' ? 'DIF与DEA在0轴附近粘合，最完美的五线开花形态。' : 'DIF and DEA bond near 0-axis, perfect blossom form.',
         desc_refuse: lang === 'zh' ? '快线(DIF)作势下穿慢线(DEA)，接触瞬间突然掉头向上，极强起涨信号。' : 'DIF feigns crossing down DEA, but turns up instantly. Strong buy signal.',
-        desc_burst: lang === 'zh' ? '伴随开花，MACD红柱呈阶梯式放大，确认动能持续增强。' : 'Red bars expand stepwise, confirming sustained momentum.'
+        desc_burst: lang === 'zh' ? '伴随开花，MACD红柱呈阶梯式放大，确认动能持续增强。' : 'Red bars expand stepwise, confirming sustained momentum.',
+        desc_trumpet: lang === 'zh' ? 'DIF与DEA由粘合状态迅速发散，形成张口形态，意味着趋势加速。' : 'DIF & DEA diverge rapidly from adhesion, signaling acceleration.'
     },
     kdj: {
         title: lang === 'zh' ? 'KDJ: “钝化”悖论' : 'KDJ: Passivation Paradox',
@@ -42,6 +46,9 @@ export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="col-span-1 md:col-span-2 text-center text-slate-500 dark:text-slate-400 font-medium italic mb-2">
+         {intro}
+      </div>
       <style>{`
         @keyframes drawLine {
           from { stroke-dashoffset: 1000; }
@@ -112,6 +119,7 @@ export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
              <p><b>● {t.macd.zero}：</b> {t.macd.desc_zero}</p>
              <p><b>● {t.macd.refuse}：</b> {t.macd.desc_refuse}</p>
              <p><b>● {t.macd.burst}：</b> {t.macd.desc_burst}</p>
+             <p><b>● {t.macd.trumpet}：</b> {t.macd.desc_trumpet}</p>
         </div>
       </Card>
 

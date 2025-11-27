@@ -6,7 +6,8 @@ import { Lang } from '../types';
 export const ProbabilisticThinking: React.FC<{ lang: Lang }> = ({ lang }) => {
   const t = {
     title: lang === 'zh' ? '概率思维：赌场庄家范式' : 'Probabilistic Thinking: The Casino Paradigm',
-    truth: lang === 'zh' ? '五大基本真理 (Mark Douglas)' : '5 Fundamental Truths',
+    douglas: lang === 'zh' ? '《交易心理分析》 Mark Douglas' : 'Trading in the Zone - Mark Douglas',
+    truth: lang === 'zh' ? '五大基本真理' : '5 Fundamental Truths',
     truths: [
         lang === 'zh' ? '任何事情都可能发生' : 'Anything can happen',
         lang === 'zh' ? '无需预测也能赚钱' : 'No need to predict to win',
@@ -14,93 +15,89 @@ export const ProbabilisticThinking: React.FC<{ lang: Lang }> = ({ lang }) => {
         lang === 'zh' ? '优势只是概率更高' : 'Edge is just higher probability',
         lang === 'zh' ? '每刻都是独一无二的' : 'Every moment is unique'
     ],
-    gambler: lang === 'zh' ? '赌徒：试图战胜单次随机' : 'Gambler: Fighting randomness',
-    house: lang === 'zh' ? '庄家：依靠大样本数学优势' : 'House: Relying on Math Edge',
-    edge: lang === 'zh' ? '资金曲线 (60%胜率)' : 'Equity Curve (60% Win Rate)'
+    house_edge: lang === 'zh' ? '庄家优势 (Edge)' : 'House Edge',
+    player: lang === 'zh' ? '玩家结果' : 'Player Result',
+    casino_logic: lang === 'zh' ? '赌场不关心单把输赢，只关心大数法则' : 'Casinos ignore single hands, focus on Law of Large Numbers',
+    profit: lang === 'zh' ? '净利润' : 'Net Profit'
   };
 
-  // Generate a random-looking but positive trend sequence
-  const trades = [1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, 1];
-  
+  // Create a grid of "Trade Results" visualization
+  // 60% win rate simulation
+  const results = [
+      'W', 'L', 'L', 'W', 'W', 'W', 'L', 'W', 'L', 'W', 
+      'W', 'W', 'L', 'W', 'W', 'L', 'W', 'L', 'W', 'W'
+  ];
+
   return (
     <Card highlightColor="indigo" className="relative group">
         <style>{`
-            @keyframes draw-equity {
-                0% { stroke-dashoffset: 1000; }
-                100% { stroke-dashoffset: 0; }
+            @keyframes fade-in-up {
+                0% { opacity: 0; transform: translateY(10px); }
+                100% { opacity: 1; transform: translateY(0); }
             }
-            @keyframes dot-appear {
-                0% { opacity: 0; transform: scale(0); }
-                100% { opacity: 1; transform: scale(1); }
-            }
-            .anim-equity { stroke-dasharray: 1000; animation: draw-equity 4s ease-out forwards; }
+            .anim-result { animation: fade-in-up 0.5s ease-out forwards; }
         `}</style>
         
         <div className="flex items-center gap-2 mb-4">
             <div className="bg-indigo-100 dark:bg-indigo-900/30 p-1.5 rounded-lg text-indigo-600 dark:text-indigo-300">
                 <Dice5 size={18} />
             </div>
-            <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.title}</h4>
+            <div>
+                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.title}</h4>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wide">{t.douglas}</div>
+            </div>
        </div>
 
-       <div className="flex flex-col md:flex-row gap-6">
-            {/* Visual: Casino Edge Simulation */}
-            <div className="w-full md:w-1/2 h-56 bg-slate-900 rounded border border-slate-800 relative p-4 overflow-hidden">
-                <div className="absolute top-2 left-2 text-xs text-slate-400 font-mono">{t.edge}</div>
+       <div className="flex flex-col lg:flex-row gap-8">
+            {/* Visual: Casino Edge Grid */}
+            <div className="w-full lg:w-1/2 bg-slate-900 rounded-xl border border-slate-800 p-5 flex flex-col shadow-inner">
+                <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
+                    <span className="text-slate-400 font-mono text-xs uppercase">{t.house_edge}</span>
+                    <span className="text-green-400 font-mono text-sm font-bold">Win Rate: 60%</span>
+                </div>
                 
-                <svg viewBox="0 0 300 150" className="w-full h-full">
-                    {/* Grid */}
-                    <line x1="0" y1="75" x2="300" y2="75" className="stroke-slate-700" strokeWidth="1" strokeDasharray="4" />
-                    
-                    {/* Trades Dots */}
-                    {trades.map((res, i) => {
-                        const x = (i / (trades.length - 1)) * 280 + 10;
-                        const y = res === 1 ? 40 : 110; // Win vs Loss position
-                        const color = res === 1 ? '#22c55e' : '#ef4444';
-                        return (
-                            <circle 
-                                key={i} 
-                                cx={x} 
-                                cy={y} 
-                                r="3" 
-                                fill={color} 
-                                style={{animation: `dot-appear 0.3s forwards ${i * 0.1}s`, opacity: 0}}
-                            />
-                        )
-                    })}
+                <div className="grid grid-cols-5 gap-2 mb-4">
+                    {results.map((res, i) => (
+                        <div 
+                            key={i} 
+                            className={`h-8 rounded flex items-center justify-center font-bold text-xs anim-result shadow-sm
+                                ${res === 'W' 
+                                    ? 'bg-green-500/20 text-green-400 border border-green-500/50' 
+                                    : 'bg-red-500/20 text-red-400 border border-red-500/50'
+                                }
+                            `}
+                            style={{animationDelay: `${i * 0.1}s`}}
+                        >
+                            {res}
+                        </div>
+                    ))}
+                </div>
 
-                    {/* Equity Line */}
-                    <path 
-                        d="M10,75 L25,65 L40,80 L55,70 L70,60 L85,75 L100,65 L115,80 L130,95 L145,85 L160,75 L175,65 L190,80 L205,70 L220,60 L235,50 L250,65 L265,55 L280,45 L295,60 L310,50" 
-                        fill="none" 
-                        className="stroke-indigo-500 anim-equity" 
-                        strokeWidth="2" 
-                    />
-                </svg>
-                
-                <div className="flex justify-between items-center mt-[-20px] px-2 text-[10px] text-slate-500 font-mono relative z-10">
-                    <span>Trade #1</span>
-                    <span>Trade #20</span>
+                <div className="mt-auto pt-2 border-t border-slate-800 flex justify-between items-center">
+                    <div className="text-xs text-slate-500 italic">Sequence is random</div>
+                    <div className="bg-indigo-600 px-3 py-1 rounded text-white font-bold text-sm shadow-lg shadow-indigo-500/20">
+                        {t.profit} +$$$
+                    </div>
+                </div>
+                <div className="mt-2 text-[10px] text-slate-500 text-center">
+                    {t.casino_logic}
                 </div>
             </div>
 
             {/* Truths List */}
-            <div className="w-full md:w-1/2 space-y-3">
-                <h5 className="font-bold text-lg text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700 pb-2">
-                    {t.truth}
-                </h5>
-                <ul className="space-y-2">
-                    {t.truths.map((truth, i) => (
-                        <li key={i} className="flex items-center gap-2 text-base font-medium text-slate-600 dark:text-slate-400">
-                            <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-500">{i+1}</span>
-                            {truth}
-                        </li>
-                    ))}
-                </ul>
-                <div className="mt-4 p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded border border-indigo-100 dark:border-indigo-800/50">
-                    <div className="flex items-center gap-2 text-base font-bold text-indigo-700 dark:text-indigo-300">
-                        <Scale size={16} /> {t.house}
-                    </div>
+            <div className="w-full lg:w-1/2 space-y-4">
+                <div className="bg-indigo-50 dark:bg-indigo-900/10 p-4 rounded-lg border border-indigo-100 dark:border-indigo-800/50">
+                    <h5 className="font-bold text-base text-indigo-800 dark:text-indigo-300 mb-3 flex items-center gap-2">
+                        <Scale size={16} /> {t.truth}
+                    </h5>
+                    <ul className="space-y-2.5">
+                        {t.truths.map((truth, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm font-medium text-slate-700 dark:text-slate-300">
+                                <span className="w-5 h-5 rounded-full bg-white dark:bg-slate-800 border border-indigo-200 dark:border-indigo-700 flex items-center justify-center text-[10px] font-bold text-indigo-500 shrink-0 mt-0.5">{i+1}</span>
+                                <span className="leading-snug">{truth}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
        </div>
@@ -271,13 +268,13 @@ export const AnalysisParalysis: React.FC<{ lang: Lang }> = ({ lang }) => {
         pathology: lang === 'zh' ? '病理：完美主义陷阱' : 'Pathology: Perfectionism Trap',
         path_desc: lang === 'zh' ? '试图寻找“必胜”形态，不敢进场。' : 'Seeking "guaranteed" wins, afraid to enter.',
         therapy: lang === 'zh' ? '解药：CBT 暴露疗法' : 'Cure: CBT Exposure Therapy',
-        step1: lang === 'zh' ? '微仓位' : 'Micro Lot',
-        step1_d: lang === 'zh' ? '0.01手' : '0.01 Lot',
+        step1: lang === 'zh' ? '微仓位' : 'Micro Pos',
+        step1_d: lang === 'zh' ? '100股 / 1手' : '100 Shares / 1 Lot',
         step2: lang === 'zh' ? '强制开仓' : 'Force Open',
         step2_d: lang === 'zh' ? '无关痛痒' : 'Painless',
         step3: lang === 'zh' ? '神经脱敏' : 'Desensitize',
         step3_d: lang === 'zh' ? '重建连接' : 'Rewire',
-        desc: lang === 'zh' ? '通过执行极小、无风险的交易，训练大脑对“扣动扳机”动作脱敏，重建执行回路。' : 'Train the brain to desensitize "trigger pulling" via tiny, risk-free trades.'
+        desc: lang === 'zh' ? '通过执行极小、无风险的交易（1手），训练大脑对“扣动扳机”动作脱敏，重建执行回路。' : 'Train the brain to desensitize "trigger pulling" via tiny (100 shares), risk-free trades.'
     };
 
     return (
@@ -293,7 +290,7 @@ export const AnalysisParalysis: React.FC<{ lang: Lang }> = ({ lang }) => {
                 <div className="flex items-center justify-between gap-2 relative mt-6 mb-6">
                     {/* Step 1 */}
                     <div className="flex flex-col items-center gap-2 z-10 w-1/3">
-                        <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center text-sm text-slate-600 dark:text-slate-300 font-mono font-bold">
+                        <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center text-sm text-slate-600 dark:text-slate-300 font-mono font-bold text-center leading-tight p-1">
                             {t.step1_d}
                         </div>
                         <div className="text-center">

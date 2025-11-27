@@ -39,89 +39,89 @@ export const DailyRoutine: React.FC<{ lang: Lang }> = ({ lang }) => {
     <Card highlightColor="blue" className="relative">
       <div className="flex items-center gap-2 mb-6">
         <div className="bg-blue-100 dark:bg-blue-900/30 p-1.5 rounded-lg text-blue-600 dark:text-blue-300">
-             <Sun size={18} />
+             <Sun size={24} />
         </div>
-        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.title}</h4>
+        <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
       </div>
 
       <div className="relative">
         {/* Connecting Line */}
         <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-slate-200 dark:bg-slate-700 hidden md:block"></div>
         
-        <div className="space-y-6">
+        <div className="space-y-12">
             {/* Pre-Market */}
-            <div className="flex flex-col md:flex-row gap-4 relative">
+            <div className="flex flex-col md:flex-row gap-6 relative">
                 <div className="hidden md:flex flex-col items-center gap-1 z-10">
                     <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-600 border border-amber-200 dark:border-amber-700 flex items-center justify-center">
-                        <Sun size={14} />
+                        <Sun size={18} />
                     </div>
                 </div>
-                <div className="flex-1 bg-amber-50 dark:bg-amber-900/10 rounded-lg p-4 border border-amber-100 dark:border-amber-800/30">
-                    <h5 className="font-bold text-amber-700 dark:text-amber-400 text-sm mb-3 uppercase tracking-wide">{t.pre.title}</h5>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-amber-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.pre.step1}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.pre.desc1}</div>
+                <div className="flex-1 bg-amber-50 dark:bg-amber-900/10 rounded-lg p-6 border border-amber-100 dark:border-amber-800/30">
+                    <h5 className="font-bold text-amber-700 dark:text-amber-400 text-xl mb-4 uppercase tracking-wide border-b border-amber-200 dark:border-amber-800 pb-2">{t.pre.title}</h5>
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-amber-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.pre.step1}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.pre.desc1}</div>
                         </div>
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-amber-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.pre.step2}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.pre.desc2}</div>
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-amber-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.pre.step2}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.pre.desc2}</div>
                         </div>
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-amber-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.pre.step3}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.pre.desc3}</div>
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-amber-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.pre.step3}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400 italic">{t.pre.desc3}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Intra-Market */}
-            <div className="flex flex-col md:flex-row gap-4 relative">
+            <div className="flex flex-col md:flex-row gap-6 relative">
                 <div className="hidden md:flex flex-col items-center gap-1 z-10">
                     <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 border border-blue-200 dark:border-blue-700 flex items-center justify-center">
-                        <Activity size={14} className="animate-pulse"/>
+                        <Activity size={18} className="animate-pulse"/>
                     </div>
                 </div>
-                <div className="flex-1 bg-blue-50 dark:bg-blue-900/10 rounded-lg p-4 border border-blue-100 dark:border-blue-800/30">
-                    <h5 className="font-bold text-blue-700 dark:text-blue-400 text-sm mb-3 uppercase tracking-wide">{t.intra.title}</h5>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-blue-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.intra.step1}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.intra.desc1}</div>
+                <div className="flex-1 bg-blue-50 dark:bg-blue-900/10 rounded-lg p-6 border border-blue-100 dark:border-blue-800/30">
+                    <h5 className="font-bold text-blue-700 dark:text-blue-400 text-xl mb-4 uppercase tracking-wide border-b border-blue-200 dark:border-blue-800 pb-2">{t.intra.title}</h5>
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-blue-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.intra.step1}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.intra.desc1}</div>
                         </div>
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-blue-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.intra.step2}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.intra.desc2}</div>
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-blue-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.intra.step2}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.intra.desc2}</div>
                         </div>
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-blue-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.intra.step3}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.intra.desc3}</div>
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-blue-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.intra.step3}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.intra.desc3}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Post-Market */}
-            <div className="flex flex-col md:flex-row gap-4 relative">
+            <div className="flex flex-col md:flex-row gap-6 relative">
                 <div className="hidden md:flex flex-col items-center gap-1 z-10">
                     <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 border border-indigo-200 dark:border-indigo-700 flex items-center justify-center">
-                        <Moon size={14} />
+                        <Moon size={18} />
                     </div>
                 </div>
-                <div className="flex-1 bg-indigo-50 dark:bg-indigo-900/10 rounded-lg p-4 border border-indigo-100 dark:border-indigo-800/30">
-                    <h5 className="font-bold text-indigo-700 dark:text-indigo-400 text-sm mb-3 uppercase tracking-wide">{t.post.title}</h5>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-indigo-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.post.step1}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.post.desc1}</div>
+                <div className="flex-1 bg-indigo-50 dark:bg-indigo-900/10 rounded-lg p-6 border border-indigo-100 dark:border-indigo-800/30">
+                    <h5 className="font-bold text-indigo-700 dark:text-indigo-400 text-xl mb-4 uppercase tracking-wide border-b border-indigo-200 dark:border-indigo-800 pb-2">{t.post.title}</h5>
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-indigo-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.post.step1}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.post.desc1}</div>
                         </div>
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-indigo-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.post.step2}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.post.desc2}</div>
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-indigo-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.post.step2}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.post.desc2}</div>
                         </div>
-                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border border-indigo-100 dark:border-slate-700">
-                             <div className="font-bold text-slate-700 dark:text-slate-200 text-xs mb-1">{t.post.step3}</div>
-                             <div className="text-[10px] font-medium text-slate-500">{t.post.desc3}</div>
+                        <div className="bg-white dark:bg-slate-800 p-5 rounded shadow-sm border border-indigo-100 dark:border-slate-700 flex items-center justify-between">
+                             <div className="font-bold text-slate-800 dark:text-slate-100 text-2xl">{t.post.step3}</div>
+                             <div className="text-lg font-medium text-slate-600 dark:text-slate-400">{t.post.desc3}</div>
                         </div>
                     </div>
                 </div>

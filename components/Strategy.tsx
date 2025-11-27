@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Card } from './Card';
-import { Filter, Play, PieChart, ShieldAlert, TrendingUp, CheckCircle2, AlertTriangle, ArrowUpRight, ScanLine, Radar, Clock, Calendar, MousePointerClick, Target, ArrowRight, Layers, Lock, Zap } from 'lucide-react';
+import { Filter, Play, PieChart, ShieldAlert, TrendingUp, CheckCircle2, AlertTriangle, ArrowUpRight, ScanLine, Radar, Clock, Calendar, MousePointerClick, Target, ArrowRight, Layers, Lock, Zap, Skull, LogOut, BarChart2, Hash, Split, Anchor, Sun, Snowflake, Sprout, Award, Coins } from 'lucide-react';
 import { Lang } from '../types';
 
 export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
@@ -23,7 +24,7 @@ export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
         f1: lang === 'zh' ? '形态特征' : 'Pattern',
         v1: lang === 'zh' ? '一阳穿多线 (粘合)' : 'One Yang Cross All',
         f2: lang === 'zh' ? '筹码结构' : 'Chips',
-        v2: lang === 'zh' ? '90%筹码集中度 > 15%' : '90% Conc > 15%',
+        v2: lang === 'zh' ? '90%筹码集中度 < 15%' : '90% Conc < 15%',
         f3: lang === 'zh' ? '均线趋势' : 'MA Trend',
         v3: lang === 'zh' ? '多头排列 (5>10>20)' : 'Bullish (5>10>20)',
         f4: lang === 'zh' ? '流动性' : 'Liquidity',
@@ -72,7 +73,7 @@ export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
       {/* Left: Fusion Morphology */}
       <div className="w-full md:w-3/5">
         <Card highlightColor="teal" className="h-full">
-            <h4 className="font-bold text-xl mb-4 text-teal-800 dark:text-teal-400">{t.fusion.title}</h4>
+            <h4 className="font-bold text-lg mb-4 text-teal-800 dark:text-teal-400">{t.fusion.title}</h4>
             <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded mb-4 border border-slate-100 dark:border-slate-800 transition-colors duration-300 overflow-hidden">
                 <svg viewBox="0 0 500 180" className="w-full h-full absolute inset-0">
                     <defs>
@@ -119,15 +120,15 @@ export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 text-center text-lg text-slate-700 dark:text-slate-300">
+            <div className="grid grid-cols-3 gap-2 text-center text-sm text-slate-700 dark:text-slate-300">
                 <div className="p-2 rounded bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/50">
-                    <span className="font-bold text-red-600 dark:text-red-400 block mb-1 text-base">{t.fusion.t1}</span> <span className="text-base">{t.fusion.d1}</span>
+                    <span className="font-bold text-red-600 dark:text-red-400 block mb-1 text-sm">{t.fusion.t1}</span> <span className="text-xs">{t.fusion.d1}</span>
                 </div>
                 <div className="p-2 rounded bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/50">
-                    <span className="font-bold text-blue-600 dark:text-blue-400 block mb-1 text-base">{t.fusion.t2}</span> <span className="text-base">{t.fusion.d2}</span>
+                    <span className="font-bold text-blue-600 dark:text-blue-400 block mb-1 text-sm">{t.fusion.t2}</span> <span className="text-xs">{t.fusion.d2}</span>
                 </div>
                 <div className="p-2 rounded bg-pink-50 dark:bg-pink-900/10 border border-pink-100 dark:border-pink-800/50">
-                    <span className="font-bold text-pink-600 dark:text-pink-400 block mb-1 text-base">{t.fusion.t3}</span> <span className="text-base">{t.fusion.d3}</span>
+                    <span className="font-bold text-pink-600 dark:text-pink-400 block mb-1 text-sm">{t.fusion.t3}</span> <span className="text-xs">{t.fusion.d3}</span>
                 </div>
             </div>
         </Card>
@@ -144,31 +145,36 @@ export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
                         <Radar className="text-blue-400 w-5 h-5 animate-spin-slow" style={{animationDuration: '4s'}} />
                         <span className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-20"></span>
                     </div>
-                    <h4 className="font-bold text-lg">{t.screen.title}</h4>
+                    <h4 className="font-bold text-base text-blue-300">{t.screen.title}</h4>
                 </div>
                 <div className="flex items-center gap-1.5 px-2 py-0.5 bg-green-900/50 rounded border border-green-500/30">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                    <span className="text-sm text-green-400 font-mono tracking-wider">{t.screen.status}</span>
+                    <span className="text-xs text-green-400 font-mono tracking-wider">{t.screen.status}</span>
                 </div>
             </div>
             
-            <div className="space-y-4 flex-grow relative z-10">
+            <div className="space-y-3 flex-grow relative z-10">
                 {[
-                    { l: t.screen.f1, v: t.screen.v1, c: 'text-yellow-400', b: 'border-yellow-500/30' },
-                    { l: t.screen.f2, v: t.screen.v2, c: 'text-blue-400', b: 'border-blue-500/30' },
-                    { l: t.screen.f3, v: t.screen.v3, c: 'text-emerald-400', b: 'border-emerald-500/30' },
-                    { l: t.screen.f4, v: t.screen.v4, c: 'text-red-400', b: 'border-red-500/30' }
+                    { icon: Zap, l: t.screen.f1, v: t.screen.v1, color: 'text-amber-300', bg: 'bg-amber-900/40', border: 'border-amber-500/50' },
+                    { icon: PieChart, l: t.screen.f2, v: t.screen.v2, color: 'text-cyan-300', bg: 'bg-cyan-900/40', border: 'border-cyan-500/50' },
+                    { icon: TrendingUp, l: t.screen.f3, v: t.screen.v3, color: 'text-emerald-300', bg: 'bg-emerald-900/40', border: 'border-emerald-500/50' },
+                    { icon: BarChart2, l: t.screen.f4, v: t.screen.v4, color: 'text-pink-300', bg: 'bg-pink-900/40', border: 'border-pink-500/50' }
                 ].map((item, i) => (
-                    <div key={i} className={`flex items-center justify-between p-3 bg-slate-700/50 dark:bg-slate-800/50 rounded border ${item.b} item-pulse transition-all`} style={{animationDelay: `${i * 0.5}s`}}>
-                        <span className="text-sm text-slate-400 uppercase tracking-wider font-bold">{item.l}</span>
-                        <span className={`font-bold text-lg ${item.c}`}>{item.v}</span>
+                    <div key={i} className={`flex items-center justify-between p-3 rounded-lg border ${item.bg} ${item.border} item-pulse transition-all transform hover:scale-[1.02]`} style={{animationDelay: `${i * 0.5}s`}}>
+                        <div className="flex items-center gap-3">
+                            <div className={`p-1.5 rounded bg-slate-900/50 ${item.color}`}>
+                                <item.icon size={16} />
+                            </div>
+                            <span className="text-xs text-slate-300 uppercase tracking-wider font-bold">{item.l}</span>
+                        </div>
+                        <span className={`font-bold text-sm ${item.color}`}>{item.v}</span>
                     </div>
                 ))}
             </div>
 
             <div className="mt-4 pt-2 relative z-10">
-                <div className="text-sm text-slate-500 font-mono text-center">
-                    AI ENGINE ACTIVE • <span className="text-slate-400">WAITING FOR DATA FEED...</span>
+                <div className="text-xs text-slate-500 font-mono text-center flex items-center justify-center gap-2">
+                    <Hash size={10} /> AI ENGINE ACTIVE • <span className="text-slate-400">WAITING FOR DATA FEED...</span>
                 </div>
             </div>
         </div>
@@ -178,323 +184,351 @@ export const StrategySection: React.FC<{ lang: Lang }> = ({ lang }) => {
 };
 
 export const RiskManagement: React.FC<{ lang: Lang }> = ({ lang }) => {
-    const t = {
-        title: lang === 'zh' ? '模型融合与交易策略构建' : 'Model Fusion & Quantitative Strategy',
-        subtitle: lang === 'zh' ? '从选股到执行的闭环逻辑' : 'Closed Loop: From Selection to Execution',
-        flow: {
-            step1: lang === 'zh' ? '阿尔法选股器' : 'Alpha Screener',
-            desc1: lang === 'zh' ? '形态+筹码' : 'Pattern+Chips',
-            step2: lang === 'zh' ? '趋势确认 (Confirm)' : 'Trend Confirm',
-            desc2: lang === 'zh' ? '一阳穿线 · 站稳' : 'Solid Yang · Hold',
-            step3: lang === 'zh' ? '自我强化 (Reinforce)' : 'Self-Reinforce',
-            desc3: lang === 'zh' ? '多头排列 · 发散' : 'Bullish Array',
+  const Highlight: React.FC<{ color?: string, children: React.ReactNode }> = ({ color = "yellow", children }) => (
+    <span className={`font-bold px-1 mx-1 rounded text-sm ${color === 'yellow' ? 'text-amber-600 bg-amber-100 dark:bg-amber-900/40 dark:text-amber-400' : ''} ${color === 'blue' ? 'text-blue-600 bg-blue-100 dark:bg-blue-900/40 dark:text-blue-400' : ''} ${color === 'red' ? 'text-red-600 bg-red-100 dark:bg-red-900/40 dark:text-red-400' : ''}`}>
+        {children}
+    </span>
+  );
+
+  const t = {
+    buy: {
+        title: lang === 'zh' ? '买入规则' : 'Entry Rules',
+        pyramid: {
+            title: lang === 'zh' ? '2-3-2 金字塔建仓' : '2-3-2 Pyramid Entry',
+            step1: '20%',
+            step1_d: lang === 'zh' ? '底仓 (试错)' : 'Base (Test)',
+            step2: '30%',
+            step2_d: lang === 'zh' ? '加仓 (确认)' : 'Add (Confirm)',
+            step3: '20%',
+            step3_d: lang === 'zh' ? '补仓/预备' : 'Final/Reserve'
         },
-        buy: {
-            title: lang === 'zh' ? '买入规则 (Entry)' : 'Buy Rules',
-            agg: lang === 'zh' ? '激进型 (14:30)' : 'Aggressive (14:30)',
-            agg_desc: lang === 'zh' ? '一阳穿多线当日，量能达标，筹码集中，尾盘直接挂单。' : 'Launch day 14:30. Vol & Chips OK. Buy at close.',
-            cons: lang === 'zh' ? '稳健型 (回踩)' : 'Conservative (Retrace)',
-            cons_desc: lang === 'zh' ? '2-3日缩量回踩5/10日线不破，确认为加仓点。' : '2-3 days shrinking vol, dipping to MA5/10. Add here.',
-            pyr: lang === 'zh' ? '金字塔建仓: 2-3-2' : 'Pyramid: 2-3-2'
-        },
-        stop: {
-            title: lang === 'zh' ? '止损规则 (Stop Loss)' : 'Stop Loss Rules',
-            logic: lang === 'zh' ? '逻辑止损' : 'Logical Stop',
-            logic_d: lang === 'zh' ? '跌破启动阳线最低价 (Low)' : 'Below Launch Candle Low',
-            chip: lang === 'zh' ? '筹码止损' : 'Chip Stop',
-            chip_d: lang === 'zh' ? '跌破筹码峰下沿' : 'Below Chip Peak Bottom',
-            time: lang === 'zh' ? '时间止损' : 'Time Stop',
-            time_d: lang === 'zh' ? '7-10天未脱离成本区' : 'Stagnant > 7-10 Days'
-        },
-        profit: {
-            title: lang === 'zh' ? '止盈规则 (Take Profit)' : 'Take Profit Rules',
-            target: lang === 'zh' ? '目标位测算' : 'Target Calc',
-            target_d: lang === 'zh' ? '筹码峰宽度 x 1.618' : 'Chip Width x 1.618',
-            chip: lang === 'zh' ? '筹码转移' : 'Chip Transfer',
-            chip_d: lang === 'zh' ? '底仓流出 > 30% 分批止盈' : 'Base Outflow > 30% Exit',
-            ma: lang === 'zh' ? '均线破位' : 'MA Break',
-            ma_d: lang === 'zh' ? '跌破MA20清仓' : 'Break MA20 Clear All'
+        conservative: {
+            t: lang === 'zh' ? '稳健型' : 'Conservative',
+            d: lang === 'zh' ? (
+                <>缩量回踩<Highlight color="blue">2-3日</Highlight>。回踩<Highlight color="red">MA5/MA10</Highlight>不破，且均线发散。加仓点。</>
+            ) : 'Retrace 2-3 days. Shrinking vol. Support at MA5/10. Add.'
         }
-    };
+    },
+    stop: {
+        title: lang === 'zh' ? '止损规则' : 'Stop Loss',
+        logic: { t: lang === 'zh' ? '逻辑止损' : 'Logic Stop', d: lang === 'zh' ? <>跌破启动阳线<Highlight color="red">最低价</Highlight>。诱多确认，无条件止损。</> : 'Break Launch Candle Low. Trap confirmed. Exit.' },
+        chip: { t: lang === 'zh' ? '筹码止损' : 'Chip Stop', d: lang === 'zh' ? <>跌破<Highlight color="blue">筹码密集峰下沿</Highlight> (支撑变压力)。</> : 'Break Chip Peak Bottom.' },
+        time: { t: lang === 'zh' ? '时间止损' : 'Time Stop', d: lang === 'zh' ? <><Highlight color="red">7-10天</Highlight>未脱离成本区，机会成本太高。</> : '7-10 Days stagnant. Opp cost too high.' }
+    },
+    profit: {
+        title: lang === 'zh' ? '止盈规则' : 'Take Profit',
+        target: { t: lang === 'zh' ? '目标测算' : 'Target', d: lang === 'zh' ? <>波浪理论：3浪目标 = <Highlight color="blue">1浪涨幅 × 1.618</Highlight>。</> : 'Elliott: Wave 3 Target = Wave 1 Rise × 1.618.' },
+        chip: { 
+            t: lang === 'zh' ? '筹码转移' : 'Chip Transfer', 
+            d: lang === 'zh' ? (
+                <>低位底仓<Highlight color="red">消失殆尽</Highlight>，高位筹码峰密集且集中度<Highlight color="red">&gt;30%</Highlight>。小心回调，分批止盈。</>
+            ) : 'Base chips vanished. Top peak dense (Conc > 30%). High pullback risk. Scale out.'
+        },
+        ma: { t: lang === 'zh' ? '均线破位' : 'MA Break', d: lang === 'zh' ? <>有效跌破<Highlight color="blue">MA20</Highlight> (生命线)。清仓。</> : 'Break MA20 (Life Line). Clear.' },
+        macd: { t: lang === 'zh' ? '量价背离' : 'Divergence', d: lang === 'zh' ? <>股价涨但<Highlight color="red">MACD红柱不增</Highlight> (背离)。走人。</> : 'Price up, MACD red shrinks. Exit.' }
+    },
+    intervention: {
+        title: lang === 'zh' ? '科学的干预方案——打破僵局的执行协议' : 'Scientific Intervention Protocols - Breaking the Deadlock',
+        scaling: {
+            title: lang === 'zh' ? '分仓止盈 (Scaling Out)' : 'Scaling Out',
+            subtitle: lang === 'zh' ? '神经生物学的完美妥协' : 'Neurobiological Compromise',
+            amygdala: lang === 'zh' ? '安抚恐惧' : 'Soothe Fear',
+            striatum: lang === 'zh' ? '满足贪婪' : 'Satisfy Greed',
+            action: lang === 'zh' ? '卖出 50%' : 'Sell 50%',
+            hold: lang === 'zh' ? '持有 50%' : 'Hold 50%',
+            win1: lang === 'zh' ? '若跌：庆幸卖了一半' : 'If Drop: Glad I sold',
+            win2: lang === 'zh' ? '若涨：庆幸还有一半' : 'If Rise: Glad I held'
+        },
+        ulysses: {
+            title: lang === 'zh' ? '尤利西斯合约 (Ulysses Pact)' : 'Ulysses Pact',
+            subtitle: lang === 'zh' ? '预承诺机制' : 'Pre-commitment',
+            desc: lang === 'zh' ? '既然大脑在关键时刻会“冻结”，就提前用系统（条件单）绑住自己的手。' : 'Brain freezes under stress. Use system (Conditional Orders) to tie your hands in advance.',
+            code: lang === 'zh' ? 'IF 价格 <= MA5 THEN 自动卖出' : 'IF Price <= MA5 THEN Auto Sell'
+        },
+    },
+    reframe: {
+        title: lang === 'zh' ? '认知重构 (Cognitive Reframing)' : 'Cognitive Reframing',
+        farmer: {
+            title: lang === 'zh' ? '利润的“收割者”思维' : 'The Harvester Mindset',
+            mantra: lang === 'zh' ? '“三浪是夏天，破位是秋天。我不收割，冬天就会带走一切。”' : '"Wave 3 is Summer, Breakdown is Autumn. Harvest or Winter takes all."',
+            visual: lang === 'zh' ? '季节性作物' : 'Seasonal Crops',
+            desc: lang === 'zh' ? '将账户浮盈视为会腐烂的作物。目标从“赚多少”转移到“留住多少”。防守 > 进攻。' : 'Floating profit = Rotting crops. Shift goal from "Make" to "Keep". Defense > Offense.'
+        },
+        badge: {
+            title: lang === 'zh' ? '拥抱“卖飞”' : 'Embrace "Selling Early"',
+            honor: lang === 'zh' ? '职业交易员的荣誉勋章' : 'Badge of Honor',
+            logic: lang === 'zh' ? '只有严格执行纪律的人，才有可能卖飞。试图卖在最高点的人，最终往往坐过山车。' : 'Only disciplined traders sell too early. Those trying to top-tick usually round-trip.',
+            philosophy: lang === 'zh' ? '卖飞 = 战胜贪婪。接受“不完美”，通向“完美”执行。' : 'Selling Early = Conquering Greed. Accept imperfection to master execution.'
+        }
+    }
+  };
 
-    // Colors based on locale for Candles
-    const upFill = lang === 'zh' ? 'fill-red-500' : 'fill-green-500';
-    const upStroke = lang === 'zh' ? 'stroke-red-500' : 'stroke-green-500';
-    const downFill = lang === 'zh' ? 'fill-green-500' : 'fill-red-500';
-    const downStroke = lang === 'zh' ? 'stroke-green-500' : 'stroke-red-500';
+  return (
+    <div className="flex flex-col gap-6">
+       {/* Buy Rules */}
+       <Card highlightColor="green" className="bg-green-50/30 dark:bg-green-900/5 border-2 border-green-500/20 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+              <div className="bg-green-100 dark:bg-green-900 p-2 rounded-xl text-green-600 dark:text-green-300">
+                  <Target size={20} />
+              </div>
+              <h4 className="font-bold text-xl text-slate-800 dark:text-slate-100">{t.buy.title}</h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Pyramid Visualization */}
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-xl border-l-4 border-green-500 shadow-sm flex flex-col items-center">
+                  <div className="font-bold text-base text-green-700 dark:text-green-400 mb-4 flex items-center gap-2">
+                       <Layers size={18}/> {t.buy.pyramid.title}
+                  </div>
+                  
+                  <div className="flex flex-col items-center justify-end w-48 gap-1 mb-4">
+                       <div className="w-1/3 bg-green-300 dark:bg-green-700 h-8 rounded-t flex items-center justify-center text-sm font-bold text-white shadow-sm">
+                            {t.buy.pyramid.step3}
+                       </div>
+                       <div className="w-2/3 bg-green-500 dark:bg-green-600 h-10 flex items-center justify-center text-base font-bold text-white shadow-sm">
+                            {t.buy.pyramid.step2}
+                       </div>
+                       <div className="w-full bg-green-700 dark:bg-green-500 h-12 rounded-b flex items-center justify-center text-lg font-bold text-white shadow-md">
+                            {t.buy.pyramid.step1}
+                       </div>
+                  </div>
 
-    const Badge = ({children, color}: {children: React.ReactNode, color: string}) => (
-        <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-bold mr-1 bg-${color}-100 text-${color}-700 dark:bg-${color}-900/50 dark:text-${color}-300 border border-${color}-200 dark:border-${color}-800`}>
-            {children}
-        </span>
-    );
+                  <div className="w-full space-y-1 text-sm text-slate-600 dark:text-slate-300 font-medium">
+                       <div className="flex justify-between border-b border-dashed border-slate-200 pb-1">
+                           <span className="font-bold text-green-700 dark:text-green-400">20% {t.buy.pyramid.step1_d}</span>
+                       </div>
+                       <div className="flex justify-between border-b border-dashed border-slate-200 pb-1">
+                           <span className="font-bold text-green-500 dark:text-green-300">30% {t.buy.pyramid.step2_d}</span>
+                       </div>
+                       <div className="flex justify-between">
+                           <span className="font-bold text-green-300 dark:text-green-200">20% {t.buy.pyramid.step3_d}</span>
+                       </div>
+                  </div>
+              </div>
 
-    return (
-        <div className="space-y-8">
-            <style>{`
-                @keyframes flow-dash {
-                    to { stroke-dashoffset: 0; }
-                }
-                .flow-line-anim {
-                    stroke-dasharray: 10;
-                    stroke-dashoffset: 100;
-                    animation: flow-dash 1s linear infinite;
-                }
-                @keyframes pulse-node {
-                    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-                    70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-                    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-                }
-                .node-pulse { animation: pulse-node 2s infinite; }
-            `}</style>
+              {/* Conservative & Details */}
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-xl border-l-4 border-blue-500 shadow-sm flex flex-col justify-center">
+                  <div className="font-bold text-lg text-blue-600 dark:text-blue-400 mb-2">{t.buy.conservative.t}</div>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium mb-4">{t.buy.conservative.d}</p>
+                  
+                  <div className="p-2 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-sm text-slate-500">
+                      <span className="font-bold">Total Max:</span> 70% (Keep 30% Cash)
+                  </div>
+              </div>
+          </div>
+      </Card>
 
-            {/* 1. Logic Flowchart - UPDATED */}
-            <Card highlightColor="slate" className="relative overflow-hidden">
-                <div className="flex flex-col md:flex-row items-center justify-between mb-6">
-                    <div>
-                        <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
-                        <p className="text-slate-500 dark:text-slate-400 mt-1 font-medium text-lg">{t.subtitle}</p>
-                    </div>
-                </div>
+      {/* Stop Rules */}
+      <Card highlightColor="red" className="bg-red-50/30 dark:bg-red-900/5 border-2 border-red-500/20 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+              <div className="bg-red-100 dark:bg-red-900 p-2 rounded-xl text-red-600 dark:text-red-300">
+                  <ShieldAlert size={20} />
+              </div>
+              <h4 className="font-bold text-xl text-slate-800 dark:text-slate-100">{t.stop.title}</h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-red-100 dark:border-red-900/30 flex flex-col h-full hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 mb-2">
+                      <Skull className="text-red-500" size={16} />
+                      <div className="font-bold text-base text-slate-800 dark:text-slate-200">{t.stop.logic.t}</div>
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{t.stop.logic.d}</div>
+              </div>
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-red-100 dark:border-red-900/30 flex flex-col h-full hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 mb-2">
+                      <Layers className="text-red-500" size={16} />
+                      <div className="font-bold text-base text-slate-800 dark:text-slate-200">{t.stop.chip.t}</div>
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{t.stop.chip.d}</div>
+              </div>
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-red-100 dark:border-red-900/30 flex flex-col h-full hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 mb-2">
+                      <Clock className="text-red-500" size={16} />
+                      <div className="font-bold text-base text-slate-800 dark:text-slate-200">{t.stop.time.t}</div>
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{t.stop.time.d}</div>
+              </div>
+          </div>
+      </Card>
 
-                <div className="relative h-40 md:h-48 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 flex items-center justify-around">
-                    {/* Step 1: Screener */}
-                    <div className="flex flex-col items-center z-10 w-1/3">
-                        <div className="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2 node-pulse border border-blue-200 dark:border-blue-800">
-                            <ScanLine size={28} />
-                        </div>
-                        <div className="font-bold text-slate-800 dark:text-slate-200 text-lg">{t.flow.step1}</div>
-                        <div className="text-xs text-slate-500 font-bold mt-1 uppercase">{t.flow.desc1}</div>
-                    </div>
+      {/* Profit Rules */}
+      <Card highlightColor="blue" className="bg-blue-50/30 dark:bg-blue-900/5 border-2 border-blue-500/20 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+              <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-xl text-blue-600 dark:text-blue-300">
+                  <LogOut size={20} />
+              </div>
+              <h4 className="font-bold text-xl text-slate-800 dark:text-slate-100">{t.profit.title}</h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl border-t-4 border-blue-500 flex flex-col">
+                  <span className="font-bold text-base text-slate-800 dark:text-slate-200 mb-1">{t.profit.target.t}</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.profit.target.d}</span>
+              </div>
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl border-t-4 border-indigo-500 flex flex-col">
+                  <span className="font-bold text-base text-slate-800 dark:text-slate-200 mb-1">{t.profit.chip.t}</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.profit.chip.d}</span>
+              </div>
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl border-t-4 border-teal-500 flex flex-col">
+                  <span className="font-bold text-base text-slate-800 dark:text-slate-200 mb-1">{t.profit.ma.t}</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.profit.ma.d}</span>
+              </div>
+              <div className="p-3 bg-white dark:bg-slate-800 rounded-xl border-t-4 border-red-500 flex flex-col">
+                  <span className="font-bold text-base text-slate-800 dark:text-slate-200 mb-1">{t.profit.macd.t}</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.profit.macd.d}</span>
+              </div>
+          </div>
+      </Card>
 
-                    {/* Arrow 1 */}
-                    <div className="flex-1 h-[2px] bg-slate-300 dark:bg-slate-700 relative mx-2">
-                         <div className="absolute top-1/2 left-0 right-0 h-full -translate-y-1/2 overflow-hidden">
-                            <svg width="100%" height="4" className="absolute top-0">
-                                <line x1="0" y1="2" x2="100%" y2="2" className="stroke-blue-500 flow-line-anim" strokeWidth="2" />
-                            </svg>
-                         </div>
-                         <ArrowRight className="absolute -right-2 -top-2.5 text-blue-500" size={16} />
-                    </div>
+      {/* Scientific Intervention Protocols */}
+      <Card highlightColor="purple" className="bg-purple-50/30 dark:bg-purple-900/5 border-2 border-purple-500/20 shadow-sm relative overflow-hidden">
+          <div className="flex items-center gap-3 mb-6 relative z-10">
+              <div className="bg-purple-100 dark:bg-purple-900 p-2 rounded-xl text-purple-600 dark:text-purple-300">
+                  <Split size={20} />
+              </div>
+              <h4 className="font-bold text-xl text-slate-800 dark:text-slate-100">{t.intervention.title}</h4>
+          </div>
 
-                    {/* Step 2: Confirm */}
-                    <div className="flex flex-col items-center z-10 w-1/3">
-                        <div className="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-2 border border-amber-200 dark:border-amber-800">
-                            <CheckCircle2 size={28} />
-                        </div>
-                        <div className="font-bold text-slate-800 dark:text-slate-200 text-lg">{t.flow.step2}</div>
-                        <div className="text-xs text-slate-500 font-bold mt-1 uppercase">{t.flow.desc2}</div>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+              {/* 1. Scaling Out (Neuro Compromise) */}
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-purple-200 dark:border-slate-700 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 mb-3 border-b border-purple-100 dark:border-slate-700 pb-2">
+                      <div className="p-1.5 bg-purple-100 dark:bg-purple-900/50 rounded-lg text-purple-600">
+                          <Split size={16} />
+                      </div>
+                      <div>
+                          <h5 className="font-bold text-base text-slate-800 dark:text-slate-100">{t.intervention.scaling.title}</h5>
+                          <span className="text-xs text-slate-500 uppercase tracking-wide font-bold">{t.intervention.scaling.subtitle}</span>
+                      </div>
+                  </div>
+                  
+                  {/* Split Brain Visual */}
+                  <div className="flex-1 flex flex-col items-center justify-center mb-4 relative">
+                      <div className="flex w-full max-w-[200px] h-20 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-600">
+                          <div className="w-1/2 bg-green-100 dark:bg-green-900/30 flex flex-col items-center justify-center border-r border-slate-200 dark:border-slate-600">
+                              <span className="text-sm font-bold text-green-700 dark:text-green-300">{t.intervention.scaling.action}</span>
+                              <span className="text-xs text-slate-500">{t.intervention.scaling.amygdala}</span>
+                          </div>
+                          <div className="w-1/2 bg-amber-100 dark:bg-amber-900/30 flex flex-col items-center justify-center">
+                              <span className="text-sm font-bold text-amber-700 dark:text-amber-300">{t.intervention.scaling.hold}</span>
+                              <span className="text-xs text-slate-500">{t.intervention.scaling.striatum}</span>
+                          </div>
+                      </div>
+                      {/* Connection Line */}
+                      <div className="absolute -bottom-3 flex gap-12 w-full justify-center">
+                          <div className="h-4 w-px bg-slate-300 dark:bg-slate-600"></div>
+                          <div className="h-4 w-px bg-slate-300 dark:bg-slate-600"></div>
+                      </div>
+                  </div>
 
-                    {/* Arrow 2 */}
-                    <div className="flex-1 h-[2px] bg-slate-300 dark:bg-slate-700 relative mx-2">
-                         <div className="absolute top-1/2 left-0 right-0 h-full -translate-y-1/2 overflow-hidden">
-                            <svg width="100%" height="4" className="absolute top-0">
-                                <line x1="0" y1="2" x2="100%" y2="2" className="stroke-green-500 flow-line-anim" strokeWidth="2" />
-                            </svg>
-                         </div>
-                         <ArrowRight className="absolute -right-2 -top-2.5 text-green-500" size={16} />
-                    </div>
+                  <div className="text-xs space-y-2 mt-2">
+                      <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/10 rounded text-green-700 dark:text-green-300 font-bold border border-green-100 dark:border-green-800/30">
+                          <ArrowRight size={12} /> {t.intervention.scaling.win1}
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-900/10 rounded text-amber-700 dark:text-amber-300 font-bold border border-amber-100 dark:border-amber-800/30">
+                          <ArrowUpRight size={12} /> {t.intervention.scaling.win2}
+                      </div>
+                  </div>
+              </div>
 
-                    {/* Step 3: Self-Reinforce */}
-                    <div className="flex flex-col items-center z-10 w-1/3">
-                        <div className="w-14 h-14 rounded-xl bg-green-500 text-white flex items-center justify-center mb-2 shadow-lg shadow-green-500/30 animate-pulse">
-                            <Zap size={28} />
-                        </div>
-                        <div className="font-bold text-slate-800 dark:text-slate-200 text-lg">{t.flow.step3}</div>
-                        <div className="text-xs text-green-600 dark:text-green-400 font-bold mt-1 uppercase">{t.flow.desc3}</div>
-                    </div>
-                </div>
-            </Card>
+              {/* 2. Ulysses Pact (Pre-commitment) */}
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-blue-200 dark:border-slate-700 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 mb-3 border-b border-blue-100 dark:border-slate-700 pb-2">
+                      <div className="p-1.5 bg-blue-100 dark:bg-blue-900/50 rounded-lg text-blue-600">
+                          <Anchor size={16} />
+                      </div>
+                      <div>
+                          <h5 className="font-bold text-base text-slate-800 dark:text-slate-100">{t.intervention.ulysses.title}</h5>
+                          <span className="text-xs text-slate-500 uppercase tracking-wide font-bold">{t.intervention.ulysses.subtitle}</span>
+                      </div>
+                  </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* 1. Buy Rules */}
-                <Card highlightColor="indigo" className="flex flex-col h-full">
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="bg-indigo-100 dark:bg-indigo-900/30 p-1.5 rounded-lg text-indigo-600 dark:text-indigo-300">
-                            <TrendingUp size={18} />
-                        </div>
-                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.buy.title}</h4>
-                    </div>
+                  <div className="flex-1 bg-slate-900 rounded-lg p-3 font-mono text-sm text-green-400 mb-3 relative overflow-hidden flex items-center border border-slate-700">
+                      <div className="absolute top-0 right-0 p-1 opacity-20">
+                          <Lock size={40} />
+                      </div>
+                      <div className="z-10">
+                          <div className="text-slate-500 mb-1">// Auto-Trigger</div>
+                          <div>{t.intervention.ulysses.code}</div>
+                          <div className="text-blue-400 mt-1">Status: ARMED</div>
+                      </div>
+                  </div>
 
-                    <div className="bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 p-4 mb-4 h-40 relative">
-                        {/* Visualization of Aggressive vs Conservative */}
-                        <svg viewBox="0 0 200 100" className="w-full h-full">
-                             {/* MAs */}
-                             <path d="M10,80 C50,75 100,60 190,20" fill="none" className="stroke-slate-400" strokeWidth="1" />
-                             <path d="M10,85 C50,80 100,70 190,30" fill="none" className="stroke-blue-500" strokeWidth="1.5" />
-                             
-                             {/* Candle 1: Launch (Big Yang) */}
-                             <rect x="50" y="40" width="10" height="40" className={`${upFill} ${upStroke}`} strokeWidth="1" />
-                             <line x1="55" y1="35" x2="55" y2="80" className={upStroke} strokeWidth="1" />
-                             
-                             {/* Aggressive Entry Icon */}
-                             <circle cx="55" cy="40" r="3" className="fill-indigo-500" />
-                             <g transform="translate(65, 35)">
-                                <text fontSize="8" className="fill-indigo-500 font-bold">14:30 Buy</text>
-                             </g>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                      {t.intervention.ulysses.desc}
+                  </p>
+              </div>
+          </div>
+      </Card>
 
-                             {/* Candle 2: Retrace (Small Yin) */}
-                             <rect x="70" y="45" width="8" height="15" className={`${downFill} ${downStroke}`} strokeWidth="1" />
-                             <line x1="74" y1="45" x2="74" y2="65" className={downStroke} strokeWidth="1" />
+      {/* Cognitive Reframing - New Dedicated Card */}
+      <Card highlightColor="amber" className="bg-amber-50/30 dark:bg-amber-900/5 border-2 border-amber-500/20 shadow-sm relative overflow-hidden">
+          <div className="flex items-center gap-3 mb-6 relative z-10">
+              <div className="bg-amber-100 dark:bg-amber-900 p-2 rounded-xl text-amber-600 dark:text-amber-300">
+                  <Sun size={20} />
+              </div>
+              <h4 className="font-bold text-xl text-slate-800 dark:text-slate-100">{t.reframe.title}</h4>
+          </div>
 
-                             {/* Candle 3: Retrace Touch MA (Small Yin) */}
-                             <rect x="85" y="55" width="8" height="10" className={`${downFill} ${downStroke}`} strokeWidth="1" />
-                             <line x1="89" y1="50" x2="89" y2="70" className={downStroke} strokeWidth="1" />
-                             
-                             {/* Conservative Entry Icon */}
-                             <circle cx="89" cy="70" r="3" className="fill-indigo-500" />
-                             <text x="89" y="85" fontSize="8" className="fill-indigo-500 font-bold" textAnchor="middle">Add</text>
-                        </svg>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 1. Harvester Mindset */}
+              <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-amber-200 dark:border-slate-700 flex flex-col h-full shadow-sm">
+                  <div className="flex items-center gap-2 mb-4 border-b border-amber-100 dark:border-slate-700 pb-2">
+                      <Sprout className="text-green-600 dark:text-green-400" size={18} />
+                      <h5 className="font-bold text-base text-slate-800 dark:text-slate-100">{t.reframe.farmer.title}</h5>
+                  </div>
+                  
+                  {/* Seasonal Visualization */}
+                  <div className="flex items-center justify-between gap-2 mb-4 text-center bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-700">
+                      <div className="flex flex-col items-center">
+                          <Sun className="text-red-500 mb-1" size={20} />
+                          <span className="text-xs font-bold text-slate-500">Wave 3 (Summer)</span>
+                      </div>
+                      <ArrowRight size={14} className="text-slate-300" />
+                      <div className="flex flex-col items-center">
+                          <Coins className="text-amber-500 mb-1" size={20} />
+                          <span className="text-xs font-bold text-slate-500">Breakdown (Harvest)</span>
+                      </div>
+                      <ArrowRight size={14} className="text-slate-300" />
+                      <div className="flex flex-col items-center opacity-50">
+                          <Snowflake className="text-blue-400 mb-1" size={20} />
+                          <span className="text-xs font-bold text-slate-500">Winter (Rot)</span>
+                      </div>
+                  </div>
 
-                    <div className="space-y-4 text-base flex-grow">
-                        <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded border-l-4 border-indigo-500 shadow-sm">
-                            <span className="font-bold text-indigo-700 dark:text-indigo-300 block mb-1">{t.buy.agg}</span>
-                            <span className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed block">
-                                <Badge color="indigo">14:30</Badge>
-                                {t.buy.agg_desc}
-                            </span>
-                        </div>
-                        <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded border-l-4 border-indigo-400 shadow-sm">
-                            <span className="font-bold text-indigo-700 dark:text-indigo-300 block mb-1">{t.buy.cons}</span>
-                            <span className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed block">
-                                <Badge color="indigo">MA5/10</Badge>
-                                {t.buy.cons_desc}
-                            </span>
-                        </div>
-                        <div className="text-center font-bold text-slate-500 text-sm bg-slate-100 dark:bg-slate-800 py-1 rounded">
-                            {t.buy.pyr}
-                        </div>
-                    </div>
-                </Card>
+                  <p className="text-sm text-slate-700 dark:text-slate-200 font-bold italic mb-2">
+                      {t.reframe.farmer.mantra}
+                  </p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {t.reframe.farmer.desc}
+                  </p>
+              </div>
 
-                {/* 2. Stop Loss */}
-                <Card highlightColor="red" className="flex flex-col h-full">
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="bg-red-100 dark:bg-red-900/30 p-1.5 rounded-lg text-red-600 dark:text-red-300">
-                            <ShieldAlert size={18} />
-                        </div>
-                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.stop.title}</h4>
-                    </div>
+              {/* 2. Embrace Selling Early */}
+              <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-indigo-200 dark:border-slate-700 flex flex-col h-full shadow-sm">
+                  <div className="flex items-center gap-2 mb-4 border-b border-indigo-100 dark:border-slate-700 pb-2">
+                      <Award className="text-indigo-600 dark:text-indigo-400" size={18} />
+                      <h5 className="font-bold text-base text-slate-800 dark:text-slate-100">{t.reframe.badge.title}</h5>
+                  </div>
 
-                    <div className="bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 p-4 mb-4 h-40 relative">
-                        <svg viewBox="0 0 200 100" className="w-full h-full">
-                             {/* Logic Stop Line */}
-                             <rect x="20" y="30" width="10" height="40" className={`${upFill} opacity-30`} />
-                             <line x1="10" y1="70" x2="200" y2="70" className="stroke-red-500" strokeDasharray="3" />
-                             <text x="180" y="65" fontSize="8" className="fill-red-500 font-bold">Low Stop</text>
-                             
-                             {/* Chip Stop Line */}
-                             <rect x="0" y="50" width="15" height="30" className="fill-cyan-500 opacity-20" />
-                             <line x1="0" y1="80" x2="200" y2="80" className="stroke-blue-500" strokeDasharray="3" />
-                             <text x="180" y="88" fontSize="8" className="fill-blue-500 font-bold">Chip Stop</text>
+                  {/* Badge Visualization */}
+                  <div className="flex flex-col items-center justify-center mb-4 p-2">
+                      <div className="relative">
+                          <div className="absolute inset-0 bg-indigo-500 blur-xl opacity-20 rounded-full"></div>
+                          <Award size={48} className="text-indigo-500 dark:text-indigo-400 relative z-10" />
+                      </div>
+                      <div className="mt-2 text-xs font-black text-indigo-700 dark:text-indigo-300 uppercase tracking-widest border border-indigo-200 dark:border-indigo-800 px-2 py-1 rounded">
+                          {t.reframe.badge.honor}
+                      </div>
+                  </div>
 
-                             {/* Price Drop */}
-                             <path d="M40,40 L60,50 L80,30 L100,60 L120,85" fill="none" className="stroke-slate-600 dark:stroke-slate-400" strokeWidth="1.5" />
-                             <circle cx="120" cy="85" r="4" className="fill-red-500 animate-pulse" />
-                             <text x="120" y="95" fontSize="10" className="fill-red-500 font-bold" textAnchor="middle">STOP</text>
-                        </svg>
-                    </div>
-
-                    <div className="space-y-4 text-base flex-grow">
-                        <div className="flex items-start gap-2 bg-red-50 dark:bg-red-900/10 p-2 rounded">
-                             <AlertTriangle size={18} className="text-red-500 mt-0.5 shrink-0" />
-                             <div>
-                                 <span className="font-bold text-slate-800 dark:text-slate-200 block text-sm mb-0.5">{t.stop.logic}</span>
-                                 <div className="text-slate-600 dark:text-slate-400 text-sm">
-                                    <Badge color="red">Low</Badge>
-                                    {t.stop.logic_d}
-                                 </div>
-                             </div>
-                        </div>
-                        <div className="flex items-start gap-2 bg-blue-50 dark:bg-blue-900/10 p-2 rounded">
-                             <Layers size={18} className="text-blue-500 mt-0.5 shrink-0" />
-                             <div>
-                                 <span className="font-bold text-slate-800 dark:text-slate-200 block text-sm mb-0.5">{t.stop.chip}</span>
-                                 <div className="text-slate-600 dark:text-slate-400 text-sm">
-                                    <Badge color="blue">Peak</Badge>
-                                    {t.stop.chip_d}
-                                 </div>
-                             </div>
-                        </div>
-                        <div className="flex items-start gap-2 bg-amber-50 dark:bg-amber-900/10 p-2 rounded">
-                             <Calendar size={18} className="text-amber-500 mt-0.5 shrink-0" />
-                             <div>
-                                 <span className="font-bold text-slate-800 dark:text-slate-200 block text-sm mb-0.5">{t.stop.time}</span>
-                                 <div className="text-slate-600 dark:text-slate-400 text-sm">
-                                    <Badge color="amber">7-10 Days</Badge>
-                                    {t.stop.time_d}
-                                 </div>
-                             </div>
-                        </div>
-                    </div>
-                </Card>
-
-                {/* 3. Take Profit */}
-                <Card highlightColor="green" className="flex flex-col h-full">
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="bg-green-100 dark:bg-green-900/30 p-1.5 rounded-lg text-green-600 dark:text-green-300">
-                            <Target size={18} />
-                        </div>
-                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.profit.title}</h4>
-                    </div>
-
-                    <div className="bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 p-4 mb-4 h-40 relative">
-                        <svg viewBox="0 0 200 100" className="w-full h-full">
-                             {/* Fib Targets */}
-                             <line x1="0" y1="80" x2="200" y2="80" className="stroke-slate-300 dark:stroke-slate-700" strokeDasharray="2" />
-                             <text x="5" y="78" fontSize="8" className="fill-slate-400">1.0</text>
-                             
-                             <line x1="0" y1="20" x2="200" y2="20" className="stroke-green-500" strokeDasharray="2" />
-                             <text x="5" y="18" fontSize="8" className="fill-green-500 font-bold">1.618</text>
-
-                             {/* Price Surge */}
-                             <path d="M20,80 C50,70 100,50 180,20" fill="none" className="stroke-slate-600 dark:stroke-slate-400" strokeWidth="1.5" />
-                             <circle cx="180" cy="20" r="4" className="fill-green-500" />
-                             <text x="180" y="32" fontSize="10" className="fill-green-500 font-bold" textAnchor="middle">TP</text>
-
-                             {/* Chip Outflow (Bottom) */}
-                             <rect x="150" y="90" width="40" height="10" className="fill-red-500 opacity-20" />
-                             <rect x="150" y="90" width="10" height="10" className="fill-red-500" /> {/* Only small part left */}
-                             <text x="130" y="98" fontSize="8" className="fill-red-400 text-right">Chip Out</text>
-                        </svg>
-                    </div>
-
-                    <div className="space-y-4 text-base flex-grow">
-                         <div className="flex items-start gap-2 bg-green-50 dark:bg-green-900/10 p-2 rounded">
-                             <Target size={18} className="text-green-500 mt-0.5 shrink-0" />
-                             <div>
-                                 <span className="font-bold text-slate-800 dark:text-slate-200 block text-sm mb-0.5">{t.profit.target}</span>
-                                 <div className="text-slate-600 dark:text-slate-400 text-sm">
-                                    <Badge color="green">1.618</Badge>
-                                    {t.profit.target_d}
-                                 </div>
-                             </div>
-                        </div>
-                        <div className="flex items-start gap-2 bg-red-50 dark:bg-red-900/10 p-2 rounded">
-                             <Layers size={18} className="text-red-500 mt-0.5 shrink-0" />
-                             <div>
-                                 <span className="font-bold text-slate-800 dark:text-slate-200 block text-sm mb-0.5">{t.profit.chip}</span>
-                                 <div className="text-slate-600 dark:text-slate-400 text-sm">
-                                    <Badge color="red">-30%</Badge>
-                                    {t.profit.chip_d}
-                                 </div>
-                             </div>
-                        </div>
-                        <div className="flex items-start gap-2 bg-blue-50 dark:bg-blue-900/10 p-2 rounded">
-                             <TrendingUp size={18} className="text-blue-500 mt-0.5 shrink-0" />
-                             <div>
-                                 <span className="font-bold text-slate-800 dark:text-slate-200 block text-sm mb-0.5">{t.profit.ma}</span>
-                                 <div className="text-slate-600 dark:text-slate-400 text-sm">
-                                    <Badge color="blue">MA20</Badge>
-                                    {t.profit.ma_d}
-                                 </div>
-                             </div>
-                        </div>
-                    </div>
-                </Card>
-            </div>
-        </div>
-    );
+                  <p className="text-sm text-slate-700 dark:text-slate-200 font-medium mb-2 leading-relaxed">
+                      {t.reframe.badge.logic}
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 italic border-t border-indigo-50 dark:border-slate-700 pt-2 mt-auto">
+                      "{t.reframe.badge.philosophy}"
+                  </p>
+              </div>
+          </div>
+      </Card>
+    </div>
+  );
 };

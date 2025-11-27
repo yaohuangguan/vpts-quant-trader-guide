@@ -39,7 +39,7 @@ const AnimatedPath: React.FC<{
 
 const Tooltip = ({ x, y, text }: { x: number; y: number; text: string }) => (
   <div 
-    className="absolute z-20 bg-slate-800 dark:bg-slate-700 text-white text-sm px-3 py-1.5 rounded shadow-lg pointer-events-none transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap border border-slate-600"
+    className="absolute z-20 bg-slate-800 dark:bg-slate-700 text-white text-base px-3 py-1.5 rounded shadow-lg pointer-events-none transform -translate-x-1/2 -translate-y-full mb-2 whitespace-nowrap border border-slate-600"
     style={{ left: x, top: y }}
   >
     {text}
@@ -88,11 +88,11 @@ const TacticalCard: React.FC<{
     return (
         <Card highlightColor={highlightColor} className="relative overflow-hidden group tactical-card">
             {tooltip && <Tooltip {...tooltip} />}
-            <div className={`absolute top-0 right-0 bg-${highlightColor}-100 dark:bg-${highlightColor}-900 text-${highlightColor}-800 dark:text-${highlightColor}-200 text-sm font-bold px-3 py-1.5 rounded-bl`}>
+            <div className={`absolute top-0 right-0 bg-${highlightColor}-100 dark:bg-${highlightColor}-900 text-${highlightColor}-800 dark:text-${highlightColor}-200 text-base font-bold px-3 py-1.5 rounded-bl`}>
                 {tag}
             </div>
-            <h4 className="font-bold text-lg mb-2 text-slate-900 dark:text-slate-100">{title} <span className="text-sm font-normal text-slate-500 dark:text-slate-400">({subtitle})</span></h4>
-            <div className="text-base font-medium text-slate-700 dark:text-slate-300 mb-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded border-l-2 border-slate-300 dark:border-slate-600 leading-relaxed">
+            <h4 className="font-bold text-xl mb-2 text-slate-900 dark:text-slate-100">{title} <span className="text-base font-normal text-slate-500 dark:text-slate-400">({subtitle})</span></h4>
+            <div className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded border-l-2 border-slate-300 dark:border-slate-600 leading-relaxed">
                 <b>{lang === 'zh' ? '战术解析' : 'Analysis'}：</b> {desc}
             </div>
             <PatternSVG>
@@ -110,7 +110,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
     c3: { title: lang==='zh'?'金蟾蜍':'Golden Toad', sub: lang==='zh'?'稳健攻击':'Steady Attack', tag: lang==='zh'?'二次启动':'Second Launch', d: lang==='zh'?'MA60持续向上。短期均线形成两个小高点（左眼、右眼），右眼突破时成交量放大是最佳买点。':'MA60 up. Short MAs form two small peaks (eyes). Breakout on right eye with volume is entry.' },
     c4: { title: lang==='zh'?'死亡开花':'Death Blossom', sub: lang==='zh'?'断头铡刀':'Guillotine', tag: lang==='zh'?'顶部反转':'Top Reversal', d: lang==='zh'?'高位诱多后图穷匕见。一根放量阴线同时切断多条均线，意味着主力不计成本出逃，多头防线崩溃。':'Bull trap at highs. One heavy vol bearish candle cuts multiple MAs. MM exiting at all costs.' },
     c5: { title: lang==='zh'?'金蜘蛛':'Golden Spider', sub: 'Golden Spider', tag: lang==='zh'?'急涨形态':'Surge Pattern', d: lang==='zh'?'三条短期均线(MA5/10/20)在极短时间内金叉汇聚于一点。均线由粘合突然发散。一根放量大阳线实体贯穿三线交汇点。':'Three short MAs converge and cross at one point instantly. Sudden divergence. Big Yang candle pierces the knot.' },
-    c6: { title: lang==='zh'?'回头望月':'Looking Back', sub: 'Looking Back', tag: lang==='zh'?'稳健确认':'Confirmation', d: lang==='zh'?'多头排列中，股价回踩。MA5/10保持平行向上。一根大阳线同时反包上穿MA5和MA10，确立洗盘结束。':'Bullish trend retrace. MA5/10 parallel up. Big Yang engulfs and crosses MA5/10 again. Washout done.' }
+    c6: { title: lang==='zh'?'回头望月':'Looking Back', sub: 'Looking Back', tag: lang==='zh'?'稳健确认':'Confirmation', d: lang==='zh'?'多头排列中，股价回踩。MA5/10保持平行向上。出现三根逐级递减缩量的阴线洗盘。随后一根大阳线同时反包上穿MA5和MA10，确立洗盘结束。':'Bullish trend retrace. MA5/10 parallel up. 3 shrinking Yin candles washout. Big Yang engulfs and crosses MA5/10 again. Washout done.' }
   };
 
   return (
@@ -162,7 +162,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             {/* Candle - Breakout at crossing point */}
             <rect x="180" y="80" width="12" height="60" className="fill-red-500 stroke-red-600 animate-pulse" />
             <line x1="186" y1="75" x2="186" y2="145" className="stroke-red-600" strokeWidth="1" />
-            <text x="195" y="85" fontSize="11" className="fill-red-500 font-bold">{lang === 'zh' ? '一阳穿线' : 'Cross'}</text>
+            <text x="195" y="85" fontSize="13" className="fill-red-500 font-bold">{lang === 'zh' ? '一阳穿线' : 'Cross'}</text>
             <circle cx="186" cy="95" r="3" className="fill-white stroke-red-500" />
         </g>
       </TacticalCard>
@@ -184,7 +184,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             <AnimatedPath d="M10,100 L80,50 L140,40 L180,75 L240,30 L340,10" className="stroke-slate-900 dark:stroke-slate-100 hover-target" delay="0.4s" />
             
             <circle cx="180" cy="75" r="5" className="fill-blue-500/20 stroke-blue-600 animate-ping" />
-            <text x="175" y="105" fontSize="11" className="fill-blue-600 dark:fill-blue-400 font-bold" textAnchor="middle">{lang === 'zh' ? '回踩MA60' : 'Test MA60'}</text>
+            <text x="175" y="105" fontSize="13" className="fill-blue-600 dark:fill-blue-400 font-bold" textAnchor="middle">{lang === 'zh' ? '回踩MA60' : 'Test MA60'}</text>
             
             <rect x="180" y="145" width="6" height="15" className="fill-green-300 dark:fill-green-400/50" />
             <rect x="230" y="135" width="8" height="25" className="fill-red-300 dark:fill-red-400/50" />
@@ -192,7 +192,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             {/* Added: Refueling Candle */}
             <rect x="200" y="55" width="10" height="30" className="fill-red-500 stroke-red-600 animate-pulse" />
             <line x1="205" y1="50" x2="205" y2="90" className="stroke-red-600" strokeWidth="1" />
-            <text x="205" y="45" fontSize="11" className="fill-red-500 font-bold" textAnchor="middle">{lang === 'zh' ? '再次启动' : 'Launch'}</text>
+            <text x="205" y="45" fontSize="13" className="fill-red-500 font-bold" textAnchor="middle">{lang === 'zh' ? '再次启动' : 'Launch'}</text>
          </g>
       </TacticalCard>
 
@@ -213,14 +213,14 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             <AnimatedPath d="M10,115 C50,75 100,105 150,115 200,75 250,95 340,35" className="stroke-slate-900 dark:stroke-slate-100 hover-target" delay="0.4s" />
 
             <circle cx="75" cy="85" r="3" className="fill-amber-400 stroke-slate-900" />
-            <text x="75" y="75" fontSize="11" className="font-bold fill-slate-700 dark:fill-slate-300 text-center" textAnchor="middle">{lang === 'zh' ? '左眼' : 'L-Eye'}</text>
+            <text x="75" y="75" fontSize="13" className="font-bold fill-slate-700 dark:fill-slate-300 text-center" textAnchor="middle">{lang === 'zh' ? '左眼' : 'L-Eye'}</text>
             <circle cx="215" cy="85" r="3" className="fill-amber-400 stroke-slate-900" />
-            <text x="215" y="75" fontSize="11" className="font-bold fill-slate-700 dark:fill-slate-300 text-center" textAnchor="middle">{lang === 'zh' ? '右眼' : 'R-Eye'}</text>
+            <text x="215" y="75" fontSize="13" className="font-bold fill-slate-700 dark:fill-slate-300 text-center" textAnchor="middle">{lang === 'zh' ? '右眼' : 'R-Eye'}</text>
 
             {/* Added: Right Eye Breakout Candle */}
             <rect x="225" y="55" width="10" height="35" className="fill-red-500 stroke-red-600 animate-pulse" />
             <line x1="230" y1="50" x2="230" y2="95" className="stroke-red-600" strokeWidth="1" />
-            <text x="235" y="50" fontSize="11" className="fill-red-500 font-bold">{lang === 'zh' ? '突破' : 'Brk'}</text>
+            <text x="235" y="50" fontSize="13" className="fill-red-500 font-bold">{lang === 'zh' ? '突破' : 'Brk'}</text>
         </g>
       </TacticalCard>
 
@@ -241,7 +241,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             <AnimatedPath d="M10,40 C80,20 160,30 200,120 340,180" className="stroke-slate-900 dark:stroke-slate-100 hover-target" delay="0.4s" />
             
             <rect x="195" y="30" width="12" height="110" className="fill-green-600 stroke-green-700" strokeWidth="1" />
-            <text x="215" y="60" fontSize="11" className="fill-green-600 dark:fill-green-400 font-bold">{lang === 'zh' ? '断头铡刀' : 'Guillotine'}</text>
+            <text x="215" y="60" fontSize="13" className="fill-green-600 dark:fill-green-400 font-bold">{lang === 'zh' ? '断头铡刀' : 'Guillotine'}</text>
             <rect x="195" y="145" width="12" height="30" className="fill-green-400 dark:fill-green-500" />
         </g>
       </TacticalCard>
@@ -270,7 +270,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             
             {/* Annotation */}
             <circle cx="175" cy="110" r="15" className="stroke-pink-500 fill-none animate-ping opacity-50" strokeWidth="2" />
-            <text x="185" y="100" fontSize="11" className="fill-pink-500 font-bold">{lang === 'zh' ? '阳线贯穿' : 'Pierce'}</text>
+            <text x="185" y="100" fontSize="13" className="fill-pink-500 font-bold">{lang === 'zh' ? '阳线贯穿' : 'Pierce'}</text>
         </g>
       </TacticalCard>
 
@@ -295,8 +295,8 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             {/* MA5 White - Parallel above MA10 */}
             <AnimatedPath d="M10,110 C100,90 200,70 340,40" className="stroke-slate-900 dark:stroke-slate-100 hover-target" strokeWidth="2" delay="0.4s" />
             
-            {/* Candles representing the dip */}
-            <rect x="130" y="60" width="8" height="15" className="fill-red-500 stroke-red-600" /> 
+            {/* Candles representing the dip (Shrinking Volume implied by smaller candles in dip context) */}
+            <rect x="130" y="60" width="8" height="15" className="fill-green-500 stroke-green-600" /> 
             <rect x="145" y="70" width="8" height="20" className="fill-green-500 stroke-green-600" />
             <rect x="160" y="85" width="8" height="20" className="fill-green-500 stroke-green-600" />
 
@@ -304,7 +304,7 @@ export const TacticalVariations: React.FC<{ lang: Lang }> = ({ lang }) => {
             <rect x="180" y="65" width="12" height="40" className="fill-red-500 stroke-red-600" />
             <line x1="186" y1="60" x2="186" y2="110" className="stroke-red-600" strokeWidth="1" />
 
-            <text x="186" y="55" fontSize="11" className="fill-red-500 font-bold" textAnchor="middle">{lang === 'zh' ? '一阳穿双线' : 'Cross Double'}</text>
+            <text x="186" y="55" fontSize="13" className="fill-red-500 font-bold" textAnchor="middle">{lang === 'zh' ? '一阳穿双线' : 'Cross Double'}</text>
             
             {/* Highlight */}
             <circle cx="186" cy="85" r="15" className="stroke-teal-500 fill-none stroke-dasharray-2 animate-pulse" strokeWidth="1" />

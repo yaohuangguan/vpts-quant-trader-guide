@@ -1,18 +1,20 @@
 import React from 'react';
 import { Card } from './Card';
-import { Scale, TrendingUp, ShieldCheck, Brain, Target, Lock, Zap, Anchor, PieChart } from 'lucide-react';
+import { Scale, TrendingUp, ShieldCheck, Brain, Target, Lock, Zap, Anchor, PieChart, Layers } from 'lucide-react';
 import { Lang } from '../types';
 
 export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
   const t = {
     title: lang === 'zh' ? '资金管理与心理博弈' : 'Capital Management & Psychology',
     kelly: {
-      title: lang === 'zh' ? '凯利公式与金字塔建仓' : 'Kelly Criterion & Pyramid Sizing',
+      title: lang === 'zh' ? '凯利公式与2-3-2建仓' : 'Kelly & 2-3-2 Sizing',
       formula: 'f = (bp - q) / b',
-      desc: lang === 'zh' ? '鉴于本模型胜率~60%，盈亏比>3:1，建议仓位：' : 'Given ~60% Win Rate, >3:1 RR, suggested sizing:',
-      base: lang === 'zh' ? '底仓 30% (启动日)' : 'Base 30% (Launch Day)',
-      add: lang === 'zh' ? '加仓 30% (回踩确认)' : 'Add 30% (Confirm)',
-      risk: lang === 'zh' ? '单股风控 < 30%' : 'Max Risk < 30% / Stock'
+      desc: lang === 'zh' ? '鉴于本模型胜率~60%，盈亏比>3:1，采用2-3-2金字塔建仓法：' : 'Given ~60% Win Rate, >3:1 RR, use 2-3-2 Pyramid:',
+      step1: lang === 'zh' ? '底仓 20% (试错)' : 'Base 20% (Test)',
+      step2: lang === 'zh' ? '加仓 30% (确认)' : 'Add 30% (Confirm)',
+      step3: lang === 'zh' ? '补仓 20% (主升)' : 'Boost 20% (Trend)',
+      reserve: lang === 'zh' ? '备用 30% (风控)' : 'Reserve 30% (Risk)',
+      risk: lang === 'zh' ? '单股仓位上限 70%' : 'Max Pos < 70%'
     },
     psy: {
       title: lang === 'zh' ? '克服“恐高”与“贪婪”' : 'Overcoming Fear of Heights & Greed',
@@ -62,7 +64,7 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
       `}</style>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* 1. Kelly Pyramid */}
+        {/* 1. Kelly Pyramid 2-3-2 */}
         <Card highlightColor="blue" className="h-full">
             <div className="flex items-center gap-2 mb-6">
                 <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg text-blue-600 dark:text-blue-300">
@@ -72,19 +74,23 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
             </div>
             
             <div className="flex flex-col md:flex-row gap-6 items-center">
-                {/* Visual */}
+                {/* Visual Pyramid */}
                 <div className="w-full md:w-1/2 h-64 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 relative flex flex-col justify-end items-center p-4">
                      {/* Max Cap Line */}
                      <div className="absolute top-4 w-full border-t border-dashed border-red-400"></div>
                      <div className="absolute top-1 right-2 text-xs text-red-500 font-bold">{t.kelly.risk}</div>
 
-                     {/* Add Position */}
-                     <div className="w-3/4 bg-blue-400 dark:bg-blue-500 rounded-t-lg border-x border-t border-blue-500 dark:border-blue-400 anim-stack relative flex items-center justify-center text-white font-bold text-lg shadow-lg" style={{'--h': '80px'} as React.CSSProperties}>
-                        {t.kelly.add}
+                     {/* Step 3: Boost */}
+                     <div className="w-1/2 bg-blue-300 dark:bg-blue-400 rounded-t-lg border-x border-t border-blue-400 dark:border-blue-300 anim-stack relative flex items-center justify-center text-white font-bold text-sm shadow-lg" style={{'--h': '50px', animationDelay: '1s'} as React.CSSProperties}>
+                        {t.kelly.step3}
                      </div>
-                     {/* Base Position */}
-                     <div className="w-full bg-slate-700 dark:bg-slate-600 rounded-b-lg border border-slate-600 dark:border-slate-500 anim-stack relative flex items-center justify-center text-white font-bold text-lg shadow-lg z-10" style={{'--h': '80px'} as React.CSSProperties}>
-                        {t.kelly.base}
+                     {/* Step 2: Add */}
+                     <div className="w-3/4 bg-blue-500 dark:bg-blue-600 border-x border-t border-blue-600 dark:border-blue-500 anim-stack relative flex items-center justify-center text-white font-bold text-base shadow-lg z-10" style={{'--h': '70px', animationDelay: '0.5s'} as React.CSSProperties}>
+                        {t.kelly.step2}
+                     </div>
+                     {/* Step 1: Base */}
+                     <div className="w-full bg-blue-700 dark:bg-blue-800 rounded-b-lg border border-blue-800 dark:border-blue-700 anim-stack relative flex items-center justify-center text-white font-bold text-base shadow-lg z-20" style={{'--h': '50px'} as React.CSSProperties}>
+                        {t.kelly.step1}
                      </div>
                 </div>
 
@@ -94,15 +100,21 @@ export const CapitalPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
                         <div className="text-sm text-slate-500 dark:text-slate-400 font-mono mb-1">Kelly Formula</div>
                         <div className="text-xl font-bold text-slate-800 dark:text-slate-200 font-mono">{t.kelly.formula}</div>
                     </div>
-                    <p className="text-lg text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                         {t.kelly.desc}
                     </p>
-                    <ul className="space-y-2">
-                        <li className="flex items-center gap-2 text-base text-slate-600 dark:text-slate-400">
-                            <div className="w-2 h-2 bg-slate-700 rounded-full"></div> {t.kelly.base}
+                    <ul className="space-y-1.5 text-sm">
+                        <li className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                            <div className="w-2 h-2 bg-blue-700 rounded-full"></div> {t.kelly.step1}
                         </li>
-                        <li className="flex items-center gap-2 text-base text-slate-600 dark:text-slate-400">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div> {t.kelly.add}
+                        <li className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div> {t.kelly.step2}
+                        </li>
+                        <li className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                            <div className="w-2 h-2 bg-blue-300 rounded-full"></div> {t.kelly.step3}
+                        </li>
+                        <li className="flex items-center gap-2 text-slate-400 dark:text-slate-500 italic">
+                            <div className="w-2 h-2 bg-slate-300 rounded-full"></div> {t.kelly.reserve}
                         </li>
                     </ul>
                 </div>

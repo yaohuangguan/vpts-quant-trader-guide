@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Tag } from './Card';
-import { ArrowDown, TrendingUp, Layers, Activity, Brain, Users, RefreshCw, Zap, BarChart2, Search, Anchor, Sigma, GitMerge, Volume2, Clock, Wallet, Minimize2, ShieldCheck, Ruler, AlertTriangle } from 'lucide-react';
+import { Clock, Minimize2, Wallet, Sigma, TrendingUp, BarChart2, Layers, Brain, Lock, ArrowRight, Activity, ArrowDown, Cpu, Sliders, Zap, ShieldCheck, Users, RefreshCw, Scissors, Anchor, Calculator, MousePointerClick, ChevronRight, Megaphone, Coins } from 'lucide-react';
 import { Lang } from '../types';
 
+// --- 1. MA Architecture ---
 export const MAArchitecture: React.FC<{ lang: Lang }> = ({ lang }) => {
   const t = {
     title: lang === 'zh' ? '时间维度的资本映射' : 'Capital Mapping in Time Dimension',
@@ -19,57 +20,16 @@ export const MAArchitecture: React.FC<{ lang: Lang }> = ({ lang }) => {
     insight: lang === 'zh' 
         ? '深度洞察：五线粘合意味着过去一年内所有层级资金的持仓成本趋于一致（成本共振）。这种“零方差”状态消除了获利抛压与割肉盘，使市场处于极度微妙的平衡——熵值最低点。'
         : 'Insight: MA convergence means cost consensus across all capital tiers over the past year. This "Zero Variance" state eliminates profit-taking and panic selling, putting the market in minimum entropy.',
-    cost_title: lang === 'zh' ? '成本均质化理论' : 'Cost Homogenization',
-    chaos: lang === 'zh' ? '高熵 (分散)' : 'High Entropy',
-    order: lang === 'zh' ? '成本共振 (零方差)' : 'Cost Resonance',
-    resistance: lang === 'zh' ? '无阻力状态' : 'Zero Resistance',
-    wash: lang === 'zh' ? '获利盘清洗：低位买入者因不涨而离场。' : 'Profit Wash: Early buyers leave due to stagnation.',
-    cut: lang === 'zh' ? '套牢盘割肉：高位套牢者因绝望而换手。' : 'Cut Loss: Trapped holders exit in despair.',
-    status_title: lang === 'zh' ? '市场状态分类' : 'Market Status',
-    status: {
-        up: { 
-            t: lang === 'zh'?'上涨趋势':'Up Trend', 
-            d: lang === 'zh'?'抛压累积':'Selling Pressure',
-            f: lang === 'zh'?'股价 > 短期成本 > 长期成本':'Price > ST Cost > LT Cost' 
-        },
-        down: { 
-            t: lang === 'zh'?'下跌趋势':'Down Trend', 
-            d: lang === 'zh'?'层层压制':'Resistance',
-            f: lang === 'zh'?'股价 < 短期成本 < 长期成本':'Price < ST Cost < LT Cost'
-        },
-        burst: { 
-            t: lang === 'zh'?'粘合爆发':'Adhesion Burst', 
-            d: lang === 'zh'?'最佳买点':'Best Entry',
-            f: lang === 'zh'?'股价 ≈ 短期成本 ≈ 长期成本 (σ²≈0)':'Price ≈ ST Cost ≈ LT Cost (σ²≈0)'
-        },
-    }
   };
 
   return (
     <div className="space-y-6">
-        <style>{`
-            @keyframes float-particle {
-                0% { transform: translate(0, 0); }
-                25% { transform: translate(10px, -10px); }
-                50% { transform: translate(0, -20px); }
-                75% { transform: translate(-10px, -10px); }
-                100% { transform: translate(0, 0); }
-            }
-            @keyframes beam-flow {
-                0% { stroke-dashoffset: 100; }
-                100% { stroke-dashoffset: 0; }
-            }
-            .particle { animation: float-particle 4s ease-in-out infinite; }
-            .beam { animation: beam-flow 2s linear infinite; }
-        `}</style>
-
-        {/* 1.1 Time & Capital Mapping */}
         <Card highlightColor="slate" className="relative overflow-hidden">
             <div className="flex items-center gap-2 mb-4">
                 <div className="bg-slate-100 dark:bg-slate-800 p-1.5 rounded-lg text-slate-600 dark:text-slate-300">
                     <Clock size={18} />
                 </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.title}</h4>
+                <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-4">
@@ -84,7 +44,7 @@ export const MAArchitecture: React.FC<{ lang: Lang }> = ({ lang }) => {
                         ${item.color === 'amber' ? 'bg-amber-50/50 border-amber-200 dark:bg-amber-900/10 dark:border-amber-800' : ''}
                         ${item.color === 'red' ? 'bg-red-50/50 border-red-200 dark:bg-red-900/10 dark:border-red-800' : ''}
                     `}>
-                        <span className={`text-sm font-bold mb-1 px-1.5 py-0.5 rounded-full w-full
+                        <span className={`text-base font-bold mb-1 px-1.5 py-0.5 rounded-full w-full
                             ${item.color === 'slate' ? 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300' : ''}
                             ${item.color === 'yellow' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' : ''}
                             ${item.color === 'fuchsia' ? 'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900 dark:text-fuchsia-300' : ''}
@@ -95,1063 +55,1030 @@ export const MAArchitecture: React.FC<{ lang: Lang }> = ({ lang }) => {
                             ${item.color === 'red' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : ''}
                         `}>{item.ma}</span>
                         <div className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-0.5 whitespace-nowrap">{item.cycle}</div>
-                        <div className="font-bold text-base text-slate-800 dark:text-slate-200 mb-0.5 whitespace-nowrap">{item.name}</div>
-                        <div className="text-xs leading-tight text-slate-600 dark:text-slate-400 font-medium">{item.capital}</div>
+                        <div className="font-bold text-lg text-slate-800 dark:text-slate-200 mb-0.5 whitespace-nowrap">{item.name}</div>
+                        <div className="text-sm leading-tight text-slate-600 dark:text-slate-400 font-medium">{item.capital}</div>
                     </div>
                 ))}
             </div>
-            <p className="text-lg font-medium text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-4 rounded italic border-l-4 border-slate-300 dark:border-slate-600 leading-relaxed">
+            <p className="text-xl font-medium text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-4 rounded italic border-l-4 border-slate-300 dark:border-slate-600 leading-relaxed">
                 {t.insight}
             </p>
         </Card>
-
-        {/* 1.2 Cost Homogenization */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card highlightColor="indigo" className="relative">
-                <div className="flex items-center gap-2 mb-3">
-                     <div className="bg-indigo-100 dark:bg-indigo-900/30 p-1.5 rounded-lg text-indigo-600 dark:text-indigo-300">
-                        <Minimize2 size={18} />
-                    </div>
-                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.cost_title}</h4>
-                </div>
-                
-                <div className="h-40 bg-slate-900 rounded border border-slate-800 mb-4 relative overflow-hidden flex items-center justify-center p-4">
-                     <svg className="w-full h-full">
-                         {/* Left: Chaos (High Entropy) */}
-                         <g opacity="0.6">
-                             <circle cx="20" cy="30" r="2" fill="#ef4444" className="particle" style={{animationDelay: '0s'}} />
-                             <circle cx="30" cy="80" r="2" fill="#22c55e" className="particle" style={{animationDelay: '1s'}} />
-                             <circle cx="40" cy="50" r="2" fill="#3b82f6" className="particle" style={{animationDelay: '0.5s'}} />
-                             <circle cx="25" cy="110" r="2" fill="#eab308" className="particle" style={{animationDelay: '2s'}} />
-                             <circle cx="50" cy="20" r="2" fill="#a855f7" className="particle" style={{animationDelay: '1.5s'}} />
-                             <text x="30" y="130" fontSize="11" fill="#64748b" textAnchor="middle">{t.chaos}</text>
-                         </g>
-
-                         {/* Funnel Arrows */}
-                         <path d="M80,20 Q120,50 150,70" fill="none" stroke="#64748b" strokeWidth="1" opacity="0.5" />
-                         <path d="M80,120 Q120,90 150,70" fill="none" stroke="#64748b" strokeWidth="1" opacity="0.5" />
-
-                         {/* Right: Order (Low Entropy) */}
-                         <line x1="150" y1="70" x2="280" y2="70" stroke="#fff" strokeWidth="3" className="beam" strokeDasharray="5" />
-                         <circle cx="150" cy="70" r="4" fill="#fff" className="animate-ping" />
-                         <text x="220" y="50" fontSize="11" fill="#fff" fontWeight="bold" textAnchor="middle">{t.order}</text>
-                         <text x="220" y="90" fontSize="10" fill="#94a3b8" textAnchor="middle">{t.resistance}</text>
-                     </svg>
-                </div>
-                <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                    <li className="flex items-start gap-2"><span className="text-red-500 font-bold text-base">•</span><span>{t.wash}</span></li>
-                    <li className="flex items-start gap-2"><span className="text-green-500 font-bold text-base">•</span><span>{t.cut}</span></li>
-                </ul>
-            </Card>
-
-            <Card highlightColor="pink" className="relative">
-                 <div className="flex items-center gap-2 mb-3">
-                     <div className="bg-pink-100 dark:bg-pink-900/30 p-1.5 rounded-lg text-pink-600 dark:text-pink-300">
-                        <Wallet size={18} />
-                    </div>
-                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.status_title}</h4>
-                </div>
-                
-                <div className="space-y-3">
-                    <div className="p-3 bg-red-50 dark:bg-red-900/10 border-l-4 border-red-400 rounded">
-                        <div className="flex justify-between items-center mb-1">
-                            <span className="font-bold text-lg text-red-700 dark:text-red-300">{t.status.up.t}</span>
-                            <span className="text-base text-red-600 dark:text-red-400 font-medium">{t.status.up.d}</span>
-                        </div>
-                        <div className="text-base text-slate-700 dark:text-slate-300 font-bold">
-                            {t.status.up.f}
-                        </div>
-                    </div>
-                    
-                    <div className="p-3 bg-green-50 dark:bg-green-900/10 border-l-4 border-green-400 rounded">
-                         <div className="flex justify-between items-center mb-1">
-                            <span className="font-bold text-lg text-green-700 dark:text-green-300">{t.status.down.t}</span>
-                            <span className="text-base text-green-600 dark:text-green-400 font-medium">{t.status.down.d}</span>
-                        </div>
-                        <div className="text-base text-slate-700 dark:text-slate-300 font-bold">
-                            {t.status.down.f}
-                        </div>
-                    </div>
-
-                    <div className="p-3 bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-400 rounded shadow-sm ring-1 ring-indigo-100 dark:ring-indigo-800">
-                         <div className="flex justify-between items-center mb-1">
-                            <span className="font-bold text-lg text-indigo-700 dark:text-indigo-300">{t.status.burst.t}</span>
-                            <span className="text-base font-bold text-indigo-600 dark:text-indigo-400">{t.status.burst.d}</span>
-                        </div>
-                        <div className="text-base text-slate-800 dark:text-slate-200 font-black">
-                            {t.status.burst.f}
-                        </div>
-                    </div>
-                </div>
-            </Card>
-        </div>
     </div>
   );
 };
 
+// --- 3. Adhesion Morphology ---
 export const AdhesionMorphology: React.FC<{ lang: Lang }> = ({ lang }) => {
-  const t = {
-    math: {
-        title: lang === 'zh' ? '粘合的数学定义' : 'Math Definition of Adhesion',
-        loose: lang === 'zh' ? '松散粘合 (关注)' : 'Loose (Watch)',
-        tight: lang === 'zh' ? '紧密粘合 (爆发)' : 'Tight (Burst)',
-        extreme: lang === 'zh' ? '极致粘合 (大牛)' : 'Extreme (Super Bull)',
-    },
-    braid: {
-        title: lang === 'zh' ? '均线互换与编织' : 'MA Exchange & Braid',
-        fake: lang === 'zh' ? '主力试盘 (假突破)' : 'Fake Breakout (Test)',
-        desc_braid: lang === 'zh' ? '短期均线反复穿越长期均线，多空激烈争夺。' : 'Short MAs cross long MAs repeatedly, intense struggle.',
-        desc_fake: lang === 'zh' ? '试探上方抛压，随后回落洗盘，非形态失败。' : 'Testing overhead pressure, then washout. Not failure.',
-    },
-    volume: {
-        title: lang === 'zh' ? '地量法则' : 'Land Volume Rule',
-        shrink: lang === 'zh' ? '成交量萎缩 (地量)' : 'Vol Shrink',
-        desc_no_vol: lang === 'zh' ? '无量不成结：成交量极度萎缩，市场情绪冰点。' : 'No Vol No Knot: Extreme shrinkage, freezing sentiment.',
-        desc_psy: lang === 'zh' ? '心理暗示：抛压枯竭，静默期。若放量滞涨则是出货信号。' : 'Psychology: Selling exhaustion. High volume with no gain = distribution.',
-    },
-    trend: {
-        title: lang === 'zh' ? '趋势几何学：多头排列' : 'Trend Geometry: Bullish Alignment',
-        s1: lang === 'zh' ? '惯性保障 (Support Net)' : 'Inertia Guarantee',
-        s2: lang === 'zh' ? '发散度监控 (Divergence)' : 'Divergence Monitor',
-        desc_s1: lang === 'zh' ? '每条均线构成支撑网。价格回踩即有买盘承接，形成自我强化(Self-Reinforcement)。' : 'MAs form support net. Dips find buyers, creating self-reinforcement.',
-        desc_s2: lang === 'zh' ? '乖离率(BIAS)过大意味着风险。最佳区间是多头初期(BIAS<10%)。' : 'High BIAS means risk. Best zone is early alignment (BIAS<10%).',
-        safe: lang === 'zh' ? '安全区' : 'Safe',
-        risk: lang === 'zh' ? '高风险' : 'Risk'
-    }
-  };
+    // Advanced Calculator State
+    const [inputs, setInputs] = useState({
+        price: '10.50',
+        ma1: '10.45',
+        ma2: '10.55',
+        ma3: '10.48',
+        ma4: '10.52',
+        ma5: '10.50'
+    });
+    const [result, setResult] = useState({
+        max: 0,
+        min: 0,
+        spread: 0,
+        adhesion: 0
+    });
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <style>{`
-            @keyframes converge {
-            0% { d: path("M10,20 C100,20 200,20 290,20"); }
-            50% { d: path("M10,20 C100,50 200,60 290,65"); }
-            100% { d: path("M10,20 C100,50 200,60 290,65"); }
-            }
-            @keyframes weave-1 {
-                0% { transform: translateY(0px); }
-                25% { transform: translateY(5px); }
-                50% { transform: translateY(0px); }
-                75% { transform: translateY(-5px); }
-                100% { transform: translateY(0px); }
-            }
-            @keyframes weave-2 {
-                0% { transform: translateY(0px); }
-                25% { transform: translateY(-3px); }
-                50% { transform: translateY(4px); }
-                75% { transform: translateY(2px); }
-                100% { transform: translateY(0px); }
-            }
-        `}</style>
+    useEffect(() => {
+        const values = [
+            parseFloat(inputs.ma1),
+            parseFloat(inputs.ma2),
+            parseFloat(inputs.ma3),
+            parseFloat(inputs.ma4),
+            parseFloat(inputs.ma5)
+        ].filter(v => !isNaN(v) && v > 0);
 
-        {/* 2.1 Math Definition */}
-        <Card highlightColor="blue" className="relative group">
-            <div className="flex items-center gap-2 mb-3">
-                <div className="bg-blue-100 dark:bg-blue-900/30 p-1.5 rounded-lg text-blue-600 dark:text-blue-300">
-                    <Sigma size={18} />
-                </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.math.title}</h4>
-            </div>
+        if (values.length > 0) {
+            const max = Math.max(...values);
+            const min = Math.min(...values);
+            const spread = max - min;
+            // Adhesion formula: (Max - Min) / Min * 100
+            const adhesion = (spread / min) * 100;
             
-            <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-3 relative p-4 flex flex-col justify-center">
-                {/* Visualizing Convergence */}
-                <div className="relative w-full h-full">
-                    <div className="absolute right-0 top-0 text-xs font-mono text-slate-500 font-medium">Adhesion %</div>
-                    
-                    {/* Top Line */}
-                    <svg className="absolute w-full h-full overflow-visible">
-                        {/* Initial Wide State (Ghost) */}
-                        <path d="M0,20 C100,20 200,20 280,20" fill="none" className="stroke-slate-200 dark:stroke-slate-800" strokeDasharray="4" />
-                        <path d="M0,120 C100,120 200,120 280,120" fill="none" className="stroke-slate-200 dark:stroke-slate-800" strokeDasharray="4" />
-                        
-                        {/* Converging Lines */}
-                        <path d="M0,20 C80,30 180,60 280,68" fill="none" className="stroke-blue-500" strokeWidth="2" />
-                        <path d="M0,45 C80,50 180,65 280,70" fill="none" className="stroke-blue-400" strokeWidth="1.5" />
-                        <path d="M0,70 C80,70 180,70 280,72" fill="none" className="stroke-blue-300" strokeWidth="1.5" />
-                        <path d="M0,95 C80,90 180,75 280,74" fill="none" className="stroke-blue-400" strokeWidth="1.5" />
-                        <path d="M0,120 C80,110 180,80 280,76" fill="none" className="stroke-blue-500" strokeWidth="2" />
-                        
-                        {/* Measurement Bracket */}
-                        <line x1="290" y1="68" x2="290" y2="76" className="stroke-red-500" strokeWidth="2" />
-                        <line x1="285" y1="68" x2="295" y2="68" className="stroke-red-500" />
-                        <line x1="285" y1="76" x2="295" y2="76" className="stroke-red-500" />
-                        
-                        <text x="300" y="75" fontSize="12" className="fill-red-500 font-bold">&lt; 2%</text>
-                    </svg>
-                </div>
-            </div>
-            <div className="space-y-1.5 text-lg text-slate-700 dark:text-slate-300 font-medium">
-                <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2 rounded">
-                    <span>&lt; 10%</span> <span className="font-bold text-slate-600 dark:text-slate-400">{t.math.loose}</span>
-                </div>
-                <div className="flex justify-between items-center bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
-                    <span>&lt; 5%</span> <span className="font-bold text-blue-600 dark:text-blue-400">{t.math.tight}</span>
-                </div>
-                <div className="flex justify-between items-center bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-100 dark:border-red-900/50">
-                    <span className="font-bold text-red-500">&lt; 2%</span> <span className="font-bold text-red-600 dark:text-red-400">{t.math.extreme}</span>
-                </div>
-            </div>
-        </Card>
-
-        {/* 2.2 The Braid */}
-        <Card highlightColor="purple" className="relative group">
-            <div className="flex items-center gap-2 mb-3">
-                <div className="bg-purple-100 dark:bg-purple-900/30 p-1.5 rounded-lg text-purple-600 dark:text-purple-300">
-                    <GitMerge size={18} />
-                </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.braid.title}</h4>
-            </div>
-
-            <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-3 relative p-4 overflow-hidden">
-                <svg className="w-full h-full overflow-visible">
-                    <g className="opacity-80">
-                        {/* Weaving Lines Animation */}
-                        <path d="M0,60 Q20,50 40,70 T80,60 T120,70 T160,50 T200,60 T240,70" fill="none" className="stroke-purple-400" strokeWidth="2" style={{animation: 'weave-1 4s ease-in-out infinite'}} />
-                        <path d="M0,70 Q20,80 40,60 T80,70 T120,60 T160,80 T200,70 T240,60" fill="none" className="stroke-yellow-500" strokeWidth="2" style={{animation: 'weave-2 5s ease-in-out infinite'}} />
-                        <path d="M0,65 L240,65" fill="none" className="stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" strokeDasharray="3" />
-                    </g>
-                    
-                    {/* Test Breakout Spike */}
-                    <path d="M120,60 L130,30 L140,60" fill="none" className="stroke-red-500" strokeWidth="1.5" />
-                    <circle cx="130" cy="30" r="2" className="fill-red-500 animate-ping" />
-                    <text x="110" y="25" fontSize="12" className="fill-red-500 font-bold">{t.braid.fake}</text>
-
-                    <text x="200" y="90" fontSize="13" className="fill-slate-400 italic">"The Braid"</text>
-                </svg>
-            </div>
-            <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                <li><b>● {lang === 'zh' ? '编织状' : 'Braid'}：</b> {t.braid.desc_braid}</li>
-                <li><b>● {lang === 'zh' ? '假突破' : 'Fake'}：</b> {t.braid.desc_fake}</li>
-            </ul>
-        </Card>
-
-        {/* 2.3 Land Volume */}
-        <Card highlightColor="green" className="relative group">
-            <div className="flex items-center gap-2 mb-3">
-                <div className="bg-green-100 dark:bg-green-900/30 p-1.5 rounded-lg text-green-600 dark:text-green-300">
-                    <Volume2 size={18} />
-                </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.volume.title}</h4>
-            </div>
-
-            <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-3 relative p-4 flex flex-col justify-end">
-                {/* Price movement (sideways) */}
-                <div className="absolute top-0 left-0 w-full h-1/2 p-2 border-b border-dashed border-slate-200 dark:border-slate-700">
-                    <div className="text-xs text-slate-500">Price (Sideways)</div>
-                    <svg width="100%" height="100%">
-                        <path d="M0,20 Q30,15 60,25 T120,20 T180,25 T240,20" fill="none" className="stroke-slate-600 dark:stroke-slate-400" strokeWidth="1.5" />
-                    </svg>
-                </div>
-
-                {/* Volume Bars (Shrinking) */}
-                <div className="flex items-end gap-1 h-1/2 w-full pt-2">
-                    {[10, 8, 7, 5, 4, 3, 2, 2, 1, 1, 1, 2, 1].map((h, i) => (
-                        <div 
-                            key={i} 
-                            className={`flex-1 ${h < 3 ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`} 
-                            style={{height: `${h * 10}%`}}
-                        ></div>
-                    ))}
-                </div>
-                
-                {/* Indicators */}
-                <div className="absolute bottom-10 right-2 text-xs font-bold text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded">
-                    {lang === 'zh' ? '换手率 < 1%' : 'Turnover < 1%'}
-                </div>
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm font-bold text-slate-500">{t.volume.shrink}</div>
-            </div>
-            <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                <li><b>● {lang === 'zh' ? '无量不成结' : 'No Vol'}：</b> {t.volume.desc_no_vol}</li>
-                <li><b>● {lang === 'zh' ? '心理暗示' : 'Psy'}：</b> {t.volume.desc_psy}</li>
-            </ul>
-        </Card>
-      </div>
-    
-      {/* 4. Trend Geometry (NEW) */}
-      <div className="border-t border-slate-200 dark:border-slate-800 pt-6">
-          <div className="flex items-center gap-2 mb-6">
-                <div className="bg-teal-100 dark:bg-teal-900/30 p-1.5 rounded-lg text-teal-600 dark:text-teal-300">
-                    <TrendingUp size={18} />
-                </div>
-                <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.trend.title}</h4>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* 4.1 Stability - Support Net */}
-              <Card highlightColor="teal" className="relative">
-                 <style>{`
-                    @keyframes bounce-support {
-                        0% { cy: 100; }
-                        50% { cy: 60; }
-                        100% { cy: 20; }
-                    }
-                    @keyframes path-flow {
-                        0% { stroke-dashoffset: 200; }
-                        100% { stroke-dashoffset: 0; }
-                    }
-                    .anim-bounce { animation: bounce-support 3s ease-in-out infinite; }
-                    .anim-path-flow { stroke-dasharray: 200; animation: path-flow 5s linear infinite; }
-                 `}</style>
-                 <div className="flex justify-between items-center mb-4">
-                     <h5 className="font-bold text-lg text-teal-800 dark:text-teal-200 flex items-center gap-2">
-                         <ShieldCheck size={18} /> {t.trend.s1}
-                     </h5>
-                 </div>
-                 
-                 <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative p-4 overflow-hidden">
-                     <svg className="w-full h-full" viewBox="0 0 300 120">
-                         {/* Parallel MAs */}
-                         <path d="M0,120 C100,100 200,80 300,60" fill="none" className="stroke-teal-600 dark:stroke-teal-400 anim-path-flow" strokeWidth="2" />
-                         <path d="M0,130 C100,110 200,90 300,70" fill="none" className="stroke-teal-500/70" strokeWidth="2" />
-                         <path d="M0,140 C100,120 200,100 300,80" fill="none" className="stroke-teal-500/40" strokeWidth="2" />
-                         
-                         {/* Price Action - Bouncing */}
-                         <circle cx="150" cy="80" r="4" className="fill-amber-500 anim-bounce" />
-                         
-                         {/* Arrows for Support */}
-                         <path d="M150,90 L150,80 L145,85 M150,80 L155,85" fill="none" className="stroke-teal-500" strokeWidth="2" />
-                         <text x="160" y="85" fontSize="10" className="fill-teal-500 font-bold">Support</text>
-                     </svg>
-                 </div>
-                 <p className="text-base text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
-                     {t.trend.desc_s1}
-                 </p>
-              </Card>
-
-              {/* 4.2 Divergence - BIAS Risk */}
-              <Card highlightColor="amber" className="relative">
-                 <style>{`
-                    @keyframes rubber-band {
-                        0% { d: path("M150,100 L150,90"); stroke: #22c55e; }
-                        50% { d: path("M150,100 L150,40"); stroke: #eab308; }
-                        100% { d: path("M150,100 L150,10"); stroke: #ef4444; }
-                    }
-                    @keyframes bias-text {
-                        0% { opacity: 0; }
-                        50% { opacity: 0.5; }
-                        100% { opacity: 1; }
-                    }
-                    .anim-rubber { animation: rubber-band 4s ease-in-out infinite alternate; }
-                 `}</style>
-                 <div className="flex justify-between items-center mb-4">
-                     <h5 className="font-bold text-lg text-amber-800 dark:text-amber-200 flex items-center gap-2">
-                         <Ruler size={18} /> {t.trend.s2}
-                     </h5>
-                 </div>
-
-                 <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative p-4 overflow-hidden">
-                      <svg className="w-full h-full" viewBox="0 0 300 120">
-                         {/* MA60 Baseline */}
-                         <path d="M0,110 C100,105 200,100 300,95" fill="none" className="stroke-blue-500" strokeWidth="2" strokeDasharray="4" />
-                         <text x="10" y="105" fontSize="10" className="fill-blue-500">MA60 (Cost)</text>
-
-                         {/* Price Line (Moving away) */}
-                         <path d="M0,100 C80,90 150,40 300,10" fill="none" className="stroke-slate-800 dark:stroke-slate-200" strokeWidth="2" />
-                         
-                         {/* The Rubber Band (BIAS) */}
-                         <path className="anim-rubber" strokeWidth="2" strokeDasharray="2" />
-                         
-                         {/* Zones */}
-                         <rect x="250" y="70" width="40" height="20" className="fill-green-100 dark:fill-green-900/30" rx="2" />
-                         <text x="270" y="84" fontSize="10" className="fill-green-600 font-bold" textAnchor="middle">&lt;10%</text>
-
-                         <rect x="250" y="10" width="40" height="20" className="fill-red-100 dark:fill-red-900/30" rx="2" />
-                         <text x="270" y="24" fontSize="10" className="fill-red-600 font-bold" textAnchor="middle">&gt;20%</text>
-
-                         <path d="M220,10 L240,10 L230,25 Z" fill="red" className="animate-bounce" />
-                         <text x="230" y="40" fontSize="10" className="fill-red-500 font-bold" textAnchor="middle">!</text>
-                      </svg>
-                 </div>
-                 <p className="text-base text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
-                     {t.trend.desc_s2}
-                 </p>
-              </Card>
-          </div>
-      </div>
-    </div>
-  );
-};
-
-export const ChipStructure: React.FC<{ lang: Lang }> = ({ lang }) => {
-  const t = {
-    a: lang === 'zh' ? '底部双峰吸筹' : 'Phase A: Dual Peak Accumulation',
-    b: lang === 'zh' ? '锁仓拉升 (单峰上移)' : 'Phase B: Locked Ascent (Peak Shift)',
-    c: lang === 'zh' ? '高位出货 (筹码大转移)' : 'Phase C: Distribution (Chip Transfer)',
-    desc_a: lang === 'zh' ? '股价低位震荡，形成“双峰”结构。上方为割肉盘，下方为主力建仓的获利盘（红）。' : 'Low oscillation forms "dual peaks". Top: Panic selling. Bottom: Accumulation (Red).',
-    desc_b: lang === 'zh' ? '拉升途中，底部获利盘（红）纹丝不动（主力锁仓）。筹码峰开始上移，中间出现真空区。' : 'Ascent: Bottom profit chips (Red) stay still (Locked). Peak moves up, vacuum in middle.',
-    desc_c: lang === 'zh' ? '动画演示：底部红色获利盘逐渐消失（主力派发），顶部青色套牢盘急剧放大。筹码完成高位集中。' : 'Animation: Bottom red chips vanish (Distribution), top blue chips expand. High-level concentration.',
-  };
-
-  return (
-    <Card className="bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-950 border-slate-200 dark:border-slate-800 transition-colors duration-300">
-       <style>{`
-        @keyframes chip-fade-out {
-          0%, 10% { width: var(--w); opacity: 0.8; }
-          90%, 100% { width: 5%; opacity: 0.1; }
+            setResult({
+                max,
+                min,
+                spread,
+                adhesion
+            });
         }
-        @keyframes chip-fade-in {
-          0%, 10% { width: 5%; opacity: 0.1; }
-          90%, 100% { width: var(--w); opacity: 0.9; }
-        }
-        @keyframes draw-path-smooth {
-          0% { stroke-dashoffset: 200; opacity: 0; }
-          10% { opacity: 1; }
-          70% { stroke-dashoffset: 0; }
-          100% { stroke-dashoffset: 0; }
-        }
-        .chip-transfer-out {
-           animation: chip-fade-out 5s ease-in-out infinite alternate;
-        }
-        .chip-transfer-in {
-           animation: chip-fade-in 5s ease-in-out infinite alternate;
-        }
-        .price-line-anim {
-           stroke-dasharray: 200;
-           stroke-dashoffset: 200;
-           animation: draw-path-smooth 4s ease-out infinite;
-        }
-      `}</style>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-800">
-        
-        {/* Phase A */}
-        <div className="px-2 py-2">
-          <h4 className="font-bold text-lg text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
-            <span className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-6 h-6 rounded-full flex items-center justify-center text-xs">A</span> 
-            {t.a}
-          </h4>
-          <div className="h-48 relative bg-slate-900 rounded border border-slate-800 mb-4 p-2 overflow-hidden flex">
-             {/* Left: Price Schematic */}
-             <div className="w-1/3 h-full relative border-r border-slate-800">
-                <path d="M0,80 Q15,90 30,80 T60,70 T90,75" fill="none" className="stroke-slate-500" strokeWidth="1" />
-                <div className="absolute bottom-2 left-2 text-xs font-bold text-slate-500">Price Low</div>
-             </div>
-             {/* Right: Chip Profile */}
-             <div className="w-2/3 h-full flex flex-col justify-end gap-[1px] pl-1 relative">
-                {/* Upper Peak (Trapped/Old) */}
-                {[...Array(10)].map((_, i) => (
-                    <div key={`top-${i}`} className="h-[2px] bg-cyan-600 opacity-60" style={{width: `${30 + Math.random() * 40}%`}}></div>
-                ))}
-                <div className="h-4"></div> {/* Valley */}
-                {/* Lower Peak (Accumulation/Profit) */}
-                {[...Array(15)].map((_, i) => (
-                    <div key={`bot-${i}`} className="h-[2px] bg-red-600 opacity-90" style={{width: `${50 + Math.random() * 40}%`}}></div>
-                ))}
-                <div className="absolute top-1/2 right-2 text-xs text-cyan-400 font-mono">Dual Peak</div>
-             </div>
-          </div>
-          <p className="text-lg font-medium text-slate-600 dark:text-slate-300 leading-relaxed">{t.desc_a}</p>
-        </div>
+    }, [inputs]);
 
-        {/* Phase B */}
-        <div className="px-2 py-2">
-          <h4 className="font-bold text-lg text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
-            <span className="bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 w-6 h-6 rounded-full flex items-center justify-center text-xs">B</span> 
-            {t.b}
-          </h4>
-          <div className="h-48 relative bg-slate-900 rounded border border-slate-800 mb-4 p-2 overflow-hidden flex">
-             {/* Left: Price Schematic */}
-             <div className="w-1/3 h-full relative border-r border-slate-800">
-                <path d="M0,75 L10,75 L30,40 L35,45 L50,10" fill="none" className="stroke-red-500 price-line-anim" strokeWidth="2" />
-             </div>
-             {/* Right: Chip Profile */}
-             <div className="w-2/3 h-full flex flex-col justify-between gap-[1px] pl-1 relative py-2">
-                {/* New Formation (Moving Up) */}
-                <div className="flex flex-col gap-[1px]">
-                     {[...Array(8)].map((_, i) => (
-                        <div key={`mid-${i}`} className="h-[2px] bg-red-500 opacity-70" style={{width: `${20 + Math.random() * 30}%`}}></div>
-                    ))}
-                </div>
-
-                {/* Vacuum Zone */}
-                <div className="text-xs text-slate-600 text-center italic my-2">Vacuum</div>
-
-                {/* Bottom Locked Chips (Still there!) */}
-                <div className="flex flex-col gap-[1px]">
-                    {[...Array(12)].map((_, i) => (
-                        <div key={`bot-locked-${i}`} className="h-[2px] bg-red-600 shadow-[0_0_5px_rgba(239,68,68,0.8)]" style={{width: `${60 + Math.random() * 30}%`}}></div>
-                    ))}
-                </div>
-                <div className="absolute bottom-2 right-2 text-xs text-red-500 font-bold">LOCKED</div>
-             </div>
-          </div>
-          <p className="text-lg font-medium text-slate-600 dark:text-slate-300 leading-relaxed">{t.desc_b}</p>
-        </div>
-
-        {/* Phase C */}
-        <div className="px-2 py-2">
-          <h4 className="font-bold text-lg text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
-            <span className="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">C</span> 
-            {t.c}
-          </h4>
-          <div className="h-48 relative bg-slate-900 rounded border border-slate-800 mb-4 p-2 overflow-hidden flex">
-             {/* Left: Price Schematic */}
-             <div className="w-1/3 h-full relative border-r border-slate-800">
-                 <path d="M0,20 L15,10 L30,25 L45,15 L60,30" fill="none" className="stroke-green-500" strokeWidth="1.5" />
-                 <div className="absolute top-2 left-2 text-xs text-green-500">Distribution</div>
-             </div>
-             {/* Right: Chip Profile */}
-             <div className="w-2/3 h-full flex flex-col justify-between gap-[1px] pl-1 relative py-1">
-                {/* Top: Massive Concentration (Retail taking over) */}
-                <div className="flex flex-col gap-[1px]">
-                     {[...Array(20)].map((_, i) => {
-                         const width = `${60 + Math.random() * 30}%`;
-                         return (
-                            <div 
-                                key={`top-retail-${i}`} 
-                                className="h-[2px] bg-cyan-500 chip-transfer-in" 
-                                style={{
-                                    '--w': width, 
-                                    animationDelay: `${i * 0.05}s` 
-                                } as React.CSSProperties}
-                            ></div>
-                         );
-                     })}
-                </div>
-                
-                {/* Arrows indicating flow */}
-                <div className="flex justify-center items-center h-full opacity-30">
-                     <TrendingUp className="text-slate-500 rotate-180" />
-                </div>
-
-                {/* Bottom: Vanishing Profit Chips */}
-                <div className="flex flex-col gap-[1px]">
-                    {[...Array(10)].map((_, i) => {
-                        const width = `${70 + Math.random() * 20}%`;
-                        return (
-                            <div 
-                                key={`bot-vanish-${i}`} 
-                                className="h-[2px] bg-red-800 chip-transfer-out" 
-                                style={{
-                                    '--w': width, 
-                                    animationDelay: `${i * 0.1}s` 
-                                } as React.CSSProperties}
-                            ></div>
-                        );
-                    })}
-                </div>
-                <div className="absolute bottom-1 right-1 text-xs text-slate-500">Exiting...</div>
-             </div>
-          </div>
-          <p className="text-lg font-medium text-slate-600 dark:text-slate-300 leading-relaxed"><b>{lang === 'zh' ? '动画演示' : 'Animation'}：</b> {t.desc_c}</p>
-        </div>
-
-      </div>
-    </Card>
-  );
-};
-
-export const VolumeDynamics: React.FC<{ lang: Lang }> = ({ lang }) => {
-  const t = {
-    v1: {
-        title: lang === 'zh' ? '量能倍增法则' : 'Volume Doubling',
-        std: lang === 'zh' ? '标准' : 'Std',
-        warn: lang === 'zh' ? '警惕' : 'Warn',
-        d_std: lang === 'zh' ? '突破日成交量至少达到粘合期均量的2倍以上。' : 'Breakout volume must be >2x average volume.',
-        d_warn: lang === 'zh' ? '无量上涨极大概率为假突破，主力诱多。' : 'Volume-less rise is often a bull trap.',
-    },
-    v2: {
-        title: lang === 'zh' ? '量堆与吸筹' : 'Volume Pile (Accumulation)',
-        form: lang === 'zh' ? '形态' : 'Form',
-        read: lang === 'zh' ? '解读' : 'Read',
-        d_form: lang === 'zh' ? '股价波动不大，但间歇性出现连续红柱放量。' : 'Low price volatility, but intermittent red volume piles.',
-        d_read: lang === 'zh' ? '主力挂大单承接抛压，“涨量跌缩”是实力的证明。' : 'Big orders absorbing selling pressure. "Rise on vol, fall on shrink".',
-        hidden: lang === 'zh' ? '隐蔽建仓' : 'Stealth Buy'
-    },
-    v3: {
-        title: lang === 'zh' ? '凹洞量 (洗盘)' : 'Crater Volume (Wash)',
-        mech: lang === 'zh' ? '机制' : 'Mech',
-        sig: lang === 'zh' ? '信号' : 'Signal',
-        d_mech: lang === 'zh' ? '主力停止护盘进行“休克疗法”，市场交易陷入停滞。' : 'Market maker stops support ("Shock Therapy"), trading halts.',
-        d_sig: lang === 'zh' ? '成交量萎缩至极致（凹洞）后突发爆量，是精确买点。' : 'Extreme shrinkage (Crater) followed by burst is a precise entry.',
-        extreme: lang === 'zh' ? '极度缩量' : 'Extreme Low'
-    }
-  };
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <style>{`
-            @keyframes bar-grow-up {
-                0% { height: 0; }
-                100% { height: var(--h); }
-            }
-            .vol-bar {
-                animation: bar-grow-up 2s ease-out forwards;
-            }
-        `}</style>
-
-        {/* 4.1 Breakout Volume */}
-        <Card highlightColor="red" className="relative">
-            <div className="flex items-center gap-2 mb-3">
-                <div className="bg-red-100 dark:bg-red-900/30 p-1.5 rounded-lg text-red-600 dark:text-red-300">
-                    <BarChart2 size={18} />
-                </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.v1.title}</h4>
-            </div>
-            <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative p-4 flex flex-col justify-end">
-                {/* Price Line Overlay */}
-                <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 p-4">
-                    <path d="M10,80 L50,80 L90,75 L130,80 L170,40" fill="none" className="stroke-slate-900 dark:stroke-slate-100" strokeWidth="2" />
-                    <circle cx="170" cy="40" r="3" className="fill-red-500" />
-                    <text x="175" y="35" fontSize="12" className="fill-red-500 font-bold">Breakout</text>
-                </svg>
-
-                {/* Volume Bars */}
-                <div className="flex items-end justify-between gap-1 h-20 w-full">
-                    <div className="w-full bg-slate-300 dark:bg-slate-700 h-10 vol-bar" style={{'--h': '30%'} as React.CSSProperties}></div>
-                    <div className="w-full bg-slate-300 dark:bg-slate-700 h-12 vol-bar" style={{'--h': '35%'} as React.CSSProperties}></div>
-                    <div className="w-full bg-slate-300 dark:bg-slate-700 h-8 vol-bar" style={{'--h': '25%'} as React.CSSProperties}></div>
-                    <div className="w-full bg-slate-300 dark:bg-slate-700 h-10 vol-bar" style={{'--h': '30%'} as React.CSSProperties}></div>
-                    
-                    {/* The Breakout Bar (Double) */}
-                    <div className="w-full bg-red-500 h-24 vol-bar relative group" style={{'--h': '90%'} as React.CSSProperties}>
-                         <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[9px] font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900 px-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                             2x Avg
-                         </div>
-                    </div>
-                </div>
-                {/* Avg Line */}
-                <div className="absolute bottom-[30%] left-4 right-4 border-t border-dashed border-slate-500 opacity-50"></div>
-                <div className="absolute bottom-[32%] left-2 text-[11px] text-slate-500 font-bold">Avg Vol</div>
-            </div>
-            <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                <li><b>● {t.v1.std}：</b> {t.v1.d_std}</li>
-                <li><b>● {t.v1.warn}：</b> {t.v1.d_warn}</li>
-            </ul>
-        </Card>
-
-        {/* 4.2 Volume Pile */}
-        <Card highlightColor="amber" className="relative">
-            <div className="flex items-center gap-2 mb-3">
-                <div className="bg-amber-100 dark:bg-amber-900/30 p-1.5 rounded-lg text-amber-600 dark:text-amber-300">
-                    <Search size={18} />
-                </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.v2.title}</h4>
-            </div>
-             <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative p-4 flex flex-col justify-end">
-                {/* Price Line Overlay (Flat) */}
-                <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 p-4">
-                    <path d="M10,60 Q50,65 90,60 T170,60 T250,60" fill="none" className="stroke-slate-400" strokeWidth="1.5" strokeDasharray="4" />
-                    <text x="10" y="55" fontSize="12" className="fill-slate-400 italic">Price Flat</text>
-                </svg>
-
-                {/* Volume Bars */}
-                <div className="flex items-end gap-1 h-20 w-full">
-                    {/* Quiet */}
-                    <div className="flex-1 bg-slate-200 dark:bg-slate-800 h-4"></div>
-                    <div className="flex-1 bg-slate-200 dark:bg-slate-800 h-5"></div>
-                    
-                    {/* Pile 1 */}
-                    <div className="flex-1 bg-red-400 dark:bg-red-600 h-12 opacity-80"></div>
-                    <div className="flex-1 bg-red-500 dark:bg-red-500 h-16"></div>
-                    <div className="flex-1 bg-red-400 dark:bg-red-600 h-10 opacity-80"></div>
-
-                    {/* Quiet */}
-                    <div className="flex-1 bg-slate-200 dark:bg-slate-800 h-4"></div>
-                    <div className="flex-1 bg-slate-200 dark:bg-slate-800 h-3"></div>
-
-                    {/* Pile 2 */}
-                    <div className="flex-1 bg-red-400 dark:bg-red-600 h-14 opacity-80"></div>
-                    <div className="flex-1 bg-red-500 dark:bg-red-500 h-18"></div>
-                    <div className="flex-1 bg-red-400 dark:bg-red-600 h-12 opacity-80"></div>
-
-                     {/* Quiet */}
-                     <div className="flex-1 bg-slate-200 dark:bg-slate-800 h-4"></div>
-                </div>
-                <div className="absolute top-2 right-2 text-xs text-amber-600 font-bold bg-amber-100 dark:bg-amber-900/30 px-1 rounded">{t.v2.hidden}</div>
-            </div>
-            <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                <li><b>● {t.v2.form}：</b> {t.v2.d_form}</li>
-                <li><b>● {t.v2.read}：</b> {t.v2.d_read}</li>
-            </ul>
-        </Card>
-
-        {/* 4.3 Crater Volume */}
-        <Card highlightColor="indigo" className="relative">
-            <div className="flex items-center gap-2 mb-3">
-                <div className="bg-indigo-100 dark:bg-indigo-900/30 p-1.5 rounded-lg text-indigo-600 dark:text-indigo-300">
-                    <Anchor size={18} />
-                </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.v3.title}</h4>
-            </div>
-             <div className="h-40 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative p-4 flex flex-col justify-end">
-                {/* U-Shape Curve Overlay */}
-                <svg className="absolute bottom-4 left-4 right-4 w-[calc(100%-32px)] h-20 pointer-events-none z-20 overflow-visible">
-                    <path d="M0,0 Q100,50 200,0" fill="none" className="stroke-indigo-500" strokeWidth="1.5" strokeDasharray="4" />
-                </svg>
-
-                {/* Volume Bars - Decreasing then Exploding */}
-                <div className="flex items-end gap-1 h-20 w-full px-2">
-                    <div className="flex-1 bg-slate-400 h-10"></div>
-                    <div className="flex-1 bg-slate-400 h-8"></div>
-                    <div className="flex-1 bg-slate-300 h-6"></div>
-                    <div className="flex-1 bg-slate-300 h-4"></div>
-                    <div className="flex-1 bg-slate-200 h-2"></div> {/* The Crater Bottom */}
-                    <div className="flex-1 bg-slate-200 h-2"></div>
-                    <div className="flex-1 bg-slate-300 h-4"></div>
-                    <div className="flex-1 bg-slate-300 h-6"></div>
-                    <div className="flex-1 bg-slate-400 h-10"></div>
-                    {/* Explosion */}
-                    <div className="flex-1 bg-green-500 h-20 vol-bar" style={{'--h': '100%'} as React.CSSProperties}></div>
-                </div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 text-sm font-bold text-indigo-600">{t.v3.extreme}</div>
-            </div>
-             <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                <li><b>● {t.v3.mech}：</b> {t.v3.d_mech}</li>
-                <li><b>● {t.v3.sig}：</b> {t.v3.d_sig}</li>
-            </ul>
-        </Card>
-    </div>
-  );
-};
-
-export const TimeframeResonance: React.FC<{ lang: Lang }> = ({ lang }) => {
-    const t = {
-        month: { title: 'MONTH', tag: lang === 'zh' ? '大阳定调' : 'Big Yang' },
-        week: { title: 'WEEK', tag: lang === 'zh' ? '攻击金叉' : 'Attack Cross' },
-        day: { title: 'DAY', tag: lang === 'zh' ? '五线开花' : '5-Line Blossom' },
-        s1: { title: lang === 'zh' ? '月线前兆' : 'Monthly Omen', d: lang === 'zh' ? 'KD月线低位金叉，MACD绿柱缩短。底分型大阳线吞没前阴。' : 'KD monthly low cross, MACD green shrinks. Bullish engulfing.' },
-        s2: { title: lang === 'zh' ? '周线结构' : 'Weekly Structure', d: lang === 'zh' ? '"屠龙刀"形态：MA30/60走平粘合。周线MA5必须金叉MA10/13。' : '"Dragon Saber": MA30/60 flatten. Weekly MA5 crosses MA10/13.' },
-        s3: { title: lang === 'zh' ? '日线扳机' : 'Daily Trigger', d: lang === 'zh' ? '在周月共振窗口内，日线出现"五线粘合+倍量突破"，胜率最高。' : 'In resonance window, daily "Adhesion + Double Vol Breakout" has highest win rate.' },
+    const handleChange = (field: string, val: string) => {
+        setInputs(prev => ({ ...prev, [field]: val }));
     };
 
-    return (
-        <Card className="bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 border-slate-200 dark:border-slate-800 transition-colors duration-300">
-             <style>{`
-                @keyframes candle-grow {
-                    0% { height: 0; y: 70; }
-                    100% { height: 30px; y: 40; }
-                }
-                @keyframes draw-cross {
-                    0% { stroke-dashoffset: 100; }
-                    100% { stroke-dashoffset: 0; }
-                }
-                @keyframes signal-flow {
-                    0% { transform: translateY(-100%); opacity: 0; }
-                    20% { opacity: 1; }
-                    80% { opacity: 1; }
-                    100% { transform: translateY(300px); opacity: 0; }
-                }
-                @keyframes day-explode {
-                    0% { r: 0; opacity: 1; }
-                    100% { r: 25; opacity: 0; }
-                }
-                .anim-candle { animation: candle-grow 2s ease-out infinite alternate; }
-                .anim-cross { stroke-dasharray: 100; stroke-dashoffset: 0; animation: draw-cross 3s ease-in-out infinite alternate; }
-                .anim-flow { animation: signal-flow 3s linear infinite; }
-                .anim-explode { animation: day-explode 1.5s ease-out infinite; }
-            `}</style>
-            
-            <div className="flex flex-col md:flex-row gap-8">
-                <div className="w-full md:w-3/5 relative">
-                    {/* Signal Beam Container */}
-                    <div className="absolute left-[120px] top-0 bottom-0 w-1 bg-gradient-to-b from-red-500/0 via-red-500/20 to-red-500/0 z-0">
-                        <div className="w-full h-20 bg-gradient-to-b from-transparent via-red-500 to-transparent anim-flow blur-sm"></div>
-                    </div>
+    const getStatus = (c: number) => {
+        if (c < 2) return { t: lang === 'zh' ? '极致粘合 (超级牛股前兆)' : 'Extreme (Super Bull)', c: 'bg-red-500 text-white shadow-red-500/50' };
+        if (c < 5) return { t: lang === 'zh' ? '紧密粘合 (高爆发概率)' : 'Tight (High Prob)', c: 'bg-green-500 text-white shadow-green-500/50' };
+        if (c < 10) return { t: lang === 'zh' ? '松散粘合 (具备关注价值)' : 'Loose (Watch)', c: 'bg-yellow-500 text-white shadow-yellow-500/50' };
+        return { t: lang === 'zh' ? '发散状态 (等待收敛)' : 'Divergent (Wait)', c: 'bg-slate-400 text-white' };
+    };
 
-                    <svg viewBox="0 0 500 300" className="w-full h-auto bg-white dark:bg-slate-900 rounded border border-slate-100 dark:border-slate-800 shadow-inner p-4 transition-colors duration-300 relative z-10 bg-opacity-80 dark:bg-opacity-80 backdrop-blur-sm">
+    const status = getStatus(result.adhesion);
+
+    const t = {
+      title: lang === 'zh' ? '均线粘合的几何形态学与微观结构' : 'Geometric Morphology & Microstructure of MA Adhesion',
+      intro: lang === 'zh' ? '“粘合”（Adhesion，又称“米黑”）是花蕾形成的孕育期，是爆发前最关键的蓄势阶段。对这一阶段的微观结构分析，决定了对后续爆发成功率的预判。' : '"Adhesion" is the incubation period of the bud, the critical accumulation phase. Micro-analysis here determines success rate.',
+      def: {
+          title: lang === 'zh' ? '粘合的数学定义与视觉特征' : 'Mathematical Definition & Visuals',
+          formula_desc: lang === 'zh' ? '从算法角度看，粘合并非要求五条线绝对重合，而是要求其离散度降低至特定阈值以下。' : 'Algorithmically, lines don\'t need to overlap perfectly, but variance must drop below a threshold.',
+      },
+      braid: {
+          title: lang === 'zh' ? '均线互换与编织 (The Braid)' : 'MA Exchange & The Braid',
+          desc: lang === 'zh' ? '短期均线（30/60）反复穿越长期均线（120/250），形成“编织状”或“麻花状”的一系列微小金叉死叉。' : 'Short MAs weave through Long MAs, forming a braid of micro crosses.',
+          insight: lang === 'zh' ? '深度洞察：这是多空双方在狭窄箱体内进行的激烈阵地争夺战。' : 'Insight: Fierce trench warfare within a narrow box.',
+          fake: lang === 'zh' ? '假突破识别：粘合初期MA30上穿MA250后迅速回落，是主力“试盘”测压，非形态失败。' : 'Fakeout: MA30 spikes above MA250 then drops. MM testing pressure.'
+      },
+      vol: {
+          title: lang === 'zh' ? '量能特征：地量法则' : 'Volume: Land Volume Rule',
+          rule: lang === 'zh' ? '“无量不成结”。成交量必须极度萎缩（地量）。' : '"No volume, no knot." Volume must shrink to extreme.',
+          turnover: lang === 'zh' ? '换手率 < 1%' : 'Turnover < 1%',
+          psych: lang === 'zh' ? '心理暗示：抛压枯竭，想卖的卖光了。若粘合期放量，往往是出货而非吸筹。' : 'Psychology: Selling exhausted. High volume during adhesion usually means distribution.'
+      },
+      calc: {
+          title: lang === 'zh' ? '专业粘合度计算器' : 'Pro Adhesion Calculator',
+          inputs: lang === 'zh' ? '请输入下列均线的具体数值:' : 'Input Specific MA Values:',
+          price: lang === 'zh' ? '当前股价' : 'Current Price',
+          res_title: lang === 'zh' ? '计算结果' : 'Result',
+          spread: lang === 'zh' ? '极差 (Spread)' : 'Spread',
+          rate: lang === 'zh' ? '粘合系数' : 'Adhesion Rate'
+      }
+    };
+  
+    // Labels for the input fields
+    const maLabels = ['MA5', 'MA10', 'MA20', 'MA30', 'MA60'];
+
+    return (
+      <div className="space-y-6">
+          <style>{`
+            @keyframes weave-1 { 0%, 100% { d: path("M0,40 Q50,30 100,40 T200,40"); } 50% { d: path("M0,40 Q50,50 100,40 T200,40"); } }
+            @keyframes weave-2 { 0%, 100% { d: path("M0,40 Q50,50 100,40 T200,40"); } 50% { d: path("M0,40 Q50,30 100,40 T200,40"); } }
+            .anim-weave-1 { animation: weave-1 3s ease-in-out infinite; }
+            .anim-weave-2 { animation: weave-2 3s ease-in-out infinite; }
+          `}</style>
+
+          {/* Intro Card */}
+          <Card highlightColor="blue" className="relative group">
+              <div className="flex items-center gap-2 mb-3">
+                  <div className="bg-blue-100 dark:bg-blue-900/30 p-1.5 rounded-lg text-blue-600 dark:text-blue-300">
+                      <Activity size={18} />
+                  </div>
+                  <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
+              </div>
+              <p className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4">
+                  {t.intro}
+              </p>
+              
+              {/* Professional Calculator */}
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-inner">
+                  <div className="flex items-center gap-2 mb-4 text-slate-900 dark:text-slate-100 font-bold border-b border-slate-200 dark:border-slate-800 pb-2">
+                      <Calculator size={18} className="text-blue-600" />
+                      {t.calc.title}
+                  </div>
+                  
+                  <div className="flex flex-col lg:flex-row gap-8">
+                      {/* Inputs */}
+                      <div className="flex-1">
+                          <label className="block text-xs font-bold text-slate-500 mb-2">{t.calc.inputs}</label>
+                          <div className="grid grid-cols-3 gap-3 mb-4">
+                              {maLabels.map((label, i) => (
+                                  <div key={i}>
+                                      <label className="block text-[10px] text-slate-400 font-mono mb-1">{label}</label>
+                                      <input 
+                                        type="number" 
+                                        placeholder={label}
+                                        value={inputs[`ma${i+1}` as keyof typeof inputs]}
+                                        onChange={(e) => handleChange(`ma${i+1}`, e.target.value)}
+                                        className="w-full p-2 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                      />
+                                  </div>
+                              ))}
+                              <div>
+                                  <label className="block text-[10px] text-blue-400 font-mono mb-1 font-bold">{t.calc.price}</label>
+                                  <input 
+                                    type="number" 
+                                    placeholder={t.calc.price}
+                                    value={inputs.price}
+                                    onChange={(e) => handleChange('price', e.target.value)}
+                                    className="w-full p-2 rounded border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 font-mono text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none placeholder-blue-300"
+                                  />
+                              </div>
+                          </div>
+                      </div>
+
+                      {/* Results */}
+                      <div className="flex-1 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-lg p-5 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden">
+                          <div className="relative z-10">
+                             <div className="flex justify-between items-center mb-2">
+                                 <span className="text-xs text-slate-500 font-bold uppercase">{t.calc.spread}</span>
+                                 <span className="font-mono font-medium text-slate-600 dark:text-slate-400">
+                                     {result.max.toFixed(2)} - {result.min.toFixed(2)} = <span className="text-slate-900 dark:text-slate-100 font-bold">{result.spread.toFixed(2)}</span>
+                                 </span>
+                             </div>
+                             <div className="flex justify-between items-end">
+                                 <div>
+                                     <span className="text-xs text-slate-500 font-bold uppercase block mb-1">{t.calc.rate}</span>
+                                     <div className={`text-4xl font-black ${result.adhesion < 5 ? 'text-green-500' : result.adhesion < 10 ? 'text-yellow-500' : 'text-slate-400'}`}>
+                                         {result.adhesion.toFixed(2)}%
+                                     </div>
+                                 </div>
+                                 <div className={`px-4 py-2 rounded-lg text-sm font-bold shadow-lg transform transition-all duration-300 ${status.c}`}>
+                                     {status.t}
+                                 </div>
+                             </div>
+                          </div>
+                          {/* Background Deco */}
+                          <Calculator className="absolute -right-4 -bottom-4 text-slate-100 dark:text-slate-700 opacity-50" size={100} />
+                      </div>
+                  </div>
+              </div>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               {/* The Braid */}
+               <Card highlightColor="indigo">
+                   <h5 className="font-bold text-lg mb-3 flex items-center gap-2 text-slate-900 dark:text-slate-100">
+                       <Scissors size={18} className="text-indigo-500" /> {t.braid.title}
+                   </h5>
+                   <div className="h-40 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-3 relative overflow-hidden flex items-center justify-center p-4">
+                        <svg className="w-full h-full" viewBox="0 0 200 80">
+                             {/* Long MA Flat */}
+                             <path d="M0,40 L200,40" stroke="currentColor" className="text-slate-300 dark:text-slate-600" strokeWidth="4" />
+                             
+                             {/* Weaving MAs */}
+                             <path d="M0,40 Q50,30 100,40 T200,40" fill="none" className="stroke-indigo-500 anim-weave-1" strokeWidth="1.5" />
+                             <path d="M0,40 Q50,50 100,40 T200,40" fill="none" className="stroke-purple-500 anim-weave-2" strokeWidth="1.5" />
+                             
+                             {/* Fake Breakout */}
+                             <path d="M60,40 L70,10 L80,40" fill="none" className="stroke-red-500" strokeWidth="1" strokeDasharray="2" />
+                             <text x="70" y="8" fontSize="6" textAnchor="middle" className="fill-red-500 font-bold">FAKE</text>
+                        </svg>
+                   </div>
+                   <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+                       <p>{t.braid.desc}</p>
+                       <p className="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded border-l-2 border-indigo-400 text-indigo-800 dark:text-indigo-300 text-xs">
+                           {t.braid.insight}
+                       </p>
+                       <p className="bg-red-50 dark:bg-red-900/20 p-2 rounded border-l-2 border-red-400 text-red-800 dark:text-red-300 text-xs">
+                           {t.braid.fake}
+                       </p>
+                   </div>
+               </Card>
+
+               {/* Land Volume */}
+               <Card highlightColor="green">
+                   <h5 className="font-bold text-lg mb-3 flex items-center gap-2 text-slate-900 dark:text-slate-100">
+                       <BarChart2 size={18} className="text-green-500" /> {t.vol.title}
+                   </h5>
+                   <div className="h-40 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-3 relative overflow-hidden flex items-end justify-center p-4">
+                        <div className="absolute top-4 left-4 text-xs font-bold text-slate-400">Price Flat</div>
+                        <div className="absolute top-1/2 left-0 w-full h-px bg-slate-300 dashed"></div>
                         
-                        {/* MONTH CHART */}
-                        <text x="20" y="30" fontSize="13" fontWeight="bold" className="fill-slate-600 dark:fill-slate-400">{t.month.title} ({lang === 'zh' ? '趋势' : 'Trend'})</text>
-                        <line x1="20" y1="80" x2="480" y2="80" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="1" />
-                        {/* Animated Big Yang */}
-                        <rect x="112" y="40" width="16" height="30" className="fill-red-500 stroke-red-700 anim-candle" />
-                        <line x1="120" y1="35" x2="120" y2="80" className="stroke-red-600" strokeWidth="1"/>
-                        <text x="145" y="60" fontSize="12" className="fill-red-500 font-bold">{t.month.tag}</text>
-                        
-                        {/* WEEK CHART */}
-                        <text x="20" y="110" fontSize="13" fontWeight="bold" className="fill-slate-600 dark:fill-slate-400">{t.week.title} ({lang === 'zh' ? '结构' : 'Structure'})</text>
-                        <line x1="20" y1="180" x2="480" y2="180" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="1" />
-                        {/* Animated Cross */}
-                        <path d="M80,160 C120,160 160,160 200,150" fill="none" className="stroke-blue-500 anim-cross" strokeWidth="3" opacity="0.5" />
-                        <path d="M90,175 C100,170 110,160 120,150 130,140 150,130" fill="none" className="stroke-slate-900 dark:stroke-slate-100 anim-cross" strokeWidth="2" />
-                        <circle cx="120" cy="150" r="4" fill="red" className="animate-pulse" />
-                        <text x="145" y="155" fontSize="12" fill="red" className="font-bold">{t.week.tag}</text>
-                        
-                        {/* DAY CHART */}
-                        <text x="20" y="210" fontSize="13" fontWeight="bold" className="fill-slate-600 dark:fill-slate-400">{t.day.title} ({lang === 'zh' ? '买点' : 'Entry'})</text>
-                        {/* Animated Explosion */}
-                        <path d="M80,250 C100,250 110,248 120,250 130,240 150,220" fill="none" className="stroke-red-500" strokeWidth="2" />
-                        <g transform="translate(120, 250)">
-                             <circle r="0" className="fill-red-500/30 stroke-red-500 anim-explode" strokeWidth="1" />
-                             <circle r="0" className="fill-red-500/20 stroke-red-500 anim-explode" strokeWidth="1" style={{animationDelay: '0.5s'}} />
-                        </g>
-                        <text x="145" y="250" fontSize="12" className="fill-red-500 font-bold">{t.day.tag}</text>
-                    </svg>
-                </div>
-                <div className="w-full md:w-2/5 space-y-4">
-                    <div className="p-3 bg-white dark:bg-slate-800 rounded border-l-4 border-l-red-500 shadow-sm transition-colors duration-300">
-                        <div className="font-bold text-red-600 dark:text-red-400 text-sm flex items-center gap-2"><ArrowDown size={14}/> {t.s1.title}</div>
-                        <p className="text-lg font-medium text-slate-700 dark:text-slate-300 mt-1">{t.s1.d}</p>
-                    </div>
-                    <div className="p-3 bg-white dark:bg-slate-800 rounded border-l-4 border-l-blue-500 shadow-sm transition-colors duration-300">
-                        <div className="font-bold text-blue-600 dark:text-blue-400 text-sm flex items-center gap-2"><Layers size={14}/> {t.s2.title}</div>
-                        <p className="text-lg font-medium text-slate-700 dark:text-slate-300 mt-1">{t.s2.d}</p>
-                    </div>
-                    <div className="p-3 bg-white dark:bg-slate-800 rounded border-l-4 border-l-green-500 shadow-sm transition-colors duration-300">
-                        <div className="font-bold text-green-600 dark:text-green-400 text-sm flex items-center gap-2"><TrendingUp size={14}/> {t.s3.title}</div>
-                        <p className="text-lg font-medium text-slate-700 dark:text-slate-300 mt-1">{t.s3.d}</p>
-                    </div>
-                </div>
-            </div>
-        </Card>
+                        <div className="flex items-end gap-1 w-full h-full justify-center">
+                             {[50, 45, 40, 35, 30, 25, 20, 15, 10, 8, 5, 5, 5, 5, 5].map((h, i) => (
+                                 <div key={i} className={`w-3 rounded-t ${h < 10 ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`} style={{height: `${h}%`}}></div>
+                             ))}
+                        </div>
+                        <div className="absolute bottom-10 text-xs font-bold text-green-600 bg-green-100 px-2 rounded">Di Liang (Land Vol)</div>
+                   </div>
+                   <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+                       <p>{t.vol.rule}</p>
+                       <div className="flex items-center gap-2">
+                           <span className="font-bold text-green-600">{t.vol.turnover}</span>
+                       </div>
+                       <p className="bg-slate-100 dark:bg-slate-800 p-2 rounded text-xs italic">
+                           {t.vol.psych}
+                       </p>
+                   </div>
+               </Card>
+          </div>
+      </div>
     );
 };
 
-export const MarketPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
+// --- 4. Trend Geometry ---
+export const TrendGeometry: React.FC<{ lang: Lang }> = ({ lang }) => {
+    const [price, setPrice] = useState(12.00);
+    const [ma60, setMa60] = useState(10.00);
+    const [bias, setBias] = useState(0);
+
+    useEffect(() => {
+        if(ma60 > 0) {
+            const b = ((price - ma60) / ma60) * 100;
+            setBias(parseFloat(b.toFixed(2)));
+        }
+    }, [price, ma60]);
+
+    const getStatus = (b: number) => {
+        if (b < 10) return { t: lang === 'zh' ? '初期 (安全/最佳)' : 'Early (Safe/Best)', c: 'bg-green-500 text-white' };
+        if (b < 20) return { t: lang === 'zh' ? '中期 (持有)' : 'Mid (Hold)', c: 'bg-blue-500 text-white' };
+        return { t: lang === 'zh' ? '过热 (高风险/均值回归)' : 'Overheated (Risk)', c: 'bg-red-500 text-white' };
+    };
+    
+    const status = getStatus(bias);
+
     const t = {
-        grind: {
-            title: lang === 'zh' ? '庄家的“磨” (The Grind)' : 'The Grind',
-            patience: lang === 'zh' ? '散户耐心' : 'Retail Patience',
-            mm: lang === 'zh' ? '庄家持仓' : 'MM Holdings',
-            will: lang === 'zh' ? '消磨意志' : 'Willpower',
-            cost: lang === 'zh' ? '成本固化' : 'Cost Solid',
-            d_will: lang === 'zh' ? '股价极小幅度波动（±2%），让散户感到绝望、无聊而卖出。' : 'Tiny volatility (±2%) makes retail despair/bored and sell.',
-            d_cost: lang === 'zh' ? '庄家在低位完成大规模建仓，确立五线粘合的成本中枢。' : 'MM completes accumulation at lows, establishing cost center.'
+        title: lang === 'zh' ? '趋势几何学：多头排列的惯性保障' : 'Trend Geometry: Inertia of Bullish Alignment',
+        math: {
+            title: lang === 'zh' ? '多头排列的数学稳定性' : 'Mathematical Stability',
+            desc: lang === 'zh' 
+                ? '定义：MA(5) > MA(10) > MA(20) > MA(60)，且斜率均为正。这种结构构成“多重支撑网”。股价回踩时，获利盘惜售，空仓者进场，形成“自我强化”。'
+                : 'Def: MA(5)>MA(10)>...>MA(60), slopes positive. Forms a "Support Mesh". Self-reinforcing trend.',
         },
-        trap: {
-            title: lang === 'zh' ? '散户心理误区' : 'Retail Traps',
-            fantasy: lang === 'zh' ? '幻想回调' : 'Fantasy Dip',
-            fear: lang === 'zh' ? '恐惧追高' : 'Fear Heights',
-            chase: lang === 'zh' ? '高位接盘(鱼尾)' : 'Chase High',
-            fomo: lang === 'zh' ? '恐惧追高' : 'Fear',
-            miss: lang === 'zh' ? '踏空陷阱' : 'Miss Out',
-            d_fomo: lang === 'zh' ? '习惯了横盘，突破3-5%时觉得“太高”，期待回调。' : 'Used to flat range, thinking 3-5% break is "too high".',
-            d_miss: lang === 'zh' ? '真正的开花是逼空式上涨（Short Squeeze），不给上车机会。' : 'Real blossom is a short squeeze, giving no chance to enter.'
+        bias: {
+             title: lang === 'zh' ? '均线发散度的监控 (BIAS)' : 'Monitoring Divergence (BIAS)',
+             desc: lang === 'zh' 
+                ? '过度发散意味着风险。当 BIAS(60) > 20% 时，股价偏离长期成本太远，随时可能均值回归（暴跌）。最佳交易区间是“多头排列初期”（BIAS < 10%）。'
+                : 'Excessive divergence = Risk. BIAS(60) > 20% implies reversion risk. Best zone is "Early Stage" (BIAS < 10%).'
         },
-        matthew: {
-            title: lang === 'zh' ? '均线开花的“马太效应”' : 'Matthew Effect (Feedback Loop)',
-            self: lang === 'zh' ? '自我实现预言' : 'Self-Fulfilling',
-            form: lang === 'zh' ? '形态确立' : 'Form Set',
-            algo: lang === 'zh' ? '量化基金扫货' : 'Algo Buy',
-            media: lang === 'zh' ? '媒体/资金涌入' : 'Media/Flow',
-            price: lang === 'zh' ? '股价推升' : 'Price Up',
-            desc: lang === 'zh' ? '趋势交易者入场 → 量化算法扫货 → 媒体报道跟进 → 更多资金推升 → 强化发散角度' : 'Trend Traders In → Algos Buy → Media Follows → More Flow → Reinforce Divergence'
+        calc: {
+            title: lang === 'zh' ? 'BIAS(60) 计算器' : 'BIAS(60) Calculator',
+            p: lang === 'zh' ? '当前股价' : 'Current Price',
+            m: lang === 'zh' ? 'MA60 价格' : 'MA60 Price'
         }
     };
 
     return (
         <div className="space-y-6">
             <style>{`
-                @keyframes grind-wave {
+                @keyframes fan-out {
+                    0% { d: path("M0,100 Q100,100 200,100"); }
+                    100% { d: path("M0,100 Q100,50 200,var(--end)"); }
+                }
+                .anim-fan { animation: fan-out 2s ease-out forwards; }
+                .price-bounce { animation: bounce-trend 3s infinite; }
+                @keyframes bounce-trend {
                     0% { transform: translateY(0); }
-                    25% { transform: translateY(-2px); }
-                    50% { transform: translateY(0); }
-                    75% { transform: translateY(2px); }
+                    50% { transform: translateY(10px); }
                     100% { transform: translateY(0); }
                 }
-                @keyframes bar-shrink {
-                    0% { height: 40px; opacity: 1; }
-                    100% { height: 10px; opacity: 0.3; }
-                }
-                @keyframes bar-grow {
-                    0% { height: 10px; opacity: 0.3; }
-                    100% { height: 50px; opacity: 1; }
-                }
-                @keyframes dash-flow {
-                    to { stroke-dashoffset: -20; }
-                }
-                .grind-anim { animation: grind-wave 3s ease-in-out infinite; }
-                .retail-patience { animation: bar-shrink 4s linear infinite alternate; }
-                .mm-accumulation { animation: bar-grow 4s linear infinite alternate; }
-                .flow-line { animation: dash-flow 1s linear infinite; }
             `}</style>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* 6.1 The Grind */}
-                <Card highlightColor="slate" className="h-full">
-                    <div className="flex items-center gap-2 mb-3">
-                        <div className="bg-slate-100 dark:bg-slate-800 p-1.5 rounded-lg text-slate-600 dark:text-slate-300">
-                             <Brain size={18} />
+                {/* Visual Concept */}
+                <Card highlightColor="blue" className="h-full">
+                     <div className="flex items-center gap-2 mb-4">
+                        <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded text-blue-600 dark:text-blue-300">
+                             <TrendingUp size={20} />
                         </div>
-                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.grind.title}</h4>
-                    </div>
-                    <div className="h-40 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative overflow-hidden p-4">
-                        {/* Grinding Price Line */}
-                        <div className="absolute top-1/2 left-0 w-full h-8 flex items-center">
-                             <svg width="100%" height="100%" className="grind-anim">
-                                 <path d="M0,15 Q20,10 40,15 T80,15 T120,15 T160,15 T200,15 T240,15 T280,15 T320,15" fill="none" className="stroke-slate-400" strokeWidth="2" />
-                             </svg>
-                        </div>
-                        
-                        {/* Bars comparison */}
-                        <div className="flex justify-between items-end h-full pt-8 relative z-10">
-                            <div className="text-center w-1/3">
-                                <div className="text-sm text-slate-500 mb-1 font-bold">{t.grind.patience}</div>
-                                <div className="w-8 mx-auto bg-green-400/50 rounded-t retail-patience"></div>
-                            </div>
-                            <div className="text-center w-1/3">
-                                <div className="text-sm text-slate-500 mb-1 font-bold">{t.grind.mm}</div>
-                                <div className="w-8 mx-auto bg-red-500 rounded-t mm-accumulation"></div>
-                            </div>
-                        </div>
-                        <div className="absolute top-2 right-2 text-xs text-slate-500 font-bold">Time: Weeks/Months</div>
-                    </div>
-                    <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                        <li><b>● {t.grind.will}：</b> {t.grind.d_will}</li>
-                        <li><b>● {t.grind.cost}：</b> {t.grind.d_cost}</li>
-                    </ul>
+                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.math.title}</h4>
+                     </div>
+                     
+                     <div className="h-40 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 relative mb-4 overflow-hidden p-4">
+                          <svg className="w-full h-full" viewBox="0 0 200 120">
+                               {/* Fanning Lines */}
+                               <path d="M0,100 Q100,100 200,100" fill="none" className="stroke-slate-300 dark:stroke-slate-600 anim-fan" style={{'--end': '90'} as React.CSSProperties} strokeWidth="1" />
+                               <path d="M0,100 Q100,90 200,70" fill="none" className="stroke-blue-400 anim-fan" style={{'--end': '70'} as React.CSSProperties} strokeWidth="2" />
+                               <path d="M0,100 Q100,80 200,50" fill="none" className="stroke-green-400 anim-fan" style={{'--end': '50'} as React.CSSProperties} strokeWidth="2" />
+                               <path d="M0,100 Q100,70 200,20" fill="none" className="stroke-red-500 anim-fan" style={{'--end': '20'} as React.CSSProperties} strokeWidth="2" />
+                               
+                               {/* Self Reinforcement Text */}
+                               <text x="100" y="40" fontSize="8" className="fill-slate-500 font-bold" textAnchor="middle">Self-Reinforcement</text>
+                               
+                               {/* Support Arrows */}
+                               <path d="M100,55 L100,65" stroke="currentColor" className="text-slate-400" strokeWidth="1" />
+                          </svg>
+                     </div>
+                     <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                         {t.math.desc}
+                     </p>
                 </Card>
 
-                {/* 6.2 Retail Traps */}
-                <Card highlightColor="red" className="h-full">
-                    <div className="flex items-center gap-2 mb-3">
-                        <div className="bg-red-100 dark:bg-red-900/30 p-1.5 rounded-lg text-red-600 dark:text-red-300">
-                             <Users size={18} />
+                {/* BIAS Monitor & Calculator */}
+                <Card highlightColor="amber" className="h-full">
+                     <div className="flex items-center gap-2 mb-4">
+                        <div className="bg-amber-100 dark:bg-amber-900/30 p-2 rounded text-amber-600 dark:text-amber-300">
+                             <Activity size={20} />
                         </div>
-                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.trap.title}</h4>
-                    </div>
-                    <div className="h-40 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 mb-4 relative p-4">
-                        <svg viewBox="0 0 300 120" className="w-full h-full">
-                            {/* Grid */}
-                            <line x1="0" y1="100" x2="300" y2="100" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="1" />
-                            
-                            {/* Fantasy Path (Dotted) */}
-                            <path d="M50,100 L80,50 L120,80 L160,40" fill="none" className="stroke-slate-400 stroke-dasharray-2" strokeWidth="1.5" />
-                            <text x="120" y="95" fontSize="12" className="fill-slate-400 font-bold">{t.trap.fantasy}</text>
-                            
-                            {/* Reality Path (Solid) */}
-                            <path d="M50,100 L80,50 L120,30 L160,10 L250,5" fill="none" className="stroke-red-500" strokeWidth="2.5" />
-                            
-                            {/* Annotations */}
-                            <circle cx="80" cy="50" r="3" className="fill-red-500" />
-                            <text x="50" y="45" fontSize="12" className="fill-slate-500 dark:fill-slate-400 font-bold">{t.trap.fear}</text>
-                            
-                            <circle cx="250" cy="5" r="3" className="fill-red-500" />
-                            <text x="210" y="20" fontSize="12" className="fill-red-500 font-bold">{t.trap.chase}</text>
-                        </svg>
-                    </div>
-                    <ul className="text-lg font-medium text-slate-700 dark:text-slate-300 space-y-2">
-                        <li><b>● {t.trap.fomo}：</b> {t.trap.d_fomo}</li>
-                        <li><b>● {t.trap.miss}：</b> {t.trap.d_miss}</li>
-                    </ul>
+                        <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.bias.title}</h4>
+                     </div>
+
+                     <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 mb-4">
+                          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-300">
+                               <Calculator size={16} /> {t.calc.title}
+                          </div>
+                          
+                          <div className="flex gap-4 mb-4">
+                               <div className="flex-1">
+                                    <label className="block text-xs font-bold text-slate-500 mb-1">{t.calc.p}</label>
+                                    <input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} className="w-full p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white font-mono" />
+                               </div>
+                               <div className="flex-1">
+                                    <label className="block text-xs font-bold text-slate-500 mb-1">{t.calc.m}</label>
+                                    <input type="number" value={ma60} onChange={e => setMa60(Number(e.target.value))} className="w-full p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white font-mono" />
+                               </div>
+                          </div>
+
+                          <div className="flex items-center justify-between bg-white dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                               <div className="text-xs text-slate-400 font-mono">BIAS = (P-MA)/MA</div>
+                               <div className="text-right">
+                                   <div className={`text-2xl font-black ${bias > 20 ? 'text-red-500' : 'text-slate-800 dark:text-white'}`}>{bias}%</div>
+                                   <div className={`text-xs font-bold px-2 py-0.5 rounded text-white ${status.c}`}>{status.t}</div>
+                               </div>
+                          </div>
+                     </div>
+                     
+                     <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                         {t.bias.desc}
+                     </p>
                 </Card>
             </div>
+        </div>
+    );
+};
 
-            {/* 6.3 Matthew Effect */}
-            <Card highlightColor="blue">
-                <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-blue-100 dark:bg-blue-900/30 p-1.5 rounded-lg text-blue-600 dark:text-blue-300">
-                         <RefreshCw size={18} />
-                    </div>
-                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.matthew.title}</h4>
+// --- 6. Volume Dynamics ---
+export const VolumeDynamics: React.FC<{ lang: Lang }> = ({ lang }) => {
+  const t = {
+    c1: { t: lang==='zh'?'量能倍增法则':'Volume Breakout', d: lang==='zh'?'突破日成交量至少达到粘合期均量的2倍以上。':'Breakout vol > 2x Avg Vol.', w: lang==='zh'?'警惕：无量上涨大概率为假突破，主力诱多。':'Warning: No vol = Trap.' },
+    c2: { t: lang==='zh'?'量堆与吸筹':'Accumulation Heap', d: lang==='zh'?'股价波动不大，但间歇性出现连续红柱放量。':'Price flat, intermittent red vol heaps.', i: lang==='zh'?'解读：主力挂大单承接抛压，“涨量跌缩”是实力的证明。':'MM absorbing selling pressure.' },
+    c3: { t: lang==='zh'?'凹洞量 (洗盘)':'Concave (Washout)', d: lang==='zh'?'主力停止护盘进行“休克疗法”，市场交易陷入停滞。':'MM stops support. Shock therapy.', m: lang==='zh'?'信号：成交量萎缩至极致（凹洞）后突发爆量，是精确买点。':'Signal: Extreme shrink then Burst.' },
+    labels: {
+        breakout: lang === 'zh' ? 'Breakout' : 'Breakout',
+        avg: lang === 'zh' ? 'Avg Vol' : 'Avg Vol',
+        flat: lang === 'zh' ? 'Price Flat' : 'Price Flat',
+        hide: lang === 'zh' ? '隐蔽建仓' : 'Hidden Buy',
+        shrink: lang === 'zh' ? '极致缩量' : 'Extreme Shrink',
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 1. Breakout */}
+        <Card highlightColor="red">
+             <div className="flex items-center gap-2 mb-3">
+                 <div className="bg-red-100 dark:bg-red-900/30 p-1.5 rounded text-red-600 dark:text-red-300"><BarChart2 size={18}/></div>
+                 <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.c1.t}</h4>
+             </div>
+             <div className="h-32 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded relative mb-3 overflow-hidden">
+                  <svg className="w-full h-full">
+                      {/* Price Line - Breakout */}
+                      <path d="M10,80 L150,80 L200,40" fill="none" className="stroke-slate-800 dark:stroke-slate-200" strokeWidth="2" />
+                      <circle cx="200" cy="40" r="3" className="fill-red-500" />
+                      <text x="200" y="30" fontSize="10" className="fill-red-500 font-bold" textAnchor="middle">{t.labels.breakout}</text>
+                      
+                      {/* Vol Bars - Shrinking then Explosion */}
+                      <line x1="10" y1="95" x2="250" y2="95" className="stroke-slate-300" strokeDasharray="3"/>
+                      <text x="15" y="90" fontSize="9" className="fill-slate-400 font-bold">{t.labels.avg}</text>
+                      
+                      {/* Shrinking Bars */}
+                      <rect x="20" y="100" width="15" height="20" className="fill-slate-300 dark:fill-slate-600" />
+                      <rect x="40" y="105" width="15" height="15" className="fill-slate-300 dark:fill-slate-600" />
+                      <rect x="60" y="110" width="15" height="10" className="fill-slate-300 dark:fill-slate-600" />
+                      <rect x="80" y="112" width="15" height="8" className="fill-slate-300 dark:fill-slate-600" />
+                      
+                      {/* Explosion Bar */}
+                      <rect x="190" y="70" width="20" height="50" className="fill-red-500 animate-pulse" />
+                  </svg>
+             </div>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-2">● 标准：{t.c1.d}</p>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">● 警惕：{t.c1.w}</p>
+        </Card>
+
+        {/* 2. Accumulation */}
+        <Card highlightColor="yellow">
+             <div className="flex items-center gap-2 mb-3">
+                 <div className="bg-yellow-100 dark:bg-yellow-900/30 p-1.5 rounded text-yellow-600 dark:text-yellow-300"><Layers size={18}/></div>
+                 <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.c2.t}</h4>
+             </div>
+             <div className="h-32 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded relative mb-3 overflow-hidden">
+                  <svg className="w-full h-full">
+                      <path d="M10,60 Q120,65 250,60" fill="none" className="stroke-slate-400 dark:stroke-slate-500" strokeWidth="1" strokeDasharray="4"/>
+                      <text x="20" y="50" fontSize="10" className="fill-slate-400 italic">{t.labels.flat}</text>
+                      
+                      {/* Intermittent Red Heaps */}
+                      <rect x="20" y="100" width="10" height="10" className="fill-slate-200 dark:fill-slate-700" />
+                      <rect x="35" y="95" width="10" height="15" className="fill-slate-200 dark:fill-slate-700" />
+                      <rect x="50" y="80" width="10" height="30" className="fill-red-400" /> {/* Heap 1 */}
+                      <rect x="65" y="75" width="10" height="35" className="fill-red-400" />
+                      <rect x="80" y="90" width="10" height="20" className="fill-red-400" />
+                      
+                      <rect x="100" y="105" width="10" height="5" className="fill-slate-200 dark:fill-slate-700" />
+                      <rect x="115" y="100" width="10" height="10" className="fill-slate-200 dark:fill-slate-700" />
+                      
+                      <rect x="135" y="80" width="10" height="30" className="fill-red-400" /> {/* Heap 2 */}
+                      <rect x="150" y="78" width="10" height="32" className="fill-red-400" />
+                      
+                      <rect x="170" y="105" width="10" height="5" className="fill-slate-200 dark:fill-slate-700" />
+                      <text x="220" y="25" fontSize="9" className="fill-yellow-600 dark:fill-yellow-400 font-bold bg-yellow-100 px-1 rounded">{t.labels.hide}</text>
+                  </svg>
+             </div>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-2">● 形态：{t.c2.d}</p>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">● 解读：{t.c2.i}</p>
+        </Card>
+
+        {/* 3. Concave */}
+        <Card highlightColor="indigo">
+             <div className="flex items-center gap-2 mb-3">
+                 <div className="bg-indigo-100 dark:bg-indigo-900/30 p-1.5 rounded text-indigo-600 dark:text-indigo-300"><Minimize2 size={18}/></div>
+                 <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.c3.t}</h4>
+             </div>
+             <div className="h-32 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded relative mb-3 overflow-hidden">
+                  <svg className="w-full h-full">
+                       {/* U Shape Vol */}
+                       <path d="M20,60 Q125,100 230,60" fill="none" className="stroke-indigo-400 stroke-dasharray-2" />
+                       <text x="125" y="80" fontSize="10" className="fill-indigo-500 font-bold" textAnchor="middle">{t.labels.shrink}</text>
+                       
+                       <rect x="20" y="80" width="12" height="30" className="fill-slate-400" />
+                       <rect x="35" y="90" width="12" height="20" className="fill-slate-400" />
+                       <rect x="50" y="100" width="12" height="10" className="fill-slate-300" />
+                       <rect x="65" y="105" width="12" height="5" className="fill-slate-200" />
+                       <rect x="80" y="108" width="12" height="2" className="fill-slate-200" />
+                       <rect x="110" y="105" width="12" height="5" className="fill-slate-200" />
+                       <rect x="140" y="100" width="12" height="10" className="fill-slate-300" />
+                       <rect x="155" y="80" width="12" height="30" className="fill-slate-400" />
+                       
+                       {/* Burst - RED */}
+                       <rect x="175" y="60" width="15" height="50" className="fill-red-500 animate-pulse" />
+                  </svg>
+             </div>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-2">● 机制：{t.c3.d}</p>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">● 信号：{t.c3.m}</p>
+        </Card>
+    </div>
+  );
+};
+
+// --- 7. Chip Structure ---
+export const ChipStructure: React.FC<{ lang: Lang }> = ({ lang }) => {
+  const t = {
+    s1: lang === 'zh' ? '底部双峰吸筹' : 'Dual Peak Accumulation',
+    s2: lang === 'zh' ? '锁仓拉升 (单峰上移)' : 'Locking Ascent',
+    s3: lang === 'zh' ? '高位出货 (筹码大转移)' : 'High Distribution',
+    desc1: lang === 'zh' ? '股价低位震荡，形成“双峰”结构。上方为割肉盘，下方为主力建仓的获利盘 (红)。' : 'Low price oscillation. Top: Panic sells. Bottom: MM Profit chips (Red).',
+    desc2: lang === 'zh' ? '拉升途中，底部获利盘 (红) 纹丝不动 (主力锁仓)。第二个筹码峰开始分离上移，中间出现真空区。' : 'Ascent. Bottom red chips LOCKED (MM holding). Second peak moves up through vacuum.',
+    desc3: lang === 'zh' ? '动画演示：底部红色获利盘逐渐消失 (主力派发)，顶部青色套牢盘急剧放大。筹码完成高位集中。' : 'Animation: Bottom red chips vanish (Distribution), top cyan trapped chips grow. High concentration.',
+    labels: {
+        price_low: 'Price Low',
+        dual: 'Dual Peak',
+        vacuum: 'Vacuum',
+        locked: 'LOCKED',
+        dist: 'Distribution',
+        exit: 'Exiting...',
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <style>{`
+            @keyframes chip-transfer {
+                0% { width: 100px; opacity: 1; }
+                50% { width: 10px; opacity: 0.5; }
+                100% { width: 0px; opacity: 0; }
+            }
+            @keyframes chip-grow {
+                0% { width: 0px; opacity: 0; }
+                50% { width: 50px; opacity: 0.5; }
+                100% { width: 120px; opacity: 1; }
+            }
+            .anim-chip-out { animation: chip-transfer 4s infinite alternate; }
+            .anim-chip-in { animation: chip-grow 4s infinite alternate; }
+            
+            @keyframes peak-move-up {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(-60px); }
+            }
+            .anim-peak-up { animation: peak-move-up 4s ease-in-out infinite alternate; }
+        `}</style>
+
+        {/* Stage A: Dual Peak */}
+        <Card highlightColor="blue" className="bg-slate-50 dark:bg-slate-900">
+             <div className="flex items-center gap-2 mb-3">
+                 <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">A</div>
+                 <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.s1}</h4>
+             </div>
+             {/* Chart container - Always Dark for Terminal Look */}
+             <div className="h-52 bg-slate-900 rounded border border-slate-700 relative p-4 mb-3 flex items-end">
+                 <div className="absolute top-2 left-2 text-slate-500 text-xs font-mono">{t.labels.price_low}</div>
+                 
+                 {/* Left Axis */}
+                 <div className="h-full w-px bg-slate-700 absolute left-8 top-0"></div>
+                 
+                 {/* Chips: Red Profit Peaks at Bottom */}
+                 <div className="flex flex-col gap-0.5 w-full pl-10">
+                      {/* Top Peak (Small, Trapped/Resistance) */}
+                      {[10, 20, 30, 40, 30, 20].map((w, i) => (
+                          <div key={`top-${i}`} className="h-1 bg-cyan-800" style={{width: w + '%'}}></div>
+                      ))}
+                      <div className="h-8"></div> {/* Gap */}
+                      {/* Bottom Dual Peaks (Red) */}
+                      {[30, 50, 70, 80, 60, 40].map((w, i) => (
+                          <div key={`b1-${i}`} className="h-1 bg-red-600" style={{width: w + '%'}}></div>
+                      ))}
+                      <div className="h-2"></div>
+                      {[40, 60, 90, 100, 80, 50].map((w, i) => (
+                          <div key={`b2-${i}`} className="h-1 bg-red-600" style={{width: w + '%'}}></div>
+                      ))}
+                 </div>
+                 <div className="absolute right-2 bottom-10 text-cyan-400 text-xs font-mono">{t.labels.dual}</div>
+             </div>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.desc1}</p>
+        </Card>
+
+        {/* Stage B: Locking Ascent */}
+        <Card highlightColor="red" className="bg-slate-50 dark:bg-slate-900">
+             <div className="flex items-center gap-2 mb-3">
+                 <div className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-xs">B</div>
+                 <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.s2}</h4>
+             </div>
+             <div className="h-52 bg-slate-900 rounded border border-slate-700 relative p-4 mb-3 flex items-end overflow-hidden">
+                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 text-slate-600 text-xs font-mono italic">{t.labels.vacuum}</div>
+                 <div className="h-full w-px bg-slate-700 absolute left-8 top-0"></div>
+                 
+                 <div className="flex flex-col gap-0.5 w-full pl-10 h-full justify-end">
+                      {/* Moving Peak */}
+                      <div className="anim-peak-up absolute bottom-20 left-18 w-full">
+                           {[20, 40, 60, 50, 30].map((w, i) => (
+                               <div key={`m-${i}`} className="h-1 bg-red-500 mb-0.5" style={{width: w + '%'}}></div>
+                           ))}
+                      </div>
+
+                      {/* Locked Bottom Peak */}
+                      <div className="relative">
+                          {[50, 70, 90, 100, 80, 60].map((w, i) => (
+                              <div key={`l-${i}`} className="h-1 bg-red-700" style={{width: w + '%'}}></div>
+                          ))}
+                          <div className="absolute right-0 bottom-0 text-red-500 font-bold text-xs animate-pulse">{t.labels.locked}</div>
+                      </div>
+                 </div>
+             </div>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.desc2}</p>
+        </Card>
+
+        {/* Stage C: Distribution */}
+        <Card highlightColor="slate" className="bg-slate-50 dark:bg-slate-900">
+             <div className="flex items-center gap-2 mb-3">
+                 <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">C</div>
+                 <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.s3}</h4>
+             </div>
+             <div className="h-52 bg-slate-900 rounded border border-slate-700 relative p-4 mb-3 flex items-end">
+                 <div className="absolute top-4 left-10 text-green-400 text-xs font-mono">{t.labels.dist}</div>
+                 <div className="h-full w-px bg-slate-700 absolute left-8 top-0"></div>
+                 
+                 <div className="flex flex-col gap-0.5 w-full pl-10 h-full justify-between py-2">
+                      {/* Top Growing Blue Chips */}
+                      <div className="flex flex-col gap-0.5">
+                          {[10, 20, 30, 40, 50, 60, 50, 40].map((w, i) => (
+                              <div key={`t-${i}`} className="h-1 bg-cyan-500 anim-chip-in" style={{animationDelay: `${i*0.1}s`}}></div>
+                          ))}
+                      </div>
+
+                      {/* Transfer Arrow */}
+                      <div className="self-center opacity-30">
+                          <TrendingUp size={24} className="text-slate-500 transform rotate-45" />
+                      </div>
+
+                      {/* Bottom Vanishing Red Chips */}
+                      <div className="flex flex-col gap-0.5">
+                           {[60, 80, 90, 100, 70, 50].map((w, i) => (
+                              <div key={`b-${i}`} className="h-1 bg-red-800 anim-chip-out" style={{animationDelay: `${i*0.1}s`, width: w + '%'}}></div>
+                          ))}
+                           <div className="text-xs text-slate-500 text-right">{t.labels.exit}</div>
+                      </div>
+                 </div>
+             </div>
+             <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{t.desc3}</p>
+        </Card>
+    </div>
+  );
+};
+
+// --- 8. Timeframe Resonance ---
+export const TimeframeResonance: React.FC<{ lang: Lang }> = ({ lang }) => {
+    const t = {
+        daily: {
+            title: lang === 'zh' ? '日线：五线开花' : 'Daily: Blossom',
+            desc: lang === 'zh' ? '均线极致粘合，大阳线（>5%）一阳穿多线，确立启动点。' : 'Extreme MA adhesion. Big Yang (>5%) crosses lines. Launch point.',
+            label: lang === 'zh' ? '日线开花' : 'Daily Blossom'
+        },
+        weekly: {
+            title: lang === 'zh' ? '周线：屠龙刀' : 'Weekly: Dragon Saber',
+            desc: lang === 'zh' ? 'MA5金叉MA10。MA30与MA60接近走平并粘合（关键！）。中期大底特征。' : 'MA5 cross MA10 up. MA30/60 flatten & bond (Key). Mid-term bottom.',
+            labels: {
+                saber: lang === 'zh' ? '屠龙刀' : 'DRAGON SABER',
+                bond: lang === 'zh' ? 'MA30/60粘合' : 'MA30/60 Bond'
+            }
+        },
+        monthly: {
+            title: lang === 'zh' ? '月线：30月线回踩信条' : 'Monthly: 30M MA Retest',
+            desc: lang === 'zh' ? '月线放量突破30月均线，次月缩量回踩30月线不破。这是超级牛股的黄金起涨点。' : 'Breakout 30-Month MA with volume, retest next month without breaking. Golden launch point.',
+            labels: {
+                ma30: 'MA30',
+                break: lang === 'zh' ? '突破' : 'Break',
+                retest: lang === 'zh' ? '回踩确认' : 'Retest',
+                launch: lang === 'zh' ? '起涨点' : 'Launch'
+            }
+        }
+    };
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Daily - Five Line Blossom */}
+            <Card highlightColor="blue" className="bg-white dark:bg-slate-900 flex flex-col h-full">
+                <div className="h-40 bg-slate-900 rounded border border-slate-700 relative mb-3 p-2 flex items-center justify-center">
+                    <svg className="w-full h-full">
+                        {/* 5 Lines Blooming */}
+                        <path d="M10,80 Q50,80 100,50" stroke="#fcd34d" fill="none" strokeWidth="1" />
+                        <path d="M10,80 Q50,80 100,40" stroke="#fff" fill="none" strokeWidth="1" />
+                        <path d="M10,80 Q50,80 100,60" stroke="#c084fc" fill="none" strokeWidth="1" />
+                        <path d="M10,80 Q50,80 100,90" stroke="#4ade80" fill="none" strokeWidth="1" />
+                        <path d="M10,80 Q50,80 100,100" stroke="#60a5fa" fill="none" strokeWidth="1" />
+                        {/* Big Red Yang */}
+                        <rect x="80" y="30" width="10" height="60" className="fill-red-600 stroke-red-400" />
+                        <text x="50" y="20" className="fill-blue-400 text-xs font-mono">{t.daily.label}</text>
+                    </svg>
                 </div>
-                
-                <div className="relative h-32 md:h-40 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 p-4 flex items-center justify-center">
-                     {/* Central Text */}
-                     <div className="absolute z-10 text-center">
-                         <div className="font-black text-sm text-blue-800 dark:text-blue-300 uppercase tracking-wider bg-white dark:bg-slate-800 px-2 py-1 rounded shadow-sm border border-blue-100 dark:border-blue-900">
-                            {t.matthew.self}
-                            <br/>Self-Fulfilling
-                         </div>
-                     </div>
-
-                     {/* Cycle Nodes */}
-                     <div className="w-full max-w-md h-full relative">
-                         {/* Top: Breakout */}
-                         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                             <Zap size={16} className="text-yellow-500 fill-yellow-500 mb-1" />
-                             <span className="text-xs font-bold text-slate-600 dark:text-slate-300">{t.matthew.form}</span>
-                         </div>
+                <h4 className="font-bold text-lg mb-1 text-center text-slate-900 dark:text-slate-100">{t.daily.title}</h4>
+                <p className="text-sm text-slate-500 text-center">{t.daily.desc}</p>
+            </Card>
+            
+            {/* Weekly - Dragon Saber (Tu Long Dao) */}
+            <Card highlightColor="amber" className="bg-white dark:bg-slate-900 flex flex-col h-full">
+                <div className="h-40 bg-slate-900 rounded border border-slate-700 relative mb-3 p-2 flex items-center justify-center">
+                    <svg className="w-full h-full">
+                         {/* MA30 (Green) & MA60 (Blue) Flat Bonding */}
+                         <path d="M0,80 Q100,80 200,75" stroke="#4ade80" fill="none" strokeWidth="3" />
+                         <path d="M0,82 Q100,82 200,78" stroke="#60a5fa" fill="none" strokeWidth="3" strokeDasharray="4" />
                          
-                         {/* Right: Algo/Funds */}
-                         <div className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-2 flex flex-col items-center">
-                             <Activity size={16} className="text-green-500 mb-1" />
-                             <span className="text-xs font-bold text-slate-600 dark:text-slate-300 text-center" dangerouslySetInnerHTML={{__html: t.matthew.algo.replace(' ','<br/>')}}></span>
-                         </div>
+                         {/* MA10 (Yellow) */}
+                         <path d="M0,90 Q50,90 100,85 T200,60" stroke="#fcd34d" fill="none" strokeWidth="2" />
+                         
+                         {/* MA5 (White) Golden Cross MA10 */}
+                         <path d="M0,100 Q40,95 80,75 L120,40" stroke="#fff" fill="none" strokeWidth="2" />
 
-                         {/* Bottom: Media */}
-                         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                             <Users size={16} className="text-purple-500 mb-1" />
-                             <span className="text-xs font-bold text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{__html: t.matthew.media.replace('/','<br/>')}}></span>
-                         </div>
-
-                         {/* Left: Price Up */}
-                         <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-2 flex flex-col items-center">
-                             <TrendingUp size={16} className="text-red-500 mb-1" />
-                             <span className="text-xs font-bold text-slate-600 dark:text-slate-300 text-center" dangerouslySetInnerHTML={{__html: t.matthew.price.replace(' ','<br/>')}}></span>
-                         </div>
-
-                         {/* Connecting Arrows (SVG) */}
-                         <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                             <circle cx="50%" cy="50%" r="35%" fill="none" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="20" opacity="0.1" />
-                             <path d="M50,10 Q80,10 90,40" vectorEffect="non-scaling-stroke" fill="none" className="stroke-blue-400 flow-line" strokeWidth="2" strokeDasharray="4" />
-                             {/* Simplified visual representation of flow */}
-                             <circle cx="50%" cy="50%" r="35%" fill="none" className="stroke-blue-500 flow-line" strokeWidth="1.5" strokeDasharray="5, 5" />
-                         </svg>
-                     </div>
+                         {/* Cross Point */}
+                         <circle cx="80" cy="75" r="4" className="fill-red-500 animate-ping" />
+                         
+                         <text x="120" y="30" className="fill-amber-400 text-xs font-bold font-mono">{t.weekly.labels.saber}</text>
+                         <text x="130" y="70" className="fill-green-400 text-[10px] font-mono">{t.weekly.labels.bond}</text>
+                    </svg>
                 </div>
-                <p className="text-lg font-medium text-slate-700 dark:text-slate-300 mt-3 text-center">
-                    {t.matthew.desc}
-                </p>
+                <h4 className="font-bold text-lg mb-1 text-center text-slate-900 dark:text-slate-100">{t.weekly.title}</h4>
+                <p className="text-sm text-slate-500 text-center">{t.weekly.desc}</p>
+            </Card>
+
+            {/* Monthly - 30M Break & Retest */}
+            <Card highlightColor="red" className="bg-white dark:bg-slate-900 flex flex-col h-full">
+                <div className="h-40 bg-slate-900 rounded border border-slate-700 relative mb-3 p-2 flex items-center justify-center">
+                    <svg className="w-full h-full" viewBox="0 0 200 120">
+                         {/* MA30 (30-Month Line) - Curved Up */}
+                         <path d="M10,90 Q100,80 190,60" stroke="#facc15" fill="none" strokeWidth="2" />
+                         <text x="150" y="55" className="fill-yellow-400 text-[10px] font-mono font-bold">{t.monthly.labels.ma30}</text>
+                         
+                         {/* Candle 1: Breakout (Red) */}
+                         <rect x="60" y="50" width="12" height="50" className="fill-red-600 stroke-red-400" />
+                         <text x="60" y="40" className="fill-red-400 text-[9px] font-mono">{t.monthly.labels.break}</text>
+
+                         {/* Candle 2: Retest (Small Green/Red) sitting on line */}
+                         <rect x="90" y="70" width="12" height="15" className="fill-red-600 stroke-red-400" />
+                         <line x1="96" y1="85" x2="96" y2="88" className="stroke-red-400" /> {/* Lower Shadow touching line */}
+                         
+                         {/* Launch Arrow */}
+                         <path d="M110,80 L130,40" stroke="#4ade80" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                         <text x="110" y="95" className="fill-green-400 text-[10px] font-bold">{t.monthly.labels.retest}</text>
+                         <text x="135" y="35" className="fill-green-400 text-xs font-bold animate-pulse">{t.monthly.labels.launch}</text>
+                    </svg>
+                </div>
+                <h4 className="font-bold text-lg mb-1 text-center text-slate-900 dark:text-slate-100">{t.monthly.title}</h4>
+                <p className="text-sm text-slate-500 text-center">{t.monthly.desc}</p>
             </Card>
         </div>
     );
 };
 
+// --- 13. System Evolution ---
 export const SystemEvolution: React.FC<{ lang: Lang }> = ({ lang }) => {
     const t = {
-        title: lang === 'zh' ? '线性系统 vs 斐波那契系统' : 'Linear vs Fibonacci System',
-        subtitle: lang === 'zh' ? '市场共识与自然法则的较量' : 'Market Consensus vs Natural Law',
-        linear: lang === 'zh' ? '传统线性 (30/60)' : 'Traditional (30/60)',
-        fibo: lang === 'zh' ? '斐波那契 (34/55)' : 'Fibonacci (34/55)',
-        fake: lang === 'zh' ? '骗线击穿' : 'Fake Breakdown',
-        support: lang === 'zh' ? '精准支撑' : 'Precise Support',
-        a_title: lang === 'zh' ? 'A. 传统线性系统 (MA 5/10/20/30/60)' : 'A. Linear System (MA 5/10/20/30/60)',
-        a_pro: lang === 'zh' ? '优势：全市场90%散户使用，共识度高，心理支撑强。' : 'Pro: Used by 90% retail. High consensus.',
-        a_con: lang === 'zh' ? '劣势：极易被量化算法针对。主力常刻意瞬间击穿30日线制造恐慌（洗盘），随后拉起。' : 'Con: Targeted by algos. Often fake breakdowns.',
-        b_title: lang === 'zh' ? 'B. 斐波那契系统 (MA 13/21/34/55/89)' : 'B. Fibonacci System (MA 13/21/34/55/89)',
-        b_pro: lang === 'zh' ? '优势：贴合自然波动法则。55日线往往比60日线提前5天反应，能捕捉到主力在防守位的“偷跑”买点。' : 'Pro: Natural law. MA55 reacts earlier than MA60. Catch "front-run" entries.',
-        b_con: lang === 'zh' ? '劣势：若个股缺乏主力控盘，可能因缺乏群体性共振而失效。' : 'Con: May fail if stock lacks strong MM control due to lower consensus.'
+        noise: {
+            title: lang === 'zh' ? '算法噪音与“骗线” (Bear Trap)' : 'Algo Noise & Bear Trap',
+            desc: lang === 'zh' ? '量化算法制造瞬间跌破均线（绿色诱空），随后迅速拉起（红色诱多）。' : 'Algos fake breakdown (Green), then rally (Red).',
+            action: lang === 'zh' ? '应对：收盘确认 / 3日原则' : 'Action: Close Confirm / 3-Day Rule',
+            labels: {
+                trap: lang === 'zh' ? '诱空陷阱' : 'Bear Trap',
+                support: lang === 'zh' ? '关键支撑' : 'Support',
+                recover: lang === 'zh' ? 'V型反转' : 'V-Recovery'
+            }
+        },
+        fib: {
+            title: lang === 'zh' ? '斐波那契与自适应均线' : 'Fibonacci & Adaptive MA',
+            desc: lang === 'zh' ? '使用 13, 21, 34, 55 (Fib) 数列替代传统参数，形成动态支撑网。' : 'Use Fib sequence (13, 21, 34, 55) as dynamic support net.',
+            adv: lang === 'zh' ? '捕捉隐秘支撑' : 'Catch Hidden Support',
+            labels: {
+                net: lang === 'zh' ? 'Fib支撑网' : 'Fib Net',
+                touch: lang === 'zh' ? '精准回踩' : 'Touch'
+            },
+            benefits_title: lang === 'zh' ? '核心优势' : 'Core Benefits',
+            benefits: lang === 'zh' 
+                ? ['1. 过滤横盘噪音 (自适应平滑)', '2. 捕捉隐秘的自然支撑位 (非整数关口)', '3. 抢在传统均线派发前离场']
+                : ['1. Filter sideways noise (Adaptive)', '2. Catch hidden natural support levels', '3. Exit before standard MA herd']
+        }
     };
 
     return (
-        <Card highlightColor="indigo">
-            <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-4">
-                <div>
-                    <h4 className="font-bold text-xl text-indigo-900 dark:text-indigo-200 flex items-center gap-2"><Activity size={20}/> {t.title}</h4>
-                    <p className="text-slate-500 dark:text-slate-400 text-base mt-1">{t.subtitle}</p>
-                </div>
-                <div className="flex gap-2">
-                    <Tag color="slate">MA 5/10/20/30/60</Tag>
-                    <Tag color="amber">MA 13/21/34/55/89</Tag>
-                </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <style>{`
+                @keyframes trap-drop-v {
+                    0% { height: 10px; y: 80px; fill: #22c55e; }
+                    40% { height: 50px; y: 80px; fill: #22c55e; } 
+                    100% { height: 50px; y: 80px; fill: #22c55e; }
+                }
+                @keyframes trap-recover-v {
+                    0% { height: 0px; y: 130px; fill: #ef4444; opacity: 0; }
+                    50% { height: 0px; y: 130px; fill: #ef4444; opacity: 0; }
+                    100% { height: 80px; y: 50px; fill: #ef4444; opacity: 1; }
+                }
+                .anim-candle-drop { animation: trap-drop-v 4s infinite; }
+                .anim-candle-rise { animation: trap-recover-v 4s infinite; }
+            `}</style>
 
-            <div className="flex flex-col md:flex-row gap-8 items-center">
-                <div className="w-full md:w-1/2 bg-slate-50 dark:bg-slate-900 rounded p-4 border border-slate-100 dark:border-slate-800 h-48 relative transition-colors duration-300">
-                    <div className="absolute top-2 left-2 text-xs font-bold text-slate-500 dark:text-slate-500">{t.linear}</div>
-                    <path d="M10,80 C100,80 200,80 300,80" className="stroke-slate-400 dark:stroke-slate-600 block" strokeWidth="2" strokeDasharray="4" fill="none" />
-                    <path d="M10,60 L50,70 L100,90 L150,75 L200,50" className="stroke-slate-900 dark:stroke-slate-100 block" strokeWidth="1.5" fill="none" />
-                    <circle cx="100" cy="90" r="4" fill="red" className="block" />
-                    <text x="100" y="110" fontSize="12" fill="red" textAnchor="middle" className="font-bold">{t.fake}</text>
-
-                    <div className="absolute bottom-2 right-2 text-xs font-bold text-amber-600 dark:text-amber-400">{t.fibo}</div>
-                    <svg viewBox="0 0 320 160" className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                         <path d="M10,140 C100,135 200,130 300,120" className="stroke-amber-500" strokeWidth="2" fill="none" />
-                         <path d="M10,120 L50,130 L100,138 L150,110" className="stroke-slate-900 dark:stroke-slate-100" strokeWidth="1.5" fill="none" opacity="0.5" />
-                         <circle cx="100" cy="138" r="4" className="fill-green-600" />
-                         <text x="100" y="155" fontSize="12" className="fill-green-600 font-bold" textAnchor="middle">{t.support}</text>
-                    </svg>
+            {/* Algo Noise / Bear Trap Visualization */}
+            <Card highlightColor="green" className="bg-white dark:bg-slate-900">
+                <div className="flex items-center gap-2 mb-3">
+                    <Cpu size={20} className="text-green-600"/>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.noise.title}</h4>
                 </div>
+                <div className="h-48 bg-slate-900 rounded border border-slate-700 relative p-4 flex items-center justify-center overflow-hidden">
+                     <svg className="w-full h-full" viewBox="0 0 200 150">
+                         {/* Support Line */}
+                         <line x1="10" y1="80" x2="190" y2="80" className="stroke-slate-400" strokeWidth="2" strokeDasharray="5,5" />
+                         <text x="15" y="75" className="fill-slate-500 text-[10px] font-bold uppercase">{t.noise.labels.support}</text>
 
-                <div className="w-full md:w-1/2 space-y-4">
-                    <div>
-                        <h5 className="font-bold text-slate-700 dark:text-slate-300 text-lg mb-1">{t.a_title}</h5>
-                        <p className="text-base font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
-                            {t.a_pro}<br />
-                            {t.a_con}
-                        </p>
-                    </div>
-                    <div>
-                        <h5 className="font-bold text-amber-700 dark:text-amber-400 text-lg mb-1">{t.b_title}</h5>
-                        <p className="text-base font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
-                            {t.b_pro}<br />
-                            {t.b_con}
-                        </p>
-                    </div>
+                         {/* Candles Sequence */}
+                         <g transform="translate(40,0)">
+                             {/* 1. Normal Volatility */}
+                             <rect x="0" y="60" width="10" height="20" className="fill-red-500" />
+                             <line x1="5" y1="55" x2="5" y2="85" className="stroke-red-500" strokeWidth="1" />
+
+                             <rect x="20" y="70" width="10" height="10" className="fill-green-500" />
+                             
+                             {/* 2. The Trap (Green Drop) */}
+                             <rect x="40" y="80" width="12" height="40" className="fill-green-500 anim-candle-drop" />
+                             <text x="46" y="135" className="fill-green-400 text-[10px] font-bold" textAnchor="middle">{t.noise.labels.trap}</text>
+
+                             {/* 3. The Recovery (Red Rise) */}
+                             <rect x="60" y="50" width="12" height="80" className="fill-red-600 anim-candle-rise" />
+                             <text x="66" y="45" className="fill-red-400 text-[10px] font-bold" textAnchor="middle">{t.noise.labels.recover}</text>
+
+                             {/* 4. Follow through */}
+                             <rect x="80" y="40" width="10" height="20" className="fill-red-500 opacity-50" />
+                         </g>
+                     </svg>
                 </div>
-            </div>
-        </Card>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-2">{t.noise.desc}</p>
+            </Card>
+
+            {/* Fibonacci Visualization */}
+            <Card highlightColor="amber" className="bg-white dark:bg-slate-900">
+                <div className="flex items-center gap-2 mb-3">
+                    <Sliders size={20} className="text-amber-600"/>
+                    <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.fib.title}</h4>
+                </div>
+                <div className="h-48 bg-slate-900 rounded border border-slate-700 relative p-4 overflow-hidden mb-3">
+                     <svg className="w-full h-full" viewBox="0 0 250 150">
+                         {/* Price Action Curve */}
+                         <path d="M0,120 C50,110 80,130 120,80 S200,40 250,20" fill="none" className="stroke-white" strokeWidth="2" />
+                         <circle cx="120" cy="80" r="3" className="fill-white animate-ping" />
+                         
+                         {/* Fibonacci Net */}
+                         <g className="opacity-80">
+                             {/* Fib 13 */}
+                             <path d="M0,125 C50,115 80,125 120,85 S200,35 250,15" fill="none" className="stroke-amber-300" strokeWidth="1" />
+                             <text x="220" y="15" className="fill-amber-300 text-[9px] font-mono">13</text>
+
+                             {/* Fib 21 */}
+                             <path d="M0,130 C50,120 80,135 120,95 S200,50 250,30" fill="none" className="stroke-amber-400" strokeWidth="1" />
+                             <text x="220" y="30" className="fill-amber-400 text-[9px] font-mono">21</text>
+                             
+                             {/* Fib 34 */}
+                             <path d="M0,135 C50,125 80,140 120,105 S200,65 250,50" fill="none" className="stroke-amber-500" strokeWidth="1" />
+                             <text x="220" y="50" className="fill-amber-500 text-[9px] font-mono">34</text>
+                             
+                             {/* Fib 55 */}
+                             <path d="M0,140 C50,130 80,145 120,115 S200,80 250,70" fill="none" className="stroke-amber-600" strokeWidth="1.5" strokeDasharray="3,2"/>
+                             <text x="220" y="70" className="fill-amber-600 text-[9px] font-mono">55</text>
+                         </g>
+
+                         <text x="120" y="130" className="fill-amber-400 text-xs font-bold" textAnchor="middle">{t.fib.labels.net}</text>
+                         <line x1="120" y1="120" x2="120" y2="105" className="stroke-amber-400" strokeWidth="1" />
+                     </svg>
+                </div>
+                
+                {/* Benefits List */}
+                <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded border-l-2 border-amber-500">
+                    <div className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase mb-1">{t.fib.benefits_title}</div>
+                    <ul className="space-y-1">
+                        {t.fib.benefits.map((b, i) => (
+                            <li key={i} className="text-xs text-slate-700 dark:text-slate-300 font-medium flex items-start gap-1">
+                                <span className="text-amber-500">•</span> {b}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </Card>
+        </div>
     );
+};
+
+// --- 10. Market Psychology ---
+export const MarketPsychology: React.FC<{ lang: Lang }> = ({ lang }) => {
+  const t = {
+    title: lang === 'zh' ? '市场心理学与庄家博弈分析' : 'Market Psychology & Analysis',
+    c1: { t: lang === 'zh' ? '庄家的“磨” (The Grind)' : 'The Grind', d: lang === 'zh' ? '股价极小幅度波动 (±2%)，让散户感到绝望、无聊而卖出。' : 'Tiny volatility (±2%). Retail gets bored and sells.' },
+    c2: { t: lang === 'zh' ? '散户心理误区' : 'Retail Errors', d: lang === 'zh' ? '恐惧追高 (习惯了横盘)，踏空后又在高位接盘。' : 'Fear of heights, then chasing top.' },
+    c3: { t: lang === 'zh' ? '均线开花的“马太效应”' : 'Matthew Effect of Blossom', d: lang === 'zh' ? '自我实现预言：趋势确立 -> 算法扫货 -> 媒体跟进 -> 资金推升' : 'Self-fulfilling: Trend -> Algo Buy -> Media -> Capital Influx' },
+    labels: {
+        patience: lang === 'zh' ? '散户耐心' : 'Retail Patience',
+        grind: lang === 'zh' ? '庄家持仓' : 'MM Holding',
+        fear: lang === 'zh' ? '恐惧追高' : 'Fear High',
+        chase: lang === 'zh' ? '高位接盘(鱼尾)' : 'Chase Top',
+    },
+    matthew_steps: lang === 'zh' ? [
+        { t: '趋势交易者', d: '看到突破，入场买入', i: TrendingUp, c: 'text-blue-500', b: 'bg-blue-100 dark:bg-blue-900/30' },
+        { t: '量化基金', d: '识别动量，算法扫货', i: Cpu, c: 'text-green-500', b: 'bg-green-100 dark:bg-green-900/30' },
+        { t: '媒体报道', d: '报道强势，吸引眼球', i: Megaphone, c: 'text-purple-500', b: 'bg-purple-100 dark:bg-purple-900/30' },
+        { t: '资金涌入', d: '推高股价，强化发散', i: Coins, c: 'text-amber-500', b: 'bg-amber-100 dark:bg-amber-900/30' },
+    ] : [
+        { t: 'Trend Traders', d: 'See breakout, Enter', i: TrendingUp, c: 'text-blue-500', b: 'bg-blue-100 dark:bg-blue-900/30' },
+        { t: 'Quant Funds', d: 'Detect momentum, Algo buy', i: Cpu, c: 'text-green-500', b: 'bg-green-100 dark:bg-green-900/30' },
+        { t: 'Media', d: 'Report strength, Hype', i: Megaphone, c: 'text-purple-500', b: 'bg-purple-100 dark:bg-purple-900/30' },
+        { t: 'Capital Influx', d: 'Push price, Reinforce', i: Coins, c: 'text-amber-500', b: 'bg-amber-100 dark:bg-amber-900/30' },
+    ],
+    matthew_desc: lang === 'zh' ? '这种自我实现的预言（Self-Fulfilling Prophecy）是趋势延续的内在动力。一旦五线开花形态确立，市场会产生正向反馈循环。' : 'This Self-Fulfilling Prophecy is the internal drive of trend continuation. Once established, a positive feedback loop is created.'
+  };
+
+  return (
+    <div className="space-y-6">
+        <style>{`
+            @keyframes battery-drain {
+                0% { width: 100%; fill: #22c55e; }
+                50% { width: 50%; fill: #eab308; }
+                100% { width: 10%; fill: #ef4444; }
+            }
+            .anim-battery { animation: battery-drain 4s linear infinite; }
+            
+            @keyframes flow-arrow {
+                0% { opacity: 0.2; transform: translateX(-5px); }
+                50% { opacity: 1; transform: translateX(0); }
+                100% { opacity: 0.2; transform: translateX(5px); }
+            }
+            .anim-flow-arrow { animation: flow-arrow 1.5s ease-in-out infinite; }
+            
+            @keyframes card-pulse {
+                0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+                50% { transform: scale(1.02); box-shadow: 0 0 10px 0 rgba(59, 130, 246, 0.2); }
+                100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+            }
+            .anim-step-1 { animation: card-pulse 2s infinite; animation-delay: 0s; }
+            .anim-step-2 { animation: card-pulse 2s infinite; animation-delay: 0.5s; }
+            .anim-step-3 { animation: card-pulse 2s infinite; animation-delay: 1s; }
+            .anim-step-4 { animation: card-pulse 2s infinite; animation-delay: 1.5s; }
+        `}</style>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             {/* The Grind */}
+             <Card highlightColor="slate" className="bg-white dark:bg-slate-900">
+                 <div className="flex items-center gap-2 mb-3">
+                     <Brain size={20} className="text-slate-600"/>
+                     <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.c1.t}</h4>
+                 </div>
+                 <div className="h-32 bg-slate-50 dark:bg-slate-800 rounded relative mb-3 p-4 flex flex-col justify-end">
+                      <div className="absolute top-2 right-2 text-xs text-slate-400">Time: Weeks/Months</div>
+                      
+                      {/* Price Flat Line */}
+                      <svg className="w-full h-12 mb-4 overflow-visible">
+                          <path d="M0,10 Q20,15 40,10 T80,10 T120,10 T160,10 T200,10" fill="none" className="stroke-slate-400 stroke-2" />
+                      </svg>
+                      
+                      {/* Patience Battery */}
+                      <div className="flex items-center gap-2">
+                           <span className="text-xs font-bold text-slate-500">{t.labels.patience}</span>
+                           <div className="w-24 h-4 border border-slate-300 rounded relative">
+                               <div className="h-full bg-green-500 anim-battery"></div>
+                           </div>
+                      </div>
+                      <div className="absolute right-10 bottom-4 text-xs font-bold text-slate-400">{t.labels.grind}</div>
+                      <div className="absolute right-10 bottom-8 w-8 h-4 bg-red-300 rounded"></div>
+                 </div>
+                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">● {t.c1.d}</p>
+             </Card>
+
+             {/* Retail Errors */}
+             <Card highlightColor="red" className="bg-white dark:bg-slate-900">
+                 <div className="flex items-center gap-2 mb-3">
+                     <Users size={20} className="text-red-500"/>
+                     <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.c2.t}</h4>
+                 </div>
+                 <div className="h-32 bg-slate-50 dark:bg-slate-800 rounded relative mb-3 p-4 flex items-center justify-center">
+                      <svg className="w-full h-full overflow-visible">
+                           {/* Price surging */}
+                           <path d="M20,80 L60,40 L90,60 L140,20 L180,15" fill="none" className="stroke-red-500 stroke-2" />
+                           
+                           {/* Points */}
+                           <circle cx="60" cy="40" r="3" className="fill-slate-500" />
+                           <text x="60" y="30" fontSize="10" className="fill-slate-500" textAnchor="middle">{t.labels.fear}</text>
+                           
+                           <circle cx="180" cy="15" r="4" className="fill-red-600 animate-ping" />
+                           <text x="180" y="45" fontSize="10" className="fill-red-600 font-bold" textAnchor="middle">{t.labels.chase}</text>
+                           
+                           <path d="M90,60 L120,80" stroke="#94a3b8" strokeDasharray="2" />
+                           <text x="120" y="90" fontSize="10" fill="#94a3b8">Phantom Dip (Missed)</text>
+                      </svg>
+                 </div>
+                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">● {t.c2.d}</p>
+             </Card>
+        </div>
+
+        {/* Matthew Effect - Redesigned as Pipeline */}
+        <Card highlightColor="blue" className="bg-white dark:bg-slate-900 w-full">
+             <div className="flex items-center gap-2 mb-4">
+                 <RefreshCw size={20} className="text-blue-500"/>
+                 <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.c3.t}</h4>
+             </div>
+             
+             {/* Linear Pipeline Visualization */}
+             <div className="flex flex-col md:flex-row gap-2 items-stretch md:items-center justify-between mb-6 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                 {t.matthew_steps.map((step, i) => (
+                     <React.Fragment key={i}>
+                         <div className={`flex-1 flex flex-col items-center text-center p-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 shadow-sm relative z-10 anim-step-${i+1}`}>
+                             <div className={`p-2 rounded-full ${step.b} ${step.c} mb-2`}>
+                                 <step.i size={20} />
+                             </div>
+                             <div className="text-sm font-bold text-slate-800 dark:text-slate-200">{step.t}</div>
+                             <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-tight">{step.d}</div>
+                             <div className="absolute -top-2 -right-2 w-5 h-5 bg-slate-200 dark:bg-slate-700 rounded-full text-[10px] flex items-center justify-center font-bold text-slate-500 border border-white dark:border-slate-600">
+                                 {i+1}
+                             </div>
+                         </div>
+                         {i < t.matthew_steps.length - 1 && (
+                             <div className="flex items-center justify-center py-2 md:py-0">
+                                 <ArrowRight size={20} className="text-slate-400 dark:text-slate-500 rotate-90 md:rotate-0 anim-flow-arrow" />
+                             </div>
+                         )}
+                     </React.Fragment>
+                 ))}
+             </div>
+
+             {/* Detailed Description */}
+             <div className="p-4 bg-blue-50 dark:bg-blue-900/10 rounded border-l-4 border-blue-500">
+                 <div className="flex items-start gap-3">
+                     <Zap size={24} className="text-blue-600 dark:text-blue-400 shrink-0 mt-1" />
+                     <div>
+                         <h5 className="font-bold text-blue-800 dark:text-blue-300 text-sm uppercase tracking-wider mb-1">Self-Fulfilling Prophecy</h5>
+                         <p className="text-base font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                             {t.matthew_desc}
+                         </p>
+                     </div>
+                 </div>
+             </div>
+        </Card>
+    </div>
+  );
 };

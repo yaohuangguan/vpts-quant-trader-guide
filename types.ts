@@ -12,5 +12,5 @@ export interface SectionProps {
 export interface CardProps {
   children: React.ReactNode;
   className?: string;
-  highlightColor?: 'blue' | 'red' | 'green' | 'yellow' | 'purple' | 'indigo' | 'pink' | 'teal' | 'amber' | 'slate';
+  highlightColor?: 'blue' | 'red' | 'green' | 'yellow' | 'purple' | 'indigo' | 'pink' | 'teal' | 'amber' | 'slate' | 'fuchsia' | 'cyan';
 }
