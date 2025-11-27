@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Section } from './components/Section';
 import { Introduction } from './components/Introduction';
 import { CorePatternChart } from './components/CorePatternChart';
@@ -17,8 +17,99 @@ import { DisciplineSystem } from './components/DisciplineRoutine';
 import { ChaosOrder } from './components/ChaosOrder';
 import { Assessment } from './components/Assessment';
 import { TechnicalTruth } from './components/TechnicalTruth';
-import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User } from 'lucide-react';
+import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User, Wind, Film, ShoppingBag, Cpu, TrendingUp } from 'lucide-react';
 import { Lang } from './types';
+
+// --- Custom Logo Component with 3D Tilt Interaction ---
+const RolyPolyLogo = () => {
+  const [transform, setTransform] = useState("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)");
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Calculate position relative to center (-1 to 1)
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Logic: "Depress" where mouse is.
+    // If mouse is top (y < center), rotateX should be positive (top goes back).
+    // If mouse is right (x > center), rotateY should be negative (right goes back - verify coordinate system).
+    // Standard CSS: rotateY(90deg) moves right side away. So positive rotateY moves right side into screen.
+    // We want the side under mouse to go INTO screen.
+    
+    const rotateX = ((y - centerY) / centerY) * -25; // Invert Y for correct tilt feel
+    const rotateY = ((x - centerX) / centerX) * 25;
+
+    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`);
+  };
+
+  const handleMouseLeave = () => {
+    setTransform("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)");
+  };
+
+  return (
+    <div 
+        ref={containerRef}
+        className="group relative w-20 h-20 cursor-pointer transition-transform duration-200 ease-out"
+        style={{ transform, transformStyle: 'preserve-3d' }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+    >
+      {/* Container: Respects Theme (White in Light, Dark in Dark) */}
+      <div className="logo-content w-full h-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+        <svg viewBox="0 0 100 100" className="w-full h-full">
+          {/* Layer 1: Background K-Line Chart (More Obvious) */}
+          <g className="opacity-80">
+             {/* Grid */}
+             <line x1="10" y1="25" x2="90" y2="25" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="0.5" />
+             <line x1="10" y1="50" x2="90" y2="50" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="0.5" />
+             <line x1="10" y1="75" x2="90" y2="75" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="0.5" />
+             
+             {/* Candles */}
+             <rect x="20" y="40" width="8" height="20" className="fill-green-500" />
+             <line x1="24" y1="35" x2="24" y2="65" className="stroke-green-500" strokeWidth="1" />
+             
+             <rect x="35" y="30" width="8" height="30" className="fill-red-500" />
+             <line x1="39" y1="25" x2="39" y2="65" className="stroke-red-500" strokeWidth="1" />
+             
+             <rect x="50" y="50" width="8" height="15" className="fill-green-500" />
+             
+             <rect x="65" y="20" width="8" height="40" className="fill-red-500" />
+             <line x1="69" y1="15" x2="69" y2="65" className="stroke-red-500" strokeWidth="1" />
+             
+             {/* MAs - Stronger Colors */}
+             <path d="M10,80 Q50,70 90,40" fill="none" className="stroke-red-500" strokeWidth="2" />
+             <path d="M10,70 Q50,60 90,30" fill="none" className="stroke-green-500" strokeWidth="2" />
+          </g>
+
+          {/* Layer 2: Yellow Lightning Bolt (Vibrant) */}
+          <g transform="translate(5, 5) scale(0.9)" style={{filter: 'drop-shadow(0px 4px 4px rgba(0,0,0,0.3))'}}>
+             <filter id="bolt-glow">
+                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+             </filter>
+             <path 
+                d="M55,10 L30,55 L50,55 L40,90 L75,35 L55,35 Z" 
+                fill="#facc15" 
+                stroke="#b45309" 
+                strokeWidth="2" 
+                strokeLinejoin="round"
+                filter="url(#bolt-glow)"
+             />
+          </g>
+        </svg>
+      </div>
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -54,16 +145,16 @@ const App: React.FC = () => {
         sec_10: "市场心理学与庄家博弈分析",
         sec_11: "交易心理的生物学与神经科学基础",
         sec_12: "惜售心理的神经生物学机制——“行”的生理障碍",
-        sec_13: "心态管理的核心框架与深度解析",
+        sec_13: "思维框架：概率思维与情绪阻断",
         sec_14: "纪律的实操：常规、日志与系统",
         sec_15: "系统演进：五线开花在算法交易时代的演变",
         sec_16: "综合战法与阿尔法选股器 (Strategy & Screener)",
-        sec_17: "买卖止盈止损交易策略",
-        sec_18: "量化与技术分析的客观真理——“知”的数学基础",
-        sec_19: "知行合一的哲学与心理重构——思想的武器",
-        sec_20: "典型案例复盘与深度解析",
-        sec_21: "资金管理与心理博弈 (Capital & Psychology)",
-        sec_22: "结语：在混沌中寻找秩序",
+        sec_17: "典型案例复盘与深度解析",
+        sec_18: "资金管理与心理博弈 (Capital & Psychology)",
+        sec_19: "买卖止盈止损交易策略",
+        sec_20: "量化与技术分析的客观真理——“知”的数学基础",
+        sec_21: "知行合一的哲学与心理重构——思想的武器",
+        sec_22: "在混沌中寻找秩序",
         sec_23: "最终考核：交易员认证测试",
         one_yang: {
             title: "一阳多线：四大强度判定标准 (判定胜负手)",
@@ -73,6 +164,17 @@ const App: React.FC = () => {
                 { t: "中轴穿线", c: "五线汇聚点最好位于大阳线实体的正中间（中轴线）。这意味着多空成本在日内完成彻底交换，阳线实体充当了撬动行情的“杠杆支点”。" },
                 { t: "多头排列", c: "一阳穿线只是开始。爆发后3-5天内，股价不应回补阳线实体一半以下，且均线系统必须迅速形成标准多头排列 (5>10>20>30>60)。" }
             ]
+        },
+        wind: {
+            title: "风口，天时地利人和：最强驱动力",
+            desc: "只有有了利好消息和天时，才能大大增加成功率。技术形态是干柴，板块风口是烈火。",
+            items: [
+                { t: "Q4 年底", c: "传媒娱乐", i: Film },
+                { t: "春节前夕", c: "消费/旅游", i: ShoppingBag },
+                { t: "年中 (6-7月)", c: "硬核科技", i: Cpu },
+                { t: "大盘突破时", c: "金融科技", i: TrendingUp }
+            ],
+            conclusion: "在大的时间背景下（天时），叠加五线极致粘合（地利）与筹码高度集中（人和），多头排列才更有爆发力和持续性。"
         },
         footer: "© 2025 Quant Model Research. 最终解释权由金沐资本及Baiyang Yao姚柏杨所有."
     },
@@ -97,15 +199,15 @@ const App: React.FC = () => {
         sec_10: "Market Psychology & Market Maker Game Theory",
         sec_11: "Biology & Neuroscience Foundation of Trading Psychology",
         sec_12: "Neurobiology of Reluctance to Sell: Barriers to 'Action'",
-        sec_13: "Mindset Management Framework & Deep Analysis",
+        sec_13: "Mindset Framework: Probabilistic Thinking & Emotional Blocking",
         sec_14: "Discipline in Practice: Routine, Journaling & Systems",
         sec_15: "System Evolution: Blossom in Algorithmic Age",
         sec_16: "Comprehensive Strategy & Alpha Screener",
-        sec_17: "Buy/Sell/Stop/Profit Trading Strategies",
-        sec_18: "Objective Truth of Quant & Technical Analysis",
-        sec_19: "Philosophy & Psychology Reconstruction: Unity of Knowledge & Action",
-        sec_20: "Typical Case Study Review & Deep Analysis",
-        sec_21: "Capital Management & Psychology",
+        sec_17: "Typical Case Study Review & Deep Analysis",
+        sec_18: "Capital Management & Psychology",
+        sec_19: "Buy/Sell/Stop/Profit Trading Strategies",
+        sec_20: "Objective Truth of Quant & Technical Analysis",
+        sec_21: "Philosophy & Psychology Reconstruction: Unity of Knowledge & Action",
         sec_22: "Conclusion: Finding Order in Chaos",
         sec_23: "Final Assessment: Trader Certification",
         one_yang: {
@@ -117,6 +219,17 @@ const App: React.FC = () => {
                 { t: "Bullish Arrangement", c: "Within 3-5 days after breakout, price shouldn't retrace >50% of the candle. MAs must form bullish alignment (5>10>20>30>60)." }
             ]
         },
+        wind: {
+            title: "Wind Gap & Timing: The Ultimate Driver",
+            desc: "Only with favorable news and timing can success rates increase. Technicals are the wood; Sector Momentum is the fire.",
+            items: [
+                { t: "Q4 / Year End", c: "Media & Ent", i: Film },
+                { t: "Pre-CNY", c: "Food/Travel", i: ShoppingBag },
+                { t: "Mid-Year", c: "Hard Tech", i: Cpu },
+                { t: "Index Breakout", c: "Fintech", i: TrendingUp }
+            ],
+            conclusion: "Under the grand context (Timing), superimposed with extreme MA adhesion (Location) and high chip concentration (Harmony), creates the most explosive trend."
+        },
         footer: "© 2025 Quant Model Research. All rights reserved by Jinmu Capital & Baiyang Yao."
     }
   };
@@ -127,7 +240,6 @@ const App: React.FC = () => {
     <div className="min-h-screen relative overflow-hidden">
       {/* 
         Global Background Layer (Fixed)
-        Placing this separately from the main content to ensure z-index stacking works correctly.
       */}
       <div className="fixed inset-0 z-0 pointer-events-none">
           {/* Base Solid Color */}
@@ -144,7 +256,7 @@ const App: React.FC = () => {
               <div className="absolute top-[40%] -right-[10%] w-[50%] h-[70%] bg-indigo-100/50 rounded-full blur-[120px] animate-pulse-slow" style={{animationDelay: '2s'}}></div>
           </div>
 
-          {/* Universal Particles (Visible in both modes) */}
+          {/* Universal Particles */}
           <div className="absolute inset-0">
              {[...Array(30)].map((_, i) => (
                  <div 
@@ -181,7 +293,13 @@ const App: React.FC = () => {
       {/* Main Content (Scrollable) */}
       <div className="relative z-10">
         <header className="relative text-center pt-16 pb-16 px-6 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm mb-12 transition-colors duration-300">
-            <div className="absolute top-6 right-6 flex gap-3">
+            {/* Logo Left - With 3D Tilt */}
+            <div className="absolute top-6 left-6 z-50">
+                <RolyPolyLogo />
+            </div>
+
+            {/* Controls Right */}
+            <div className="absolute top-6 right-6 flex gap-3 z-50">
                 <button 
                     onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
                     className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1 text-sm font-bold shadow-sm"
@@ -198,7 +316,7 @@ const App: React.FC = () => {
                 </button>
             </div>
 
-            <div className="inline-block bg-blue-600 text-white text-lg font-bold px-6 py-2 rounded-full mb-6 shadow-lg tracking-wide transform hover:scale-105 transition-transform">
+            <div className="inline-block bg-blue-600 text-white text-lg font-bold px-6 py-2 rounded-full mb-6 shadow-lg tracking-wide transform hover:scale-105 transition-transform mt-4 md:mt-0">
             {t.header_badge}
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-6 leading-tight drop-shadow-sm">
@@ -268,6 +386,36 @@ const App: React.FC = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+
+                {/* Market Sentiment / Wind Gap */}
+                <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-6 transition-colors duration-300">
+                    <h4 className="text-indigo-800 dark:text-indigo-400 font-bold mb-4 flex items-center gap-2 text-xl">
+                        <div className="bg-indigo-100 dark:bg-indigo-900/40 p-1 rounded">
+                            <Wind className="w-6 h-6" />
+                        </div>
+                        {t.wind.title}
+                    </h4>
+                    
+                    <p className="text-slate-700 dark:text-slate-300 font-medium mb-6 leading-relaxed">
+                        {t.wind.desc}
+                    </p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        {t.wind.items.map((item, i) => (
+                            <div key={i} className="bg-white dark:bg-slate-800 p-4 rounded border border-indigo-100 dark:border-indigo-700/50 flex flex-col items-center text-center shadow-sm transition-transform hover:scale-105">
+                                <div className="text-indigo-500 mb-2">
+                                    <item.i size={24} />
+                                </div>
+                                <div className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">{item.t}</div>
+                                <div className="text-base font-bold text-slate-800 dark:text-slate-200">{item.c}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="bg-indigo-100 dark:bg-indigo-900/40 p-4 rounded border-l-4 border-indigo-500 text-indigo-900 dark:text-indigo-200 font-medium italic text-sm md:text-base">
+                        {t.wind.conclusion}
                     </div>
                 </div>
             </Section>
@@ -343,27 +491,27 @@ const App: React.FC = () => {
             </Section>
 
             {/* 17. Case Studies (Moved from 20) */}
-            <Section number="17" title={t.sec_20}>
+            <Section number="17" title={t.sec_17}>
                 <CaseStudies lang={lang} />
             </Section>
             
             {/* 18. Capital & Psychology (Moved from 21) */}
-            <Section number="18" title={t.sec_21}>
+            <Section number="18" title={t.sec_18}>
                 <CapitalPsychology lang={lang} />
             </Section>
 
             {/* 19. Risk Management -> RULES (Old 17) */}
-            <Section number="19" title={t.sec_17}>
+            <Section number="19" title={t.sec_19}>
                 <RiskManagement lang={lang} />
             </Section>
 
             {/* 20. Technical Truth (Old 18) */}
-            <Section number="20" title={t.sec_18}>
+            <Section number="20" title={t.sec_20}>
                 <TechnicalTruth lang={lang} />
             </Section>
 
             {/* 21. Philosophy Reconstruction (Old 19) */}
-            <Section number="21" title={t.sec_19}>
+            <Section number="21" title={t.sec_21}>
                 <PhilosophyReconstruction lang={lang} />
             </Section>
 
