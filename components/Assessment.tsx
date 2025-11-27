@@ -125,247 +125,267 @@ const Fireworks: React.FC = () => {
 };
 
 
-// --- Round 1: Foundation (Broad Coverage) ---
+// --- Round 1: Foundation & New Concepts ---
 const getSet1 = (lang: Lang): Question[] => [
+    // 1. Core Concept
     {
       id: 1, type: 'concept',
-      q: lang === 'zh' ? '五线开花的核心本质是什么？' : 'Core essence of Five-Line Blossom?',
+      q: lang === 'zh' ? '五线开花的核心物理学本质是什么？' : 'Core physics essence of Five-Line Blossom?',
       options: [
-        lang === 'zh' ? '神奇预测算法' : 'Magic algorithm',
-        lang === 'zh' ? '均线金叉交易' : 'Golden Cross trading',
-        lang === 'zh' ? '成本趋同（低熵）导致的能量爆发' : 'Energy burst from cost convergence',
-        lang === 'zh' ? '内幕跟庄' : 'Insider following'
+        lang === 'zh' ? '神奇的预测' : 'Prediction',
+        lang === 'zh' ? '成本趋同（低熵）导致的能量守恒爆发' : 'Energy burst from cost convergence (Low Entropy)',
+        lang === 'zh' ? '庄家画图' : 'MM Drawing',
+        lang === 'zh' ? '内幕消息' : 'Insider Info'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '均线粘合代表市场各周期持仓成本一致，方差趋于0，是能量压缩的极限。' : 'Adhesion means cost consensus across cycles, variance nears 0, energy compressed.'
+    },
+    // 2. VP Space-Time (New)
+    {
+      id: 2, type: 'logic',
+      q: lang === 'zh' ? '在量价时空分析中，“量缩价涨”通常意味着？' : 'In VP Analysis, "Vol Down, Price Up" usually means?',
+      options: [
+        lang === 'zh' ? '买盘不足，即将下跌' : 'No buyers, drop soon',
+        lang === 'zh' ? '主力高度控盘（锁仓），最强势的主升浪特征' : 'High MM control (Locked), Strongest Main Wave',
+        lang === 'zh' ? '散户在买' : 'Retail buying',
+        lang === 'zh' ? '市场没有人气' : 'No popularity'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '既然价格涨了却不需要成交量，说明抛压极小，筹码被主力锁定。' : 'Price rising without volume means no selling pressure. Chips are locked by MM.'
+    },
+    // 3. Strategy: Old Duck Head (New)
+    {
+      id: 3, type: 'pattern',
+      q: lang === 'zh' ? '“老鸭头”形态中，“鸭鼻孔”处的关键特征是？' : 'Key feature of the "Nostril" in Old Duck Head?',
+      options: [
+        lang === 'zh' ? '放巨量突破' : 'Huge Vol Breakout',
+        lang === 'zh' ? '跌破MA60' : 'Break MA60',
+        lang === 'zh' ? '极致缩量（芝麻量），回踩MA60不破' : 'Extreme Low Vol (Sesame), Retest MA60 Hold',
+        lang === 'zh' ? 'MACD金叉' : 'MACD Cross'
       ],
       correct: 2,
-      explanation: lang === 'zh' ? '均线粘合代表市场各周期持仓成本一致，方差趋于0，是变盘的前兆。' : 'Adhesion means cost consensus across cycles, variance nears 0.'
+      explanation: lang === 'zh' ? '鼻孔缩量代表洗盘结束，主力并未出逃。' : 'Shrinking vol at nostril means washout complete, MM stayed.'
     },
-    {
-      id: 2, type: 'concept',
-      q: lang === 'zh' ? 'MA30在五线系统中的别称是？' : 'Alias for MA30?',
-      options: [
-        lang === 'zh' ? '生命线' : 'Life Line',
-        lang === 'zh' ? '攻击线' : 'Attack Line',
-        lang === 'zh' ? '牛熊线' : 'Bull/Bear Line',
-        lang === 'zh' ? '决策线' : 'Decision Line'
-      ],
-      correct: 0,
-      explanation: lang === 'zh' ? 'MA30被称为生命线，是波段操作的重要防守底线。' : 'MA30 is the Life Line, crucial baseline for swings.'
-    },
-    {
-      id: 3, type: 'concept',
-      q: lang === 'zh' ? '均线“粘合”的量化定义通常涉及？' : 'Quant definition of "Adhesion" involves?',
-      options: [
-        lang === 'zh' ? '均线必须完全重合' : 'MAs perfectly overlap',
-        lang === 'zh' ? '均线间极差(Spread)极小' : 'Minimal Spread between MAs',
-        lang === 'zh' ? '均线数值无限大' : 'Infinite MA values',
-        lang === 'zh' ? '只有两条均线交叉' : 'Only 2 lines cross'
-      ],
-      correct: 1,
-      explanation: lang === 'zh' ? '粘合计算的是Max(MA)-Min(MA)的离散程度。' : 'Adhesion calculates the spread/variance of MAs.'
-    },
+    // 4. Strategy: Beauty Shoulder (New)
     {
       id: 4, type: 'pattern',
-      q: lang === 'zh' ? '“地量法则”指出，在均线粘合期，成交量应该？' : 'In "Land Vol Rule", volume during adhesion should?',
+      q: lang === 'zh' ? '“美人肩”与“老鸭头”的最大区别在于？' : 'Difference between "Beauty Shoulder" & "Duck Head"?',
       options: [
-        lang === 'zh' ? '逐步放大' : 'Increase gradually',
-        lang === 'zh' ? '极度萎缩（无量）' : 'Shrink drastically (No Vol)',
-        lang === 'zh' ? '忽大忽小' : 'Volatile',
-        lang === 'zh' ? '保持巨量' : 'Stay Huge'
+        lang === 'zh' ? '美人肩更弱' : 'Shoulder is weaker',
+        lang === 'zh' ? '美人肩不回踩MA60，在高位缩量盘整（拒绝深跌）' : 'Shoulder refuses deep drop (No MA60 touch), tight high consolidation',
+        lang === 'zh' ? '美人肩成交量更大' : 'Shoulder has more vol',
+        lang === 'zh' ? '没有区别' : 'No difference'
       ],
       correct: 1,
-      explanation: lang === 'zh' ? '无量不成结。缩量代表抛压枯竭，市场进入静默期。' : 'Shrinkage means selling exhaustion and market silence.'
+      explanation: lang === 'zh' ? '美人肩是极强势的上升中继，主力甚至不愿意给散户低位回补的机会。' : 'Beauty Shoulder is ultra-strong relay. MM refuses to give cheap chips.'
     },
+    // 5. Candle Pattern (New)
     {
       id: 5, type: 'pattern',
+      q: lang === 'zh' ? '高位出现“射击之星”（长上影线），预示着？' : '"Shooting Star" at high level signals?',
+      options: [
+        lang === 'zh' ? '仙人指路 (看涨)' : 'Bullish Guide',
+        lang === 'zh' ? '多头进攻受阻，空头反扑 (看跌)' : 'Bulls rejected, Bears counter (Bearish)',
+        lang === 'zh' ? '中继形态' : 'Relay',
+        lang === 'zh' ? '底部确认' : 'Bottom Confirmed'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '长上影线意味着日内多头曾尝试拉升但失败，收盘被打回原形。' : 'Long upper shadow means Bulls tried to push but failed. Bears won the day.'
+    },
+    // 6. VP Space-Time (New)
+    {
+      id: 6, type: 'logic',
+      q: lang === 'zh' ? '“量大滞涨”（高位巨量不涨）的本质是？' : 'Essence of "High Vol, Flat Price" at top?',
+      options: [
+        lang === 'zh' ? '主力吸筹' : 'Accumulation',
+        lang === 'zh' ? '换手充分，利好' : 'Good turnover',
+        lang === 'zh' ? '主力借机派发 (出货)' : 'Distribution (MM Dumping)',
+        lang === 'zh' ? '散户吓跑了' : 'Retail scared'
+      ],
+      correct: 2,
+      explanation: lang === 'zh' ? '这么大的买盘进去，价格却不涨，说明有人在源源不断地砸盘（供给>需求）。' : 'Huge buying but no price rise means someone is dumping endlessly (Supply > Demand).'
+    },
+    // 7. Foundation
+    {
+      id: 7, type: 'pattern',
       q: lang === 'zh' ? '“一阳穿多线”的最佳形态，五线汇聚点应位于阳线实体的？' : 'Best "One Yang Crosses All" has the knot at?',
       options: [
         lang === 'zh' ? '顶部' : 'Top',
-        lang === 'zh' ? '底部' : 'Bottom',
         lang === 'zh' ? '中轴 (中心)' : 'Axis (Center)',
+        lang === 'zh' ? '底部' : 'Bottom',
         lang === 'zh' ? '外部' : 'Outside'
       ],
-      correct: 2,
+      correct: 1,
       explanation: lang === 'zh' ? '中轴穿线代表着日内多空力量的彻底反转和成本的瞬间置换。' : 'Axis crossing represents total reversal of intraday forces.'
     },
-    {
-      id: 6, type: 'concept',
-      q: lang === 'zh' ? 'MA250（年线）的主要作用是？' : 'Main role of MA250 (Year Line)?',
-      options: [
-        lang === 'zh' ? '短线止损' : 'Short stop',
-        lang === 'zh' ? '牛熊分界判定' : 'Bull/Bear Division',
-        lang === 'zh' ? '追涨依据' : 'Chasing signal',
-        lang === 'zh' ? '没有任何作用' : 'Useless'
-      ],
-      correct: 1,
-      explanation: lang === 'zh' ? '年线代表长线资金成本，是判断长期趋势的最重要依据。' : 'Year line defines the long-term trend bias.'
-    },
-    {
-      id: 7, type: 'pattern',
-      q: lang === 'zh' ? '“金蟾蜍”形态的最佳买点是？' : 'Best entry for "Golden Toad"?',
-      options: [
-        lang === 'zh' ? '左眼形成时' : 'Left Eye',
-        lang === 'zh' ? '两眼之间' : 'Between Eyes',
-        lang === 'zh' ? '右眼放量突破时' : 'Right Eye Breakout',
-        lang === 'zh' ? '跌破支撑时' : 'Support Break'
-      ],
-      correct: 2,
-      explanation: lang === 'zh' ? '右眼突破确认了洗盘结束，是二次启动的确信信号。' : 'Right eye breakout confirms washout done.'
-    },
+    // 8. Candle Pattern (New)
     {
       id: 8, type: 'pattern',
-      q: lang === 'zh' ? '“金蜘蛛”由哪三条均线金叉构成？' : '"Golden Spider" MAs?',
+      q: lang === 'zh' ? '“穿头破脚”（阴包阳）出现在高位是？' : '"Bearish Engulfing" at top is?',
       options: [
-        lang === 'zh' ? 'MA5/10/20' : 'MA5/10/20',
-        lang === 'zh' ? 'MA30/60/90' : 'MA30/60/90',
-        lang === 'zh' ? 'MA60/120/250' : 'MA60/120/250',
-        lang === 'zh' ? 'MA5/30/60' : 'MA5/30/60'
+        lang === 'zh' ? '极强看跌信号' : 'Strong Bearish Signal',
+        lang === 'zh' ? '洗盘' : 'Washout',
+        lang === 'zh' ? '看涨信号' : 'Bullish Signal',
+        lang === 'zh' ? '无意义' : 'Meaningless'
       ],
       correct: 0,
-      explanation: lang === 'zh' ? '短期均线（5/10/20）同点金叉，代表短期爆发力极强。' : 'Short-term MAs converging indicates explosive power.'
+      explanation: lang === 'zh' ? '阴线实体完全吞噬了前一天的阳线，说明空头动能彻底压倒多头。' : 'Yin body engulfs Yang, Bears completely overwhelmed Bulls.'
     },
+    // 9. VP Space-Time (New)
     {
-      id: 9, type: 'indicator',
-      q: lang === 'zh' ? 'KDJ指标J值高位钝化（维持100）意味着？' : 'KDJ J-value passivation (at 100) means?',
+      id: 9, type: 'logic',
+      q: lang === 'zh' ? '“时空共振”触发的条件通常是？' : 'Condition for "Space-Time Resonance"?',
       options: [
-        lang === 'zh' ? '必须卖出' : 'Must Sell',
-        lang === 'zh' ? '极强持有信号' : 'Strong Hold Signal',
-        lang === 'zh' ? '指标坏了' : 'Indicator Broken',
-        lang === 'zh' ? '即将暴跌' : 'Crash soon'
+        lang === 'zh' ? '价格随意波动' : 'Random',
+        lang === 'zh' ? '价格触及关键阻力位(空间) + 斐波那契时间窗(时间)' : 'Price hits Resistance (Space) + Fib Window (Time)',
+        lang === 'zh' ? '只看时间' : 'Time only',
+        lang === 'zh' ? '只看价格' : 'Price only'
       ],
       correct: 1,
-      explanation: lang === 'zh' ? '钝化是强势特征，不跌破80不离场。' : 'Passivation is strength. Don\'t exit unless < 80.'
+      explanation: lang === 'zh' ? '时空交汇点往往是变盘点。若此时量能配合，则共振发生。' : 'Intersection of Price Level and Time Window is the pivot point.'
     },
+    // 10. Candle Pattern (New)
     {
-      id: 10, type: 'indicator',
-      q: lang === 'zh' ? '布林线（BOLL）“收口”预示着？' : 'BOLL "Squeeze" signals?',
+      id: 10, type: 'pattern',
+      q: lang === 'zh' ? '“早晨之星”由哪三根K线组成？' : 'Composition of "Morning Star"?',
       options: [
-        lang === 'zh' ? '趋势延续' : 'Continuation',
-        lang === 'zh' ? '波动率压缩，变盘在即' : 'Vol Compression, Move Incoming',
-        lang === 'zh' ? '市场死亡' : 'Market Dead',
-        lang === 'zh' ? '随意震荡' : 'Random Chop'
+        lang === 'zh' ? '阳线+阴线+阳线' : 'Yang+Yin+Yang',
+        lang === 'zh' ? '阴线 + 跳空十字星 + 大阳线' : 'Yin + Gap Star + Big Yang',
+        lang === 'zh' ? '三根阴线' : '3 Yins',
+        lang === 'zh' ? '三根阳线' : '3 Yangs'
       ],
       correct: 1,
-      explanation: lang === 'zh' ? '收口代表能量积蓄，随后必然有张口（爆发）。' : 'Squeeze stores energy for the inevitable expansion.'
+      explanation: lang === 'zh' ? '黑暗（阴线）之后是犹豫（星），随后光明到来（阳线）。' : 'Darkness (Yin) -> Indecision (Star) -> Light (Yang).'
     },
+    // 11. Strategy (New)
     {
-      id: 11, type: 'chip',
-      q: lang === 'zh' ? '在筹码结构中，红色通常代表？' : 'In Chip Structure, Red usually means?',
+      id: 11, type: 'pattern',
+      q: lang === 'zh' ? '“鸭嘴”张开（老鸭头爆发）时，均线系统应该？' : 'When "Duck Mouth" opens, MAs should?',
       options: [
-        lang === 'zh' ? '套牢盘' : 'Trapped Chips',
-        lang === 'zh' ? '获利盘' : 'Profit Chips',
-        lang === 'zh' ? '平盘' : 'Breakeven',
-        lang === 'zh' ? '机构盘' : 'Inst. Chips'
-      ],
-      correct: 1,
-      explanation: lang === 'zh' ? '红色获利盘，蓝色套牢盘（本系统定义）。' : 'Red = Profit, Blue = Trapped (System definition).'
-    },
-    {
-      id: 12, type: 'pattern',
-      q: lang === 'zh' ? '“锁仓拉升”时，底部获利筹码会？' : 'In "Locked Ascent", bottom chips will?',
-      options: [
-        lang === 'zh' ? '消失' : 'Vanish',
-        lang === 'zh' ? '纹丝不动' : 'Stay Stationary',
-        lang === 'zh' ? '上移' : 'Move Up',
-        lang === 'zh' ? '变蓝' : 'Turn Blue'
-      ],
-      correct: 1,
-      explanation: lang === 'zh' ? '主力志在长远，不会在拉升初期卖出底仓。' : 'MM holds base chips for the long run.'
-    },
-    {
-      id: 13, type: 'pattern',
-      q: lang === 'zh' ? '周线“屠龙刀”形态的关键特征是？' : 'Key feature of Weekly "Dragon Saber"?',
-      options: [
-        lang === 'zh' ? 'MA5死叉MA10' : 'MA5 Dead Cross MA10',
-        lang === 'zh' ? 'MA30与MA60走平粘合' : 'MA30/MA60 Flat & Bonded',
-        lang === 'zh' ? '所有均线向下' : 'All MAs Down',
-        lang === 'zh' ? '没有成交量' : 'No Volume'
-      ],
-      correct: 1,
-      explanation: lang === 'zh' ? '中期均线粘合代表周线级别的大底。' : 'Mid-term MA bonding signals a weekly-level bottom.'
-    },
-    {
-      id: 14, type: 'pattern',
-      q: lang === 'zh' ? '月线超级牛股起涨点通常符合？' : 'Monthly Super Bull Launch point fits?',
-      options: [
-        lang === 'zh' ? '跌破30月线' : 'Break 30M MA',
-        lang === 'zh' ? '远离30月线' : 'Far from 30M MA',
-        lang === 'zh' ? '突破并回踩30月线不破' : 'Break & Retest 30M MA',
-        lang === 'zh' ? '30月线向下' : '30M MA Down'
+        lang === 'zh' ? '死叉向下' : 'Dead Cross Down',
+        lang === 'zh' ? '粘合不动' : 'Stay Bonded',
+        lang === 'zh' ? 'MA5金叉MA10，呈扇形向上发散' : 'MA5 Cross MA10 Up, Fan Out',
+        lang === 'zh' ? '混乱无序' : 'Chaos'
       ],
       correct: 2,
-      explanation: lang === 'zh' ? '30月线是长线牛熊分界，回踩确认是最佳上车点。' : 'Retesting the 30M MA confirms the long-term trend.'
+      explanation: lang === 'zh' ? '鸭嘴张开越大，说明短期爆发力越强，主升浪开启。' : 'Wider mouth = Stronger burst. Main wave start.'
     },
+    // 12. Foundation
     {
-      id: 15, type: 'psychology',
-      q: lang === 'zh' ? '庄家的“磨”（The Grind）目的是？' : 'Purpose of MM "The Grind"?',
+      id: 12, type: 'concept',
+      q: lang === 'zh' ? '均线“粘合”的量化定义通常涉及？' : 'Quant definition of "Adhesion"?',
       options: [
-        lang === 'zh' ? '吸筹' : 'Accumulate',
-        lang === 'zh' ? '消耗散户耐心，迫使其离场' : 'Exhaust retail patience, force exit',
-        lang === 'zh' ? '拉升' : 'Pump',
-        lang === 'zh' ? '出货' : 'Dump'
+        lang === 'zh' ? '完全重合' : 'Overlap perfectly',
+        lang === 'zh' ? '均线间极差(Spread)极小' : 'Minimal Spread',
+        lang === 'zh' ? '均线数值大' : 'High Values',
+        lang === 'zh' ? '均线交叉' : 'Crossing'
       ],
       correct: 1,
-      explanation: lang === 'zh' ? '利用极小波动制造无聊感，清洗不坚定的浮筹。' : 'Using low volatility to bore retail traders out.'
+      explanation: lang === 'zh' ? '粘合计算的是Max(MA)-Min(MA)的离散程度。' : 'Adhesion is about minimizing the variance/spread.'
     },
+    // 13. Foundation
+    {
+      id: 13, type: 'concept',
+      q: lang === 'zh' ? 'MA60（决策线）的主要作用是？' : 'Role of MA60 (Decision Line)?',
+      options: [
+        lang === 'zh' ? '超短线买卖' : 'Scalping',
+        lang === 'zh' ? '中线趋势的生命线与防守位' : 'Mid-term Trend Lifeline & Defense',
+        lang === 'zh' ? '没有什么用' : 'Useless',
+        lang === 'zh' ? '预测明天' : 'Predict tomorrow'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? 'MA60是机构操盘的底线，有效跌破通常意味着波段结束。' : 'MA60 is the inst. baseline. Breaking it usually ends the swing.'
+    },
+    // 14. Candle Pattern (New)
+    {
+      id: 14, type: 'pattern',
+      q: lang === 'zh' ? '“吊颈线”出现在高位，虽然下影线很长，但实际上是？' : '"Hanging Man" at top has long lower shadow, but implies?',
+      options: [
+        lang === 'zh' ? '强力支撑' : 'Strong Support',
+        lang === 'zh' ? '诱多出货 (看跌)' : 'Bull Trap / Distribution (Bearish)',
+        lang === 'zh' ? '上涨中继' : 'Relay',
+        lang === 'zh' ? '洗盘' : 'Washout'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '看似探底回升，实则主力在盘中制造恐慌并趁机派发，抛压已现。' : 'Looks like support, but shows selling pressure exist. Often a trap.'
+    },
+    // 15. VP Space-Time (New)
+    {
+      id: 15, type: 'logic',
+      q: lang === 'zh' ? '“量增价跌”通常发生在？' : '"Vol Up, Price Down" usually happens at?',
+      options: [
+        lang === 'zh' ? '底部吸筹' : 'Accumulation',
+        lang === 'zh' ? '破位恐慌杀跌' : 'Panic Breakdown',
+        lang === 'zh' ? '洗盘' : 'Washout',
+        lang === 'zh' ? '主升浪' : 'Main Wave'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '放量下跌说明恐慌盘涌出，且承接盘不足以止住跌势，支撑失效。' : 'High vol drop means panic selling overwhelming support.'
+    },
+    // 16. Foundation
     {
       id: 16, type: 'psychology',
-      q: lang === 'zh' ? '“马太效应”在趋势中体现为？' : '"Matthew Effect" in trend shows as?',
+      q: lang === 'zh' ? '多巴胺在交易中的主要作用是？' : 'Dopamine\'s role in trading?',
       options: [
-        lang === 'zh' ? '强者恒强（自我实现预言）' : 'Strength begets Strength (Self-fulfilling)',
-        lang === 'zh' ? '弱者恒强' : 'Weakness begets Strength',
-        lang === 'zh' ? '均值回归' : 'Mean Reversion',
-        lang === 'zh' ? '随机波动' : 'Randomness'
-      ],
-      correct: 0,
-      explanation: lang === 'zh' ? '资金、媒体、关注度都会涌向最强的标的。' : 'Capital and attention flow to the strongest asset.'
-    },
-    {
-      id: 17, type: 'psychology',
-      q: lang === 'zh' ? '当交易者感到恐惧时，大脑哪个部位接管了控制权？' : 'When fearful, which brain part rules?',
-      options: [
-        lang === 'zh' ? '前额叶 (理智)' : 'PFC (Logic)',
-        lang === 'zh' ? '杏仁核 (本能)' : 'Amygdala (Instinct)',
-        lang === 'zh' ? '枕叶' : 'Occipital',
-        lang === 'zh' ? '顶叶' : 'Parietal'
-      ],
-      correct: 1,
-      explanation: lang === 'zh' ? '杏仁核负责战斗或逃跑反应，会抑制理智思考。' : 'Amygdala handles Fight/Flight, suppressing logic.'
-    },
-    {
-      id: 18, type: 'psychology',
-      q: lang === 'zh' ? '多巴胺在交易中的主要作用是？' : 'Role of Dopamine in trading?',
-      options: [
-        lang === 'zh' ? '产生快乐' : 'Create Joy',
-        lang === 'zh' ? '奖赏预测（预期成瘾）' : 'Reward Prediction (Expectation)',
+        lang === 'zh' ? '产生快乐' : 'Joy',
+        lang === 'zh' ? '奖赏预测（预期成瘾）' : 'Reward Prediction (Expectation Addiction)',
         lang === 'zh' ? '缓解痛苦' : 'Relieve Pain',
-        lang === 'zh' ? '增强记忆' : 'Memory'
+        lang === 'zh' ? '冷静思考' : 'Calm Logic'
       ],
       correct: 1,
       explanation: lang === 'zh' ? '多巴胺是对“不确定性奖励”的预期，而非奖励本身。' : 'Dopamine drives the pursuit of uncertain rewards.'
     },
+    // 17. Foundation
     {
-      id: 19, type: 'strategy',
-      q: lang === 'zh' ? '2-3-2金字塔建仓法中，底仓比例是？' : 'Base position size in 2-3-2?',
+      id: 17, type: 'chip',
+      q: lang === 'zh' ? '底部筹码密集，且红色获利盘比例很高，意味着？' : 'Bottom chips dense, high Red Profit ratio means?',
       options: [
-        lang === 'zh' ? '10%' : '10%',
-        lang === 'zh' ? '20%' : '20%',
-        lang === 'zh' ? '30%' : '30%',
-        lang === 'zh' ? '50%' : '50%'
+        lang === 'zh' ? '主力被套' : 'MM Trapped',
+        lang === 'zh' ? '吸筹完成，具备上攻基础' : 'Accumulation Done, Ready to Launch',
+        lang === 'zh' ? '即将暴跌' : 'Crash soon',
+        lang === 'zh' ? '散户很多' : 'Many Retail'
       ],
       correct: 1,
-      explanation: lang === 'zh' ? '20%底仓试错，风险可控。' : '20% base allows for controlled risk testing.'
+      explanation: lang === 'zh' ? '获利盘锁定良好且未抛售，说明主力控盘度高。' : 'High profit chips holding means high control by MM.'
     },
+    // 18. Strategy (New)
+    {
+      id: 18, type: 'pattern',
+      q: lang === 'zh' ? '在“美人肩”形态中，成交量应该呈现什么状态？' : 'Volume status in "Beauty Shoulder"?',
+      options: [
+        lang === 'zh' ? '持续放大' : 'Increasing',
+        lang === 'zh' ? '极致缩量 (惜售)' : 'Extreme Shrinkage (Holding)',
+        lang === 'zh' ? '忽大忽小' : 'Volatile',
+        lang === 'zh' ? '没有要求' : 'None'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '缩量盘整说明市场惜售，主力只需少量资金即可拉升。' : 'Low volume means no one wants to sell. Easy to pump.'
+    },
+    // 19. Candle Pattern (New)
+    {
+      id: 19, type: 'pattern',
+      q: lang === 'zh' ? '“红三兵”出现在低位，意味着？' : '"Three Red Soldiers" at bottom means?',
+      options: [
+        lang === 'zh' ? '诱多' : 'Trap',
+        lang === 'zh' ? '多头步步为营，趋势反转' : 'Bulls advancing, Trend Reversal',
+        lang === 'zh' ? '即将回调' : 'Pullback',
+        lang === 'zh' ? '空头陷阱' : 'Bear Trap'
+      ],
+      correct: 1,
+      explanation: lang === 'zh' ? '连续三根阳线重心上移，显示多头力量稳步增强。' : '3 consecutive Yangs moving up shows steady Bull strength.'
+    },
+    // 20. Foundation
     {
       id: 20, type: 'strategy',
-      q: lang === 'zh' ? '“完美的亏损”是指？' : 'What is a "Perfect Loss"?',
+      q: lang === 'zh' ? '“完美的亏损”是指？' : '"Perfect Loss" means?',
       options: [
-        lang === 'zh' ? '亏损很少' : 'Small loss',
-        lang === 'zh' ? '严格按计划执行止损' : 'Executed stop-loss exactly as planned',
-        lang === 'zh' ? '因运气不好亏损' : 'Bad luck loss',
-        lang === 'zh' ? '系统出错' : 'System error'
+        lang === 'zh' ? '亏很少' : 'Small loss',
+        lang === 'zh' ? '严格按计划执行了止损' : 'Executed Stop-Loss as Planned',
+        lang === 'zh' ? '运气不好' : 'Bad luck',
+        lang === 'zh' ? '没有亏损' : 'No loss'
       ],
       correct: 1,
-      explanation: lang === 'zh' ? '评价交易的标准是执行力，而非单笔盈亏。' : 'Success is measured by execution, not outcome.'
+      explanation: lang === 'zh' ? '交易的核心是执行力。只要按系统执行了，无论盈亏都是成功的交易。' : 'Execution is key. Following the system makes it a success regardless of P&L.'
     }
 ];
 
