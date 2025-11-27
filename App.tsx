@@ -17,11 +17,11 @@ import { DisciplineSystem } from './components/DisciplineRoutine';
 import { ChaosOrder } from './components/ChaosOrder';
 import { Assessment } from './components/Assessment';
 import { TechnicalTruth } from './components/TechnicalTruth';
-import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User, Wind, Film, ShoppingBag, Cpu, TrendingUp } from 'lucide-react';
+import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User, Wind, Film, ShoppingBag, Cpu, TrendingUp, Menu, X, ChevronRight } from 'lucide-react';
 import { Lang } from './types';
 
 // --- Custom Logo Component with 3D Tilt Interaction ---
-const RolyPolyLogo = () => {
+const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
   const [transform, setTransform] = useState("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)");
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -32,30 +32,30 @@ const RolyPolyLogo = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Calculate position relative to center (-1 to 1)
+    // Calculate position relative to center
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    // Logic: "Depress" where mouse is.
-    // If mouse is top (y < center), rotateX should be positive (top goes back).
-    // If mouse is right (x > center), rotateY should be negative (right goes back - verify coordinate system).
-    // Standard CSS: rotateY(90deg) moves right side away. So positive rotateY moves right side into screen.
-    // We want the side under mouse to go INTO screen.
+    // "Depress" logic: 
+    // Push Top (y < center) -> rotateX should be POSITIVE (top goes into screen)
+    // Push Bottom (y > center) -> rotateX should be NEGATIVE (bottom goes into screen, top comes out)
+    // Push Right (x > center) -> rotateY should be POSITIVE (right goes into screen?? No, standard CSS rotateY(90) moves right away)
+    // Actually, usually rotateX(positive) tips top back. rotateY(positive) tips right back.
     
-    const rotateX = ((y - centerY) / centerY) * -25; // Invert Y for correct tilt feel
-    const rotateY = ((x - centerX) / centerX) * 25;
+    const rotateX = ((centerY - y) / centerY) * 20; 
+    const rotateY = ((x - centerX) / centerX) * 20;
 
-    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`);
+    setTransform(`perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`);
   };
 
   const handleMouseLeave = () => {
-    setTransform("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)");
+    setTransform("perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)");
   };
 
   return (
     <div 
         ref={containerRef}
-        className="group relative w-20 h-20 cursor-pointer transition-transform duration-200 ease-out"
+        className={`group relative cursor-pointer transition-transform duration-300 ease-out ${className}`}
         style={{ transform, transformStyle: 'preserve-3d' }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -63,34 +63,35 @@ const RolyPolyLogo = () => {
       {/* Container: Respects Theme (White in Light, Dark in Dark) */}
       <div className="logo-content w-full h-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
         <svg viewBox="0 0 100 100" className="w-full h-full">
-          {/* Layer 1: Background K-Line Chart (More Obvious) */}
-          <g className="opacity-80">
+          {/* Layer 1: Background K-Line Chart (More Obvious & Thicker) */}
+          <g className="opacity-90">
              {/* Grid */}
              <line x1="10" y1="25" x2="90" y2="25" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="0.5" />
              <line x1="10" y1="50" x2="90" y2="50" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="0.5" />
              <line x1="10" y1="75" x2="90" y2="75" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="0.5" />
              
-             {/* Candles */}
-             <rect x="20" y="40" width="8" height="20" className="fill-green-500" />
-             <line x1="24" y1="35" x2="24" y2="65" className="stroke-green-500" strokeWidth="1" />
+             {/* Candles - Bright Green/Red */}
+             <rect x="15" y="40" width="10" height="20" className="fill-green-500" />
+             <line x1="20" y1="35" x2="20" y2="65" className="stroke-green-500" strokeWidth="2" />
              
-             <rect x="35" y="30" width="8" height="30" className="fill-red-500" />
-             <line x1="39" y1="25" x2="39" y2="65" className="stroke-red-500" strokeWidth="1" />
+             <rect x="35" y="30" width="10" height="30" className="fill-red-500" />
+             <line x1="40" y1="25" x2="40" y2="65" className="stroke-red-500" strokeWidth="2" />
              
-             <rect x="50" y="50" width="8" height="15" className="fill-green-500" />
+             <rect x="55" y="50" width="10" height="15" className="fill-green-500" />
+             <line x1="60" y1="48" x2="60" y2="70" className="stroke-green-500" strokeWidth="2" />
              
-             <rect x="65" y="20" width="8" height="40" className="fill-red-500" />
-             <line x1="69" y1="15" x2="69" y2="65" className="stroke-red-500" strokeWidth="1" />
+             <rect x="75" y="20" width="10" height="40" className="fill-red-500" />
+             <line x1="80" y1="15" x2="80" y2="65" className="stroke-red-500" strokeWidth="2" />
              
-             {/* MAs - Stronger Colors */}
-             <path d="M10,80 Q50,70 90,40" fill="none" className="stroke-red-500" strokeWidth="2" />
-             <path d="M10,70 Q50,60 90,30" fill="none" className="stroke-green-500" strokeWidth="2" />
+             {/* MAs - Stronger Colors & Thickness */}
+             <path d="M10,80 Q50,70 90,40" fill="none" className="stroke-red-500" strokeWidth="3" />
+             <path d="M10,70 Q50,60 90,30" fill="none" className="stroke-green-500" strokeWidth="3" />
           </g>
 
           {/* Layer 2: Yellow Lightning Bolt (Vibrant) */}
-          <g transform="translate(5, 5) scale(0.9)" style={{filter: 'drop-shadow(0px 4px 4px rgba(0,0,0,0.3))'}}>
+          <g transform="translate(5, 5) scale(0.9)" style={{filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.3))'}}>
              <filter id="bolt-glow">
-                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
                 <feMerge>
                     <feMergeNode in="coloredBlur"/>
                     <feMergeNode in="SourceGraphic"/>
@@ -100,7 +101,7 @@ const RolyPolyLogo = () => {
                 d="M55,10 L30,55 L50,55 L40,90 L75,35 L55,35 Z" 
                 fill="#facc15" 
                 stroke="#b45309" 
-                strokeWidth="2" 
+                strokeWidth="1.5" 
                 strokeLinejoin="round"
                 filter="url(#bolt-glow)"
              />
@@ -109,6 +110,121 @@ const RolyPolyLogo = () => {
       </div>
     </div>
   );
+};
+
+// Section Keys for Navigation
+const SECTION_KEYS = [
+    'sec_00', 'sec_01', 'sec_02', 'sec_03', 'sec_04', 'sec_05', 
+    'sec_06', 'sec_07', 'sec_08', 'sec_09', 'sec_10', 'sec_11',
+    'sec_12', 'sec_13', 'sec_14', 'sec_15', 'sec_16', 'sec_17',
+    'sec_18', 'sec_19', 'sec_20', 'sec_21', 'sec_22', 'sec_23'
+];
+
+const Navbar: React.FC<{ 
+    lang: Lang; 
+    setLang: (l: Lang) => void; 
+    darkMode: boolean; 
+    setDarkMode: (d: boolean) => void;
+    t: any;
+}> = ({ lang, setLang, darkMode, setDarkMode, t }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    const scrollToSection = (id: string) => {
+        setIsMenuOpen(false);
+        const element = document.getElementById(id);
+        if (element) {
+            const headerOffset = 80;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
+    };
+
+    return (
+        <>
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 h-16 md:h-20 transition-all duration-300 shadow-sm">
+                <div className="container mx-auto px-4 h-full flex items-center justify-between">
+                    {/* Logo */}
+                    <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+                        <RolyPolyLogo className="w-10 h-10 md:w-14 md:h-14" />
+                        <span className="font-black text-lg md:text-xl text-slate-800 dark:text-slate-100 hidden sm:block tracking-tight">
+                            {t.header_title_1}
+                        </span>
+                    </div>
+
+                    {/* Controls */}
+                    <div className="flex items-center gap-2 md:gap-4">
+                        <button 
+                            onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+                            className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1 text-xs md:text-sm font-bold"
+                        >
+                            <Globe size={16} /> {lang === 'zh' ? 'EN' : '中'}
+                        </button>
+                        <button 
+                            onClick={() => setDarkMode(!darkMode)}
+                            className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                        >
+                            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                        </button>
+                        
+                        {/* Mobile Menu Toggle */}
+                        <button 
+                            onClick={toggleMenu}
+                            className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-lg active:scale-95"
+                        >
+                            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            {/* Mobile Navigation Drawer */}
+            <div className={`fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={toggleMenu}>
+                <div 
+                    className={`absolute right-0 top-0 bottom-0 w-80 bg-white dark:bg-slate-900 shadow-2xl transform transition-transform duration-300 flex flex-col ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950/50">
+                        <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100">
+                            {lang === 'zh' ? '章节导航' : 'Navigation'}
+                        </h3>
+                        <button onClick={toggleMenu} className="p-1 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">
+                            <X size={24} />
+                        </button>
+                    </div>
+                    
+                    <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                        {SECTION_KEYS.map((key, index) => (
+                            <button
+                                key={key}
+                                onClick={() => scrollToSection(key)}
+                                className="w-full text-left p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center justify-between group border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="w-6 h-6 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">
+                                        {index.toString().padStart(2, '0')}
+                                    </div>
+                                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-1">
+                                        {t[key]?.split('：')[0] || t[key]}
+                                    </span>
+                                </div>
+                                <ChevronRight size={16} className="text-slate-400 group-hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-all" />
+                            </button>
+                        ))}
+                    </div>
+                    
+                    <div className="p-4 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400">
+                        {t.header_title_1} - v10.1
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 };
 
 const App: React.FC = () => {
@@ -290,32 +406,13 @@ const App: React.FC = () => {
         .animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
       `}</style>
 
+      {/* Fixed Navbar */}
+      <Navbar lang={lang} setLang={setLang} darkMode={darkMode} setDarkMode={setDarkMode} t={t} />
+
       {/* Main Content (Scrollable) */}
-      <div className="relative z-10">
-        <header className="relative text-center pt-16 pb-16 px-6 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm mb-12 transition-colors duration-300">
-            {/* Logo Left - With 3D Tilt */}
-            <div className="absolute top-6 left-6 z-50">
-                <RolyPolyLogo />
-            </div>
-
-            {/* Controls Right */}
-            <div className="absolute top-6 right-6 flex gap-3 z-50">
-                <button 
-                    onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
-                    className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1 text-sm font-bold shadow-sm"
-                    aria-label="Toggle Language"
-                >
-                    <Globe size={18} /> {lang === 'zh' ? 'EN' : '中'}
-                </button>
-                <button 
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm"
-                aria-label="Toggle Dark Mode"
-                >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-                </button>
-            </div>
-
+      <div className="relative z-10 pt-20"> {/* Add padding-top for fixed header */}
+        <header className="relative text-center pb-16 px-6 mb-12">
+            
             <div className="inline-block bg-blue-600 text-white text-lg font-bold px-6 py-2 rounded-full mb-6 shadow-lg tracking-wide transform hover:scale-105 transition-transform mt-4 md:mt-0">
             {t.header_badge}
             </div>
@@ -329,7 +426,7 @@ const App: React.FC = () => {
 
             {/* Author Info */}
             <div className="flex flex-col items-center justify-center gap-2 mb-8">
-                <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <User size={16} className="text-slate-500 dark:text-slate-400" />
                     <span className="font-bold text-slate-700 dark:text-slate-300 text-base md:text-lg">
                         {t.author_name}
@@ -357,17 +454,17 @@ const App: React.FC = () => {
         {/* Increased max-width to 7xl for 10% wider layout */}
         <main className="container mx-auto max-w-7xl px-4 pb-20">
             {/* 00. Introduction */}
-            <Section number="00" title={t.sec_00}>
+            <Section id="sec_00" number="00" title={t.sec_00}>
                 <Introduction lang={lang} />
             </Section>
 
             {/* 1. MA Architecture */}
-            <Section number="01" title={t.sec_01}>
+            <Section id="sec_01" number="01" title={t.sec_01}>
                 <MAArchitecture lang={lang} />
             </Section>
 
             {/* 2. Core Pattern */}
-            <Section number="02" title={t.sec_02}>
+            <Section id="sec_02" number="02" title={t.sec_02}>
                 <CorePatternChart lang={lang} />
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-6 transition-colors duration-300">
                     <h4 className="text-amber-800 dark:text-amber-400 font-bold mb-4 flex items-center gap-2 text-xl">
@@ -421,107 +518,107 @@ const App: React.FC = () => {
             </Section>
 
             {/* 3. Adhesion Morphology */}
-            <Section number="03" title={t.sec_03}>
+            <Section id="sec_03" number="03" title={t.sec_03}>
                 <AdhesionMorphology lang={lang} />
             </Section>
 
             {/* 4. Trend Geometry */}
-            <Section number="04" title={t.sec_04}>
+            <Section id="sec_04" number="04" title={t.sec_04}>
                 <TrendGeometry lang={lang} />
             </Section>
 
             {/* 5. Indicators */}
-            <Section number="05" title={t.sec_05}>
+            <Section id="sec_05" number="05" title={t.sec_05}>
                 <IndicatorDiagrams lang={lang} />
             </Section>
 
             {/* 6. Tactical Variations */}
-            <Section number="06" title={t.sec_06}>
+            <Section id="sec_06" number="06" title={t.sec_06}>
                 <TacticalVariations lang={lang} />
             </Section>
 
             {/* 7. Volume Dynamics */}
-            <Section number="07" title={t.sec_07}>
+            <Section id="sec_07" number="07" title={t.sec_07}>
                 <VolumeDynamics lang={lang} />
             </Section>
 
             {/* 8. Chip Structure */}
-            <Section number="08" title={t.sec_08}>
+            <Section id="sec_08" number="08" title={t.sec_08}>
                 <ChipStructure lang={lang} />
             </Section>
 
             {/* 9. Timeframe Resonance */}
-            <Section number="09" title={t.sec_09}>
+            <Section id="sec_09" number="09" title={t.sec_09}>
                 <TimeframeResonance lang={lang} />
             </Section>
 
             {/* 10. Market Psychology */}
-            <Section number="10" title={t.sec_10}>
+            <Section id="sec_10" number="10" title={t.sec_10}>
                 <MarketPsychology lang={lang} />
             </Section>
 
             {/* 11. Neuroscience & Biology */}
-            <Section number="11" title={t.sec_11}>
+            <Section id="sec_11" number="11" title={t.sec_11}>
                 <NeuroScienceSection lang={lang} />
             </Section>
 
             {/* 12. Neurobiology of Selling */}
-            <Section number="12" title={t.sec_12}>
+            <Section id="sec_12" number="12" title={t.sec_12}>
                 <NeuroBiology lang={lang} />
             </Section>
 
             {/* 13. Mindset Framework */}
-            <Section number="13" title={t.sec_13}>
+            <Section id="sec_13" number="13" title={t.sec_13}>
                 <MindsetFramework lang={lang} />
             </Section>
             
             {/* 14. Discipline */}
-            <Section number="14" title={t.sec_14}>
+            <Section id="sec_14" number="14" title={t.sec_14}>
                 <DisciplineSystem lang={lang} />
             </Section>
 
             {/* 15. System Evolution */}
-            <Section number="15" title={t.sec_15}>
+            <Section id="sec_15" number="15" title={t.sec_15}>
                 <SystemEvolution lang={lang} />
             </Section>
 
             {/* 16. Strategy & Screener */}
-            <Section number="16" title={t.sec_16}>
+            <Section id="sec_16" number="16" title={t.sec_16}>
                 <StrategySection lang={lang} />
             </Section>
 
-            {/* 17. Case Studies (Moved from 20) */}
-            <Section number="17" title={t.sec_17}>
+            {/* 17. Case Studies */}
+            <Section id="sec_17" number="17" title={t.sec_17}>
                 <CaseStudies lang={lang} />
             </Section>
             
-            {/* 18. Capital & Psychology (Moved from 21) */}
-            <Section number="18" title={t.sec_18}>
+            {/* 18. Capital & Psychology */}
+            <Section id="sec_18" number="18" title={t.sec_18}>
                 <CapitalPsychology lang={lang} />
             </Section>
 
-            {/* 19. Risk Management -> RULES (Old 17) */}
-            <Section number="19" title={t.sec_19}>
+            {/* 19. Risk Management */}
+            <Section id="sec_19" number="19" title={t.sec_19}>
                 <RiskManagement lang={lang} />
             </Section>
 
-            {/* 20. Technical Truth (Old 18) */}
-            <Section number="20" title={t.sec_20}>
+            {/* 20. Technical Truth */}
+            <Section id="sec_20" number="20" title={t.sec_20}>
                 <TechnicalTruth lang={lang} />
             </Section>
 
-            {/* 21. Philosophy Reconstruction (Old 19) */}
-            <Section number="21" title={t.sec_21}>
+            {/* 21. Philosophy Reconstruction */}
+            <Section id="sec_21" number="21" title={t.sec_21}>
                 <PhilosophyReconstruction lang={lang} />
             </Section>
 
             {/* 22. Chaos & Order */}
-            <Section number="22" title={t.sec_22}>
+            <Section id="sec_22" number="22" title={t.sec_22}>
                 <ChaosOrder lang={lang} />
             </Section>
 
             {/* 23. Assessment */}
-            <Section number="23" title={t.sec_23}>
+            <Section id="sec_23" number="23" title={t.sec_23}>
                 <Assessment lang={lang} />
                 <div className="text-center text-slate-500 dark:text-slate-500 text-xl mt-12 pb-10 font-medium">
                     {t.footer}

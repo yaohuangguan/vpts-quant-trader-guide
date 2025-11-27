@@ -13,8 +13,8 @@
     <meta name="apple-mobile-web-app-title" content="五线开花" />
     
     <!-- Icon Settings -->
-    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
-    <link rel="apple-touch-icon" href="./icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg?v=3" />
+    <link rel="apple-touch-icon" href="./icon.svg?v=3" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -62,6 +62,8 @@
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js').then(registration => {
             console.log('SW registered: ', registration);
+            // Check for updates
+            registration.update();
           }).catch(registrationError => {
             console.log('SW registration failed: ', registrationError);
           });

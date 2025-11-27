@@ -13,27 +13,27 @@
   <!-- Background Container (Required for PWA) -->
   <rect width="512" height="512" fill="url(#bg)" rx="100" ry="100"/>
   
-  <!-- Layer 1: Background K-Line Chart (More Visible) -->
-  <g opacity="0.6">
+  <!-- Layer 1: Background K-Line Chart (Thicker & Brighter) -->
+  <g opacity="0.8">
       <!-- Grid -->
       <path d="M60,128 H452 M60,256 H452 M60,384 H452" stroke="#475569" stroke-width="2" stroke-dasharray="10,10"/>
       
+      <!-- Candles - Bright Green/Red -->
+      <rect x="100" y="290" width="30" height="60" fill="#22c55e" />
+      <line x1="115" y1="280" x2="115" y2="360" stroke="#22c55e" stroke-width="6"/>
+      
+      <rect x="180" y="200" width="30" height="80" fill="#ef4444" />
+      <line x1="195" y1="190" x2="195" y2="290" stroke="#ef4444" stroke-width="6"/>
+      
+      <rect x="260" y="300" width="30" height="40" fill="#22c55e" />
+      <line x1="275" y1="290" x2="275" y2="350" stroke="#22c55e" stroke-width="6"/>
+      
+      <rect x="350" y="100" width="30" height="150" fill="#ef4444" />
+      <line x1="365" y1="80" x2="365" y2="260" stroke="#ef4444" stroke-width="6"/>
+
       <!-- Moving Averages (Red and Green) -->
-      <path d="M60,360 C200,360 300,360 452,390" stroke="#ef4444" stroke-width="8" fill="none"/> 
-      <path d="M60,340 C200,340 300,290 452,190" stroke="#22c55e" stroke-width="8" fill="none"/> 
-      
-      <!-- Candles -->
-      <rect x="100" y="290" width="20" height="60" fill="#22c55e" />
-      <line x1="110" y1="280" x2="110" y2="360" stroke="#22c55e" stroke-width="4"/>
-      
-      <rect x="150" y="250" width="20" height="40" fill="#ef4444" />
-      <line x1="160" y1="240" x2="160" y2="300" stroke="#ef4444" stroke-width="4"/>
-      
-      <rect x="200" y="200" width="20" height="80" fill="#ef4444" />
-      <line x1="210" y1="190" x2="210" y2="290" stroke="#ef4444" stroke-width="4"/>
-      
-      <rect x="350" y="100" width="20" height="100" fill="#ef4444" />
-      <line x1="360" y1="90" x2="360" y2="210" stroke="#ef4444" stroke-width="4"/>
+      <path d="M60,360 C200,360 300,360 452,390" stroke="#ef4444" stroke-width="12" fill="none"/> 
+      <path d="M60,340 C200,340 300,290 452,190" stroke="#22c55e" stroke-width="12" fill="none"/> 
   </g>
 
   <!-- Layer 2: Yellow Lightning Bolt (Foreground) -->
@@ -41,7 +41,7 @@
       <path d="M280,40 L160,260 L260,260 L220,472 L380,220 L280,220 Z" 
             fill="#facc15" 
             stroke="#b45309" 
-            stroke-width="8" 
+            stroke-width="10" 
             stroke-linejoin="round"/>
   </g>
 </svg>

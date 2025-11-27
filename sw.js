@@ -1,7 +1,8 @@
-const CACHE_NAME = 'five-line-blossom-v1';
+const CACHE_NAME = 'five-line-blossom-v3';
 const urlsToCache = [
   './',
   './index.html',
+  './icon.svg?v=3',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap'
 ];
