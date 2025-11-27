@@ -1,195 +1,226 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from './Card';
-import { Clock, Maximize, Zap, TrendingUp, Compass, Activity, Layers, Disc } from 'lucide-react';
+import { Clock, Zap, TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, Activity, X } from 'lucide-react';
 import { Lang } from '../types';
 
+// Micro-Chart Component for VP Patterns
+const VPMicroChart: React.FC<{ 
+    pDir: 'up' | 'down' | 'flat', 
+    vDir: 'up' | 'down' | 'flat', 
+    color: string 
+}> = ({ pDir, vDir, color }) => {
+    return (
+        <div className="w-16 h-12 flex flex-col justify-end gap-1">
+            {/* Price Line */}
+            <div className="h-6 w-full relative border-b border-slate-200 dark:border-slate-600">
+                <svg viewBox="0 0 40 20" className="w-full h-full overflow-visible">
+                    {pDir === 'up' && <path d="M0,20 Q20,20 40,0" fill="none" className={color} strokeWidth="2" />}
+                    {pDir === 'down' && <path d="M0,0 Q20,0 40,20" fill="none" className={color} strokeWidth="2" />}
+                    {pDir === 'flat' && <path d="M0,10 Q20,15 40,10" fill="none" className={color} strokeWidth="2" />}
+                </svg>
+            </div>
+            {/* Volume Bars */}
+            <div className="flex items-end justify-between h-5 w-full gap-0.5">
+                {[1, 2, 3, 4, 5].map(i => {
+                    let h = '30%';
+                    if (vDir === 'up') h = `${20 + i * 15}%`;
+                    if (vDir === 'down') h = `${100 - i * 15}%`;
+                    if (vDir === 'flat') h = '40%';
+                    return <div key={i} className={`w-1.5 rounded-sm ${pDir === 'up' ? 'bg-red-400' : pDir === 'down' ? 'bg-green-400' : 'bg-slate-400'}`} style={{height: h}}></div>
+                })}
+            </div>
+        </div>
+    );
+};
+
 export const VPSpaceTime: React.FC<{ lang: Lang }> = ({ lang }) => {
+  const [activeResonance, setActiveResonance] = useState(false);
+
   const t = {
-    title: lang === 'zh' ? '量价时空：四维全息分析' : 'Volume-Price Space-Time: 4D Holographic Analysis',
-    subtitle: lang === 'zh' ? '超越二维K线的更高维度视角' : 'Higher Dimensional Perspective Beyond 2D Charts',
-    
-    dimensions: [
-      { 
-        id: 'vol', 
-        t: lang === 'zh' ? '量 (Quantity)' : 'Volume', 
-        d: lang === 'zh' ? '动能之源。量在价先，是趋势的燃料。' : 'Source of Momentum. Fuel for the trend.',
-        c: 'text-red-500',
-        b: 'bg-red-100 dark:bg-red-900/30'
-      },
-      { 
-        id: 'price', 
-        t: lang === 'zh' ? '价 (Price)' : 'Price', 
-        d: lang === 'zh' ? '价值表象。结构突破是趋势的确认。' : 'Representation of Value. Structure break confirms trend.',
-        c: 'text-blue-500',
-        b: 'bg-blue-100 dark:bg-blue-900/30'
-      },
-      { 
-        id: 'space', 
-        t: lang === 'zh' ? '空 (Space)' : 'Space', 
-        d: lang === 'zh' ? '盈亏比。向上阻力位与向下支撑位的距离。' : 'Risk/Reward. Distance to Resistance vs Support.',
-        c: 'text-green-500',
-        b: 'bg-green-100 dark:bg-green-900/30'
-      },
-      { 
-        id: 'time', 
-        t: lang === 'zh' ? '时 (Time)' : 'Time', 
-        d: lang === 'zh' ? '变盘窗口。斐波那契周期与季节性拐点。' : 'Turning Point. Fibonacci Cycles & Seasonality.',
-        c: 'text-purple-500',
-        b: 'bg-purple-100 dark:bg-purple-900/30'
-      }
+    title: lang === 'zh' ? '量价时空：四维全息分析' : 'Volume-Price Space-Time: 4D Analysis',
+    vp_title: lang === 'zh' ? '六大核心量价关系 (VP DNA)' : '6 Core Volume-Price Relationships',
+    st_title: lang === 'zh' ? '时空共振触发器 (Space-Time Trigger)' : 'Space-Time Resonance Trigger',
+    patterns: [
+        {
+            id: 1, p: 'up', v: 'up', 
+            name: lang === 'zh' ? '量增价涨' : 'Vol Up, Price Up', 
+            desc: lang === 'zh' ? '【常态】健康上涨。买盘积极，多头趋势初期或中期的标准形态。' : '[Normal] Healthy trend. Active buying. Standard early/mid trend.',
+            tag: lang === 'zh' ? '健康' : 'Healthy', c: 'stroke-red-500'
+        },
+        {
+            id: 2, p: 'up', v: 'down', 
+            name: lang === 'zh' ? '量缩价涨' : 'Vol Down, Price Up', 
+            desc: lang === 'zh' ? '【最强】锁仓拉升。主力高度控盘，市场惜售。常见于主升浪加速段。' : '[Strongest] Locked ascent. High MM control, no selling. Main wave accel.',
+            tag: lang === 'zh' ? '控盘' : 'Locked', c: 'stroke-red-600'
+        },
+        {
+            id: 3, p: 'flat', v: 'up', 
+            name: lang === 'zh' ? '量大滞涨' : 'High Vol, Flat Price', 
+            desc: lang === 'zh' ? '【警戒】高位出货。巨大的成交量却推不动股价，说明主力在借机派发。' : '[Warning] Churning. Huge volume but no rise = Distribution.',
+            tag: lang === 'zh' ? '出货' : 'Dump', c: 'stroke-amber-500'
+        },
+        {
+            id: 4, p: 'down', v: 'up', 
+            name: lang === 'zh' ? '量增价跌' : 'Vol Up, Price Down', 
+            desc: lang === 'zh' ? '【恐慌】破位下杀。承接盘虽有但抛压更重，往往意味着支撑失效。' : '[Panic] Breakdown. Heavy selling overwhelms support.',
+            tag: lang === 'zh' ? '破位' : 'Break', c: 'stroke-green-500'
+        },
+        {
+            id: 5, p: 'down', v: 'down', 
+            name: lang === 'zh' ? '量缩价跌' : 'Vol Down, Price Down', 
+            desc: lang === 'zh' ? '【洗盘】良性回调。市场惜售，空头力量衰竭，等待企稳。' : '[Washout] Healthy correction. Selling exhausted. Wait for base.',
+            tag: lang === 'zh' ? '洗盘' : 'Wash', c: 'stroke-green-400'
+        },
+        {
+            id: 6, p: 'flat', v: 'down', 
+            name: lang === 'zh' ? '量缩价平' : 'Vol Down, Price Flat', 
+            desc: lang === 'zh' ? '【底部】筑底阶段。被遗忘的角落，变盘临界点的前夜。' : '[Bottom] Dormancy. Forgotten zone. Eve of change.',
+            tag: lang === 'zh' ? '蓄势' : 'Base', c: 'stroke-slate-400'
+        },
     ],
-
-    resonance: {
-      title: lang === 'zh' ? '时空共振 (Resonance)' : 'Space-Time Resonance',
-      desc: lang === 'zh' 
-        ? '当价格运行到关键的空间阻力位，同时时间刚好到达斐波那契变盘窗口（如第13/21天），若伴随成交量异常（极缩或极放），则必然发生变盘。这就是“时空之门”开启的瞬间。'
-        : 'When Price hits key Resistance (Space) at the exact Fibonacci Time window (e.g., Day 13/21), accompanied by abnormal Volume, a reversal is inevitable. The "Space-Time Portal" opens.',
-      formula: lang === 'zh' ? 'P(价格) + T(时间) + V(能量) = 趋势爆发' : 'P(Price) + T(Time) + V(Energy) = Trend Burst'
-    },
-
-    gann: {
-      title: lang === 'zh' ? '江恩时间法则' : 'Gann Time Law',
-      desc: lang === 'zh' ? '“时间是决定市场走势的最重要因素。当时间到达，价格自会跟随。”' : '"Time is the most important factor. When time is up, price will reverse."',
-      rules: lang === 'zh' 
-        ? ['1. 历史高低点的时间循环', '2. 斐波那契数列 (3, 5, 8, 13, 21...)', '3. 节气与月相的自然律']
-        : ['1. Time cycles from historic Highs/Lows', '2. Fibonacci Sequence (3, 5, 8, 13, 21...)', '3. Solar Terms & Lunar Phases']
+    trigger: {
+        space: lang === 'zh' ? '空间 (阻力位)' : 'Space (Resistance)',
+        time: lang === 'zh' ? '时间 (变盘窗)' : 'Time (Window)',
+        action: lang === 'zh' ? '共振点：突破！' : 'Resonance: Breakout!',
+        desc: lang === 'zh' ? '当价格运行至关键【空间】阻力位，且时间恰好到达斐波那契【时间】窗口（如第13/21天）。若此时量能异动，则产生共振。' 
+                             : 'When Price hits key [Space] resistance exactly at a Fibonacci [Time] window (Day 13/21). If Volume pulses, Resonance occurs.'
     }
   };
 
   return (
     <div className="space-y-6">
         <style>{`
-            @keyframes orbit-1 { from { transform: rotate(0deg) translateX(60px) rotate(0deg); } to { transform: rotate(360deg) translateX(60px) rotate(-360deg); } }
-            @keyframes orbit-2 { from { transform: rotate(120deg) translateX(80px) rotate(-120deg); } to { transform: rotate(480deg) translateX(80px) rotate(-480deg); } }
-            @keyframes orbit-3 { from { transform: rotate(240deg) translateX(100px) rotate(-240deg); } to { transform: rotate(600deg) translateX(100px) rotate(-600deg); } }
-            
-            @keyframes wormhole-spin { 
-                0% { transform: rotate(0deg) scale(1); } 
-                50% { transform: rotate(180deg) scale(1.1); } 
-                100% { transform: rotate(360deg) scale(1); } 
+            @keyframes scan-vertical {
+                0% { left: 0%; opacity: 0; }
+                20% { opacity: 1; }
+                80% { opacity: 1; }
+                100% { left: 100%; opacity: 0; }
             }
-            .anim-wormhole { animation: wormhole-spin 10s linear infinite; }
-            .anim-orbit-1 { animation: orbit-1 8s linear infinite; }
-            .anim-orbit-2 { animation: orbit-2 12s linear infinite; }
-            .anim-orbit-3 { animation: orbit-3 15s linear infinite; }
+            @keyframes pulse-node {
+                0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+                70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+                100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            }
+            .anim-scan { animation: scan-vertical 4s linear infinite; }
+            .anim-resonance { animation: pulse-node 2s infinite; }
         `}</style>
 
-        {/* 1. The 4 Dimensions Card */}
-        <Card highlightColor="indigo" className="relative overflow-hidden">
-            <div className="flex items-center gap-2 mb-6 relative z-10">
+        {/* 1. Volume-Price Logic Board */}
+        <Card highlightColor="indigo">
+            <div className="flex items-center gap-2 mb-6">
                 <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg text-indigo-600 dark:text-indigo-300">
-                    <Maximize size={24} />
+                    <Activity size={24} />
                 </div>
-                <div>
-                    <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.title}</h4>
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">{t.subtitle}</p>
-                </div>
+                <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.vp_title}</h4>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
-                {/* Visual: Solar System Model */}
-                <div className="h-64 bg-slate-900 rounded-2xl border border-slate-700 relative flex items-center justify-center overflow-hidden shadow-inner">
-                    {/* Center Sun (Trend) */}
-                    <div className="absolute w-12 h-12 bg-indigo-500 rounded-full shadow-[0_0_30px_rgba(99,102,241,0.6)] flex items-center justify-center text-white font-bold text-xs z-10 animate-pulse">
-                        Trend
-                    </div>
-                    {/* Orbits */}
-                    <div className="absolute w-[120px] h-[120px] border border-slate-700 rounded-full opacity-50"></div>
-                    <div className="absolute w-[160px] h-[160px] border border-slate-700 rounded-full opacity-40"></div>
-                    <div className="absolute w-[200px] h-[200px] border border-slate-700 rounded-full opacity-30"></div>
-
-                    {/* Planets */}
-                    <div className="absolute anim-orbit-1 flex items-center justify-center w-8 h-8 rounded-full bg-red-500 text-white text-[9px] font-bold shadow-lg">V</div>
-                    <div className="absolute anim-orbit-2 flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-[9px] font-bold shadow-lg">P</div>
-                    <div className="absolute anim-orbit-3 flex items-center justify-center w-8 h-8 rounded-full bg-purple-500 text-white text-[9px] font-bold shadow-lg">T</div>
-                    
-                    {/* Connecting Lines (Dynamic) */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-                        <line x1="50%" y1="50%" x2="50%" y2="0" className="stroke-indigo-400" />
-                        <line x1="50%" y1="50%" x2="100%" y2="100%" className="stroke-indigo-400" />
-                        <line x1="50%" y1="50%" x2="0" y2="100%" className="stroke-indigo-400" />
-                    </svg>
-                </div>
-
-                {/* Dimension Details */}
-                <div className="grid grid-cols-1 gap-3">
-                    {t.dimensions.map((d, i) => (
-                        <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                            <div className={`w-8 h-8 rounded-full ${d.b} ${d.c} flex items-center justify-center font-black shrink-0 mt-1`}>
-                                {d.t.charAt(0)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {t.patterns.map((p) => (
+                    <div key={p.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors group">
+                        <div className="flex justify-between items-start mb-3">
+                            <div className="flex items-center gap-2">
+                                <div className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider text-white 
+                                    ${p.tag === '健康' || p.tag === 'Healthy' ? 'bg-red-500' : ''}
+                                    ${p.tag === '控盘' || p.tag === 'Locked' ? 'bg-red-700' : ''}
+                                    ${p.tag === '出货' || p.tag === 'Dump' ? 'bg-amber-500' : ''}
+                                    ${p.tag === '破位' || p.tag === 'Break' ? 'bg-green-600' : ''}
+                                    ${p.tag === '洗盘' || p.tag === 'Wash' ? 'bg-green-400' : ''}
+                                    ${p.tag === '蓄势' || p.tag === 'Base' ? 'bg-slate-400' : ''}
+                                `}>
+                                    {p.tag}
+                                </div>
+                                <h5 className="font-bold text-sm text-slate-800 dark:text-slate-200">{p.name}</h5>
                             </div>
-                            <div>
-                                <h5 className={`font-bold text-sm ${d.c}`}>{d.t}</h5>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-tight font-medium">
-                                    {d.d}
-                                </p>
+                            {/* Icons */}
+                            <div className="flex gap-1 text-xs">
+                                {p.p === 'up' && <ArrowUp size={14} className="text-red-500" />}
+                                {p.p === 'down' && <ArrowDown size={14} className="text-green-500" />}
+                                {p.p === 'flat' && <Minus size={14} className="text-slate-400" />}
+                                <span className="text-slate-300">|</span>
+                                {p.v === 'up' && <ArrowUp size={14} className="text-red-500" />}
+                                {p.v === 'down' && <ArrowDown size={14} className="text-green-500" />}
                             </div>
                         </div>
-                    ))}
-                </div>
+                        
+                        <div className="flex gap-4 items-center">
+                            {/* Micro Chart */}
+                            {/* @ts-ignore */}
+                            <VPMicroChart pDir={p.p} vDir={p.v} color={p.c} />
+                            
+                            <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug font-medium flex-1">
+                                {p.desc}
+                            </p>
+                        </div>
+                    </div>
+                ))}
             </div>
         </Card>
 
-        {/* 2. Space-Time Wormhole */}
+        {/* 2. Space-Time Trigger Visualization */}
         <Card highlightColor="purple" className="relative overflow-hidden">
-             <div className="flex items-center gap-2 mb-4">
-                <div className="bg-purple-100 dark:bg-purple-900/30 p-1.5 rounded-lg text-purple-600 dark:text-purple-300">
-                    <Disc size={20} />
+             <div className="flex items-center gap-2 mb-6 relative z-10">
+                <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg text-purple-600 dark:text-purple-300">
+                    <Clock size={24} />
                 </div>
-                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.resonance.title}</h4>
+                <h4 className="font-bold text-xl text-slate-900 dark:text-slate-100">{t.st_title}</h4>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-6 items-center">
-                {/* Wormhole Visual */}
-                <div className="w-full md:w-1/2 h-48 bg-black rounded-xl border border-slate-700 relative overflow-hidden flex items-center justify-center">
-                    {/* Spiral */}
-                    <div className="absolute w-[200%] h-[200%] anim-wormhole opacity-30">
-                        <svg viewBox="0 0 200 200" className="w-full h-full">
-                            {[...Array(10)].map((_, i) => (
-                                <circle key={i} cx="100" cy="100" r={i * 10 + 5} fill="none" stroke="url(#spiralGrad)" strokeWidth="1" strokeDasharray="10 5" />
-                            ))}
-                            <defs>
-                                <linearGradient id="spiralGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#8b5cf6" />
-                                    <stop offset="100%" stopColor="#3b82f6" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+            <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
+                {/* Chart Visualization */}
+                <div className="w-full md:w-3/5 h-64 bg-slate-900 rounded-xl border border-slate-700 relative overflow-hidden" 
+                     onMouseEnter={() => setActiveResonance(true)} 
+                     onMouseLeave={() => setActiveResonance(false)}>
+                    
+                    {/* Grid */}
+                    <div className="absolute inset-0 opacity-20" 
+                         style={{backgroundImage: 'linear-gradient(#475569 1px, transparent 1px), linear-gradient(90deg, #475569 1px, transparent 1px)', backgroundSize: '40px 40px'}}>
                     </div>
+
+                    {/* Space Line (Resistance) */}
+                    <div className="absolute top-[30%] w-full border-t border-dashed border-red-500 opacity-50"></div>
+                    <div className="absolute top-[30%] right-2 text-xs text-red-500 font-bold">{t.trigger.space}</div>
+
+                    {/* Time Line (Fibonacci Window) */}
+                    <div className="absolute left-[70%] h-full border-l border-dashed border-purple-500 opacity-50"></div>
+                    <div className="absolute bottom-2 left-[71%] text-xs text-purple-500 font-bold">{t.trigger.time} (Day 13)</div>
+
+                    {/* Price Curve */}
+                    <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                        <path d="M0,100 Q100,100 150,80 T300,50 L400,20" fill="none" className="stroke-slate-100" strokeWidth="2" />
+                    </svg>
+
+                    {/* Resonance Point */}
+                    <div className={`absolute top-[30%] left-[70%] w-4 h-4 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300 ${activeResonance ? 'anim-resonance shadow-[0_0_20px_rgba(255,255,255,1)]' : 'opacity-0'}`}></div>
                     
-                    {/* Intersection Point */}
-                    <div className="relative z-10 w-2 h-2 bg-white rounded-full shadow-[0_0_20px_10px_rgba(255,255,255,0.8)] animate-ping"></div>
-                    
-                    {/* Axes */}
-                    <div className="absolute w-full h-px bg-purple-500/50"></div>
-                    <div className="absolute h-full w-px bg-purple-500/50"></div>
-                    
-                    <div className="absolute bottom-2 left-2 text-xs text-purple-400 font-mono">TIME (Fibonacci)</div>
-                    <div className="absolute top-2 right-2 text-xs text-blue-400 font-mono">SPACE (Resistance)</div>
+                    {/* Scanner Line */}
+                    <div className="absolute top-0 bottom-0 w-8 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent anim-scan pointer-events-none"></div>
+
+                    {/* Label when active */}
+                    <div className={`absolute top-[20%] left-[70%] transform -translate-x-1/2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded transition-opacity duration-300 ${activeResonance ? 'opacity-100' : 'opacity-0'}`}>
+                        {t.trigger.action}
+                    </div>
                 </div>
 
                 {/* Description */}
-                <div className="w-full md:w-1/2 space-y-4">
-                    <p className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed text-sm">
-                        {t.resonance.desc}
+                <div className="w-full md:w-2/5 space-y-4">
+                    <p className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed text-sm md:text-base">
+                        {t.trigger.desc}
                     </p>
                     
-                    <div className="bg-slate-50 dark:bg-slate-800 p-3 rounded border border-slate-200 dark:border-slate-700 text-center">
-                        <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 text-sm md:text-base">
-                            {t.resonance.formula}
-                        </span>
-                    </div>
-
-                    <div className="space-y-1">
-                        <h6 className="font-bold text-slate-800 dark:text-slate-200 text-xs uppercase flex items-center gap-1">
-                            <Clock size={12} /> {t.gann.title}
-                        </h6>
-                        <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-1 pl-4 list-disc marker:text-purple-500">
-                            {t.gann.rules.map((r, i) => (
-                                <li key={i}>{r}</li>
-                            ))}
-                        </ul>
+                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg border-l-4 border-purple-500 text-sm text-slate-600 dark:text-slate-400">
+                        <div className="font-bold mb-2 text-slate-800 dark:text-slate-200">Formula:</div>
+                        <div className="flex flex-col gap-2 font-mono">
+                            <div className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1">
+                                <span>P (Space)</span> <span>= Resistance</span>
+                            </div>
+                            <div className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1">
+                                <span>T (Time)</span> <span>= Fib(13, 21, 34)</span>
+                            </div>
+                            <div className="flex justify-between text-purple-600 dark:text-purple-400 font-bold">
+                                <span>Resonance</span> <span>= EXPLOSION</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
