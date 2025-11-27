@@ -1,0 +1,22 @@
+{
+  "name": "五线开花深度模型",
+  "short_name": "五线开花",
+  "description": "基于筹码微观结构与多周期共振的深度交易模型",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/892/892228.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/892/892228.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
