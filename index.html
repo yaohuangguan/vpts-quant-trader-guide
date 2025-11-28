@@ -42,6 +42,15 @@
       .font-mono {
         font-family: 'JetBrains Mono', monospace;
       }
+      /* Performance Optimization: Pause animations when not in view */
+      .animation-paused * {
+        animation-play-state: paused !important;
+      }
+      /* Force hardware acceleration for smoother animations when active */
+      .will-change-transform {
+        will-change: transform;
+        transform: translateZ(0);
+      }
     </style>
   <script type="importmap">
 {

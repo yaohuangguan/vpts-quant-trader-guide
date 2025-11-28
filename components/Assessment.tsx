@@ -75,12 +75,18 @@ const Fireworks: React.FC = () => {
 
         const createFirework = (x: number, y: number) => {
              const color = colors[Math.floor(Math.random() * colors.length)];
-             for(let i=0; i<30; i++) {
+             // Reduced particle count for performance
+             for(let i=0; i<20; i++) {
                  particles.push(new Particle(x, y, color));
              }
         };
 
         const animate = () => {
+             if (particles.length === 0 && !activeRef.current) {
+                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                 return;
+             }
+
              requestAnimationFrame(animate);
              if(!ctx) return;
              ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas instead of overlay for fade out effect
@@ -116,6 +122,7 @@ const Fireworks: React.FC = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
             clearTimeout(timeout);
+            activeRef.current = false; // Ensure loop stops on unmount
         };
     }, []);
 

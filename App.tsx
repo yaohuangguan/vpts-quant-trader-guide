@@ -22,13 +22,14 @@ import { VPSpaceTime } from './components/VPSpaceTime';
 import { LineChart, Target, Layers, Moon, Sun, Globe, Brain, GraduationCap, User, Wind, Film, ShoppingBag, Cpu, TrendingUp, Menu, X, ChevronRight } from 'lucide-react';
 import { Lang } from './types';
 
-// --- Custom Logo Component with 3D Tilt Interaction ---
+// --- Custom Logo Component with 3D Tilt Interaction (Performance Optimized) ---
 const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
-  const [transform, setTransform] = useState("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)");
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const frameId = useRef<number>(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !contentRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -41,23 +42,37 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
     const rotateX = ((centerY - y) / centerY) * 20; 
     const rotateY = ((x - centerX) / centerX) * 20;
 
-    setTransform(`perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`);
+    // Throttle via requestAnimationFrame
+    cancelAnimationFrame(frameId.current);
+    frameId.current = requestAnimationFrame(() => {
+        if(contentRef.current) {
+            contentRef.current.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        }
+    });
   };
 
   const handleMouseLeave = () => {
-    setTransform("perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)");
+    cancelAnimationFrame(frameId.current);
+    frameId.current = requestAnimationFrame(() => {
+        if(contentRef.current) {
+            contentRef.current.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)";
+        }
+    });
   };
+
+  useEffect(() => {
+      return () => cancelAnimationFrame(frameId.current);
+  }, []);
 
   return (
     <div 
         ref={containerRef}
-        className={`group relative cursor-pointer transition-transform duration-300 ease-out ${className}`}
-        style={{ transform, transformStyle: 'preserve-3d' }}
+        className={`group relative cursor-pointer ${className}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
     >
       {/* Container: Respects Theme (White in Light, Dark in Dark) */}
-      <div className="logo-content w-full h-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+      <div ref={contentRef} className="logo-content w-full h-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden transition-transform duration-300 ease-out will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
         <svg viewBox="0 0 100 100" className="w-full h-full">
           {/* Layer 1: Background K-Line Chart (More Obvious & Thicker) */}
           <g className="opacity-90">
@@ -97,7 +112,7 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
                 d="M55,10 L30,55 L50,55 L40,90 L75,35 L55,35 Z" 
                 fill="#facc15" 
                 stroke="#b45309" 
-                stroke-width="1.5" 
+                strokeWidth="1.5" 
                 strokeLinejoin="round"
                 filter="url(#bolt-glow)"
              />
@@ -108,7 +123,7 @@ const RolyPolyLogo = ({ className = "w-20 h-20" }: { className?: string }) => {
   );
 };
 
-// Section Keys for Navigation - Inserted sec_vp at 09, Moved sec_08 (Chip) to 11
+// Section Keys for Navigation
 const SECTION_KEYS = [
     'sec_00', // 00 Intro
     'sec_01', // 01 MA
@@ -119,9 +134,9 @@ const SECTION_KEYS = [
     'sec_06', // 06 Tactical
     'sec_kline', // 07 Candles
     'sec_07', // 08 Volume
-    'sec_vp', // 09 VP Space-Time (NEW)
-    'sec_16', // 10 Strategy (Target Position)
-    'sec_08', // 11 Chip Structure (Moved after Strategy)
+    'sec_vp', // 09 VP Space-Time
+    'sec_16', // 10 Strategy
+    'sec_08', // 11 Chip Structure
     'sec_09', // 12 Timeframe
     'sec_17', // 13 Case Studies
     'sec_10', // 14 Psych
@@ -277,6 +292,8 @@ const Navbar: React.FC<{
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [lang, setLang] = useState<Lang>('zh');
+  const [isPageVisible, setIsPageVisible] = useState(true);
+  const [particleCount, setParticleCount] = useState(15);
 
   useEffect(() => {
     if (darkMode) {
@@ -285,6 +302,34 @@ const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [darkMode]);
+
+  // Performance Optimization: Pause animations globally when tab is inactive
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsPageVisible(document.visibilityState === 'visible');
+      if (document.visibilityState === 'hidden') {
+        document.body.classList.add('animation-paused');
+      } else {
+        document.body.classList.remove('animation-paused');
+      }
+    };
+
+    // Performance Optimization: Reduce particles on mobile
+    const handleResize = () => {
+        setParticleCount(window.innerWidth < 768 ? 6 : 15);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('resize', handleResize);
+    
+    // Init call
+    handleResize();
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const titles = {
     zh: {
@@ -304,7 +349,7 @@ const App: React.FC = () => {
         sec_06: "核心变种：全均线战术板 (Six Tactical Patterns)",
         sec_kline: "经典顶底K线形态大全 (Pattern Library)",
         sec_07: "量能动力学与验证机制",
-        sec_vp: "量价时空分析：四维全息视角", // New Section Title
+        sec_vp: "量价时空分析：四维全息视角", 
         sec_08: "筹码微观结构：吸筹-锁仓-出货",
         sec_09: "全周期共振：信号传递链",
         sec_10: "市场心理学与庄家博弈分析",
@@ -360,7 +405,7 @@ const App: React.FC = () => {
         sec_06: "Tactical Variations: Six Core Patterns",
         sec_kline: "Classic Top/Bottom Candlestick Patterns",
         sec_07: "Volume Dynamics & Verification Mechanisms",
-        sec_vp: "Volume-Price Space-Time Analysis", // New
+        sec_vp: "Volume-Price Space-Time Analysis",
         sec_08: "Micro-Chip Structure: Accumulation-Lock-Distribution",
         sec_09: "Timeframe Resonance: Signal Chain",
         sec_10: "Market Psychology & Market Maker Game Theory",
@@ -404,7 +449,7 @@ const App: React.FC = () => {
   const t = titles[lang];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-x-hidden">
       {/* 
         Global Background Layer (Fixed)
       */}
@@ -419,16 +464,16 @@ const App: React.FC = () => {
           
           {/* Light Mode Gradient Blobs */}
           <div className="dark:hidden absolute inset-0 opacity-60">
-              <div className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] bg-blue-100/50 rounded-full blur-[120px] animate-pulse-slow"></div>
-              <div className="absolute top-[40%] -right-[10%] w-[50%] h-[70%] bg-indigo-100/50 rounded-full blur-[120px] animate-pulse-slow" style={{animationDelay: '2s'}}></div>
+              <div className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] bg-blue-100/50 rounded-full blur-[120px] animate-pulse-slow will-change-transform"></div>
+              <div className="absolute top-[40%] -right-[10%] w-[50%] h-[70%] bg-indigo-100/50 rounded-full blur-[120px] animate-pulse-slow will-change-transform" style={{animationDelay: '2s'}}></div>
           </div>
 
-          {/* Universal Particles */}
+          {/* Universal Particles (Performance Optimized) */}
           <div className="absolute inset-0">
-             {[...Array(30)].map((_, i) => (
+             {[...Array(particleCount)].map((_, i) => (
                  <div 
                     key={i}
-                    className="absolute rounded-full bg-blue-400/30 dark:bg-indigo-400/20 blur-[1px] animate-float-slow"
+                    className="absolute rounded-full bg-blue-400/30 dark:bg-indigo-400/20 blur-[1px] animate-float-slow will-change-transform"
                     style={{
                         top: `${Math.random() * 100}%`,
                         left: `${Math.random() * 100}%`,
@@ -455,6 +500,7 @@ const App: React.FC = () => {
         }
         .animate-float-slow { animation: float-slow linear infinite; }
         .animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
+        .will-change-transform { will-change: transform; }
       `}</style>
 
       {/* Fixed Navbar */}

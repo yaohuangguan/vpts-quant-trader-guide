@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from './Card';
 import { Wind, Zap, Anchor, Compass, Ship, Waves } from 'lucide-react';
@@ -53,10 +54,10 @@ export const ChaosOrder: React.FC<{ lang: Lang }> = ({ lang }) => {
             0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
             100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
-        .ship-anim { animation: ship-rock 5s ease-in-out infinite; }
-        .star-anim { animation: star-twinkle 3s ease-in-out infinite; }
-        .rotate-astro { animation: rotate-slow 120s linear infinite; }
-        .grid-flow { animation: float-grid 5s linear infinite; }
+        .ship-anim { animation: ship-rock 5s ease-in-out infinite; will-change: transform; }
+        .star-anim { animation: star-twinkle 3s ease-in-out infinite; will-change: opacity, transform; }
+        .rotate-astro { animation: rotate-slow 120s linear infinite; will-change: transform; }
+        .grid-flow { animation: float-grid 5s linear infinite; will-change: transform; }
       `}</style>
       
       {/* Background Container */}
@@ -78,8 +79,8 @@ export const ChaosOrder: React.FC<{ lang: Lang }> = ({ lang }) => {
                      </svg>
                 </div>
 
-                {/* Stars */}
-                {[...Array(50)].map((_, i) => (
+                {/* Stars - Reduced Count for Performance */}
+                {[...Array(20)].map((_, i) => (
                    <div 
                     key={i} 
                     className="absolute bg-white rounded-full star-anim"

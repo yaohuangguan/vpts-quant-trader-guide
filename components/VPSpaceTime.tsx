@@ -91,18 +91,25 @@ export const VPSpaceTime: React.FC<{ lang: Lang }> = ({ lang }) => {
   return (
     <div className="space-y-6">
         <style>{`
-            @keyframes scan-vertical {
-                0% { left: 0%; opacity: 0; }
+            @keyframes scan-horizontal {
+                0% { transform: translateX(0%); opacity: 0; }
                 20% { opacity: 1; }
                 80% { opacity: 1; }
-                100% { left: 100%; opacity: 0; }
+                100% { transform: translateX(500%); opacity: 0; } /* Adjust 500% based on relative width of parent vs bar */
             }
             @keyframes pulse-node {
                 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
                 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
                 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
             }
-            .anim-scan { animation: scan-vertical 4s linear infinite; }
+            /* Optimized scan using left for simplicity in responsive layout, adding will-change */
+            @keyframes scan-left-right {
+                0% { left: 0%; opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { left: 100%; opacity: 0; }
+            }
+            .anim-scan { animation: scan-left-right 4s linear infinite; will-change: left; }
             .anim-resonance { animation: pulse-node 2s infinite; }
         `}</style>
 

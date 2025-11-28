@@ -24,6 +24,31 @@ const Candle = ({ x, y, w, h_body, h_wick_top, h_wick_bottom, color, delay = '0s
     </g>
 );
 
+const PatternCard: React.FC<{ p: PatternData; lang: Lang }> = ({ p, lang }) => (
+    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:border-slate-300 dark:hover:border-slate-500 transition-colors shadow-sm group">
+        <div className="h-32 bg-slate-50 dark:bg-slate-900 relative flex items-center justify-center p-4 border-b border-slate-200 dark:border-slate-700">
+            <style>{`
+                @keyframes grow-candle {
+                    from { transform: scaleY(0); }
+                    to { transform: scaleY(1); }
+                }
+                .candle-anim { transform-origin: bottom; animation: grow-candle 1s ease-out forwards; }
+            `}</style>
+            {p.svg}
+            <div className={`absolute top-2 right-2 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1 ${p.type === 'top' ? 'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-700' : 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-700'}`}>
+                {p.type === 'top' ? <ArrowDown size={10} /> : <ArrowUp size={10} />}
+                {p.type === 'top' ? (lang === 'zh' ? '见顶' : 'TOP') : (lang === 'zh' ? '见底' : 'BTM')}
+            </div>
+        </div>
+        <div className="p-4">
+            <h5 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{lang === 'zh' ? p.name : p.enName}</h5>
+            <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                {p.desc}
+            </p>
+        </div>
+    </div>
+);
+
 // --- Pattern Specific Visualizations ---
 
 export const ClassicCandlePatterns: React.FC<{ lang: Lang }> = ({ lang }) => {
@@ -255,31 +280,6 @@ export const ClassicCandlePatterns: React.FC<{ lang: Lang }> = ({ lang }) => {
         ]
     };
 
-    const PatternCard = ({ p }: { p: PatternData }) => (
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:border-slate-300 dark:hover:border-slate-500 transition-colors shadow-sm group">
-            <div className="h-32 bg-slate-50 dark:bg-slate-900 relative flex items-center justify-center p-4 border-b border-slate-200 dark:border-slate-700">
-                <style>{`
-                    @keyframes grow-candle {
-                        from { transform: scaleY(0); }
-                        to { transform: scaleY(1); }
-                    }
-                    .candle-anim { transform-origin: bottom; animation: grow-candle 1s ease-out forwards; }
-                `}</style>
-                {p.svg}
-                <div className={`absolute top-2 right-2 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1 ${p.type === 'top' ? 'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-700' : 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-700'}`}>
-                    {p.type === 'top' ? <ArrowDown size={10} /> : <ArrowUp size={10} />}
-                    {p.type === 'top' ? (lang === 'zh' ? '见顶' : 'TOP') : (lang === 'zh' ? '见底' : 'BTM')}
-                </div>
-            </div>
-            <div className="p-4">
-                <h5 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{lang === 'zh' ? p.name : p.enName}</h5>
-                <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                    {p.desc}
-                </p>
-            </div>
-        </div>
-    );
-
     return (
         <div className="space-y-10">
             {/* Single */}
@@ -288,7 +288,7 @@ export const ClassicCandlePatterns: React.FC<{ lang: Lang }> = ({ lang }) => {
                     {lang === 'zh' ? '单K线形态 (Single Candle)' : 'Single Candle Patterns'}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {patterns.single.map((p, i) => <PatternCard key={i} p={p} />)}
+                    {patterns.single.map((p, i) => <PatternCard key={i} p={p} lang={lang} />)}
                 </div>
             </div>
 
@@ -298,7 +298,7 @@ export const ClassicCandlePatterns: React.FC<{ lang: Lang }> = ({ lang }) => {
                     {lang === 'zh' ? '双K线组合 (Double Candles)' : 'Double Candle Patterns'}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {patterns.double.map((p, i) => <PatternCard key={i} p={p} />)}
+                    {patterns.double.map((p, i) => <PatternCard key={i} p={p} lang={lang} />)}
                 </div>
             </div>
 
@@ -308,7 +308,7 @@ export const ClassicCandlePatterns: React.FC<{ lang: Lang }> = ({ lang }) => {
                     {lang === 'zh' ? '三K线组合 (Triple Candles)' : 'Triple Candle Patterns'}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {patterns.triple.map((p, i) => <PatternCard key={i} p={p} />)}
+                    {patterns.triple.map((p, i) => <PatternCard key={i} p={p} lang={lang} />)}
                 </div>
             </div>
 
@@ -318,7 +318,7 @@ export const ClassicCandlePatterns: React.FC<{ lang: Lang }> = ({ lang }) => {
                     {lang === 'zh' ? '形态结构 (Morphology)' : 'Chart Patterns'}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {patterns.morph.map((p, i) => <PatternCard key={i} p={p} />)}
+                    {patterns.morph.map((p, i) => <PatternCard key={i} p={p} lang={lang} />)}
                 </div>
             </div>
         </div>
