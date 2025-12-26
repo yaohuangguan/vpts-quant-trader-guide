@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Card } from './Card';
-import { TrendingUp, Activity, BarChart2, GitCommit } from 'lucide-react';
+import { TrendingUp, Activity, BarChart2, GitCommit, Compass, Crosshair } from 'lucide-react';
 import { Lang } from '../types';
 
 export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
@@ -41,6 +42,22 @@ export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
         div: lang === 'zh' ? '顶背离' : 'Divergence',
         desc_axis: lang === 'zh' ? 'RSI有效站稳50上方是多头行情的底线。' : 'RSI staying above 50 is the baseline for bullish trends.',
         desc_div: lang === 'zh' ? '股价创新高而RSI不再创新高，是离场警报。' : 'Price makes new high but RSI does not. Exit warning.'
+    },
+    bbi: {
+        title: lang === 'zh' ? 'BBI: 多空分水岭' : 'BBI: Bull/Bear Divider',
+        bull: lang === 'zh' ? '多头区 (持有)' : 'Bull Zone (Hold)',
+        bear: lang === 'zh' ? '空头区 (空仓)' : 'Bear Zone (Cash)',
+        cross: lang === 'zh' ? '穿越确立' : 'Crossover',
+        desc_trend: lang === 'zh' ? 'BBI综合了3、6、12、24日四条均线，是一条加权的多空平衡线。' : 'BBI aggregates 3, 6, 12, 24-day MAs into one weighted balance line.',
+        desc_act: lang === 'zh' ? '股价位于BBI上方视为多头市场，只做多；下方为空头市场，只做空或空仓。它是过滤震荡噪音的神器。' : 'Price > BBI = Bull Market (Buy only); Price < BBI = Bear Market. Filters noise effectively.'
+    },
+    sar: {
+        title: lang === 'zh' ? 'SAR: 抛物线转向 (止损神器)' : 'SAR: Parabolic Stop & Reverse',
+        long: lang === 'zh' ? '红点护盘' : 'Red Support',
+        short: lang === 'zh' ? '绿点压制' : 'Green Resist',
+        flip: lang === 'zh' ? '触点反转' : 'Touch & Flip',
+        desc_stop: lang === 'zh' ? 'SAR是极其优秀的“傻瓜式移动止损”工具。随着股价上涨，红点紧随其后抬高，自动锁定利润。' : 'Excellent "Foolproof Trailing Stop". As price rises, red dots follow up, locking profits.',
+        desc_discipline: lang === 'zh' ? '一旦股价跌破SAR红点，必须无条件离场。它能帮你克服“再等等”的侥幸心理。' : 'If price breaks SAR dot, exit unconditionally. Overcomes "wait and see" bias.'
     }
   };
 
@@ -74,6 +91,11 @@ export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
         .pulse-target {
             animation: pulse-red 2s infinite;
         }
+        @keyframes sar-dot {
+            0% { opacity: 0; transform: scale(0); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .anim-dot { animation: sar-dot 0.5s ease-out forwards; }
       `}</style>
 
       {/* MACD */}
@@ -234,6 +256,85 @@ export const IndicatorDiagrams: React.FC<{ lang: Lang }> = ({ lang }) => {
          <div className="space-y-2 text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
              <p><b>● {t.rsi.axis}：</b> {t.rsi.desc_axis}</p>
              <p><b>● {t.rsi.div}：</b> {t.rsi.desc_div}</p>
+        </div>
+      </Card>
+
+      {/* BBI */}
+      <Card highlightColor="teal">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="bg-teal-100 dark:bg-teal-900/30 p-1.5 rounded text-teal-600 dark:text-teal-400">
+             <Compass size={18}/>
+          </div>
+          <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.bbi.title}</h4>
+        </div>
+
+        <div className="h-36 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 relative mb-3 overflow-hidden p-2">
+             <svg className="w-full h-full" viewBox="0 0 300 120">
+                 {/* BBI Line (Smoother) */}
+                 <path d="M0,80 Q50,90 100,80 T200,60 T300,30" fill="none" className="stroke-teal-500" strokeWidth="3" />
+                 
+                 {/* Price Line (More volatile) */}
+                 <path d="M0,90 L20,85 L40,95 L60,85 L80,90 L100,75 L120,80 L140,50 L160,55 L180,45 L200,50 L240,20 L260,25 L300,10" fill="none" className="stroke-slate-400 dark:stroke-slate-500" strokeWidth="1" strokeDasharray="4 2" />
+                 
+                 {/* Bull Zone Highlight */}
+                 <path d="M100,80 Q150,70 200,60 T300,30 L300,0 L100,0 Z" className="fill-teal-500/10" />
+                 
+                 {/* Crossover Point */}
+                 <circle cx="100" cy="80" r="4" className="fill-red-500 animate-ping" />
+                 <text x="105" y="100" fontSize="11" className="fill-teal-600 font-bold">{t.bbi.cross}</text>
+                 
+                 {/* Zones */}
+                 <text x="250" y="20" fontSize="12" className="fill-teal-600 font-bold">{t.bbi.bull}</text>
+                 <text x="50" y="110" fontSize="12" className="fill-slate-400 font-bold">{t.bbi.bear}</text>
+             </svg>
+        </div>
+
+        <div className="space-y-2 text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+             <p><b>● {t.bbi.cross}：</b> {t.bbi.desc_trend}</p>
+             <p><b>● {t.bbi.bull}：</b> {t.bbi.desc_act}</p>
+        </div>
+      </Card>
+
+      {/* SAR */}
+      <Card highlightColor="fuchsia">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="bg-fuchsia-100 dark:bg-fuchsia-900/30 p-1.5 rounded text-fuchsia-600 dark:text-fuchsia-400">
+             <Crosshair size={18}/>
+          </div>
+          <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t.sar.title}</h4>
+        </div>
+
+        <div className="h-36 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 relative mb-3 overflow-hidden p-2">
+             <svg className="w-full h-full" viewBox="0 0 300 120">
+                 {/* Candles - Uptrend */}
+                 <g transform="translate(20,0)">
+                    {[80, 75, 70, 60, 50, 40, 30].map((y, i) => (
+                        <rect key={i} x={i*30} y={y} width={8} height={20} className="fill-red-500" />
+                    ))}
+                    <line x1="200" y1="30" x2="208" y2="50" className="stroke-red-500" strokeWidth="8" /> {/* Top Candle */}
+                 </g>
+                 
+                 {/* Reversal Candle (Drop) */}
+                 <rect x="230" y="40" width="8" height="40" className="fill-green-500 stroke-green-600" />
+
+                 {/* SAR Dots (Red below) */}
+                 {[110, 105, 95, 85, 75, 65, 55].map((y, i) => (
+                     <circle key={i} cx={24 + i*30} cy={y} r="3" className="fill-red-500 anim-dot" style={{animationDelay: `${i*0.1}s`}} />
+                 ))}
+
+                 {/* SAR Dots (Green above after reversal) */}
+                 <circle cx="234" cy="30" r="4" className="fill-green-500 animate-bounce" />
+                 <circle cx="264" cy="25" r="3" className="fill-green-500 opacity-50" />
+                 
+                 {/* Labels */}
+                 <text x="100" y="110" fontSize="11" className="fill-red-500 font-bold">{t.sar.long}</text>
+                 <text x="240" y="15" fontSize="11" className="fill-green-600 font-bold">{t.sar.flip}</text>
+             </svg>
+        </div>
+
+        <div className="space-y-2 text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+             <p><b>● {t.sar.long}：</b> {t.sar.desc_stop}</p>
+             <p><b>● {t.sar.flip}：</b> {t.sar.desc_discipline}</p>
         </div>
       </Card>
     </div>
